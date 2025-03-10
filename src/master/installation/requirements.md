@@ -31,7 +31,7 @@ Modify your **`php.ini`** file with the following settings:
 ```ini
 memory_limit = 4G
 max_execution_time = 360
-date.timezone = Asia/Kolkata  ; Change this to your timezone.
+date.timezone = Asia/Kolkata ; Change this to your timezone.
 ```
 
 ::: tip Remember to restart your web server

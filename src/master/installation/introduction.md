@@ -22,7 +22,7 @@ Aureus ERP is your gateway to an efficient, scalable, and highly customizable en
 
 ## Plugins
 
-AureusERP plugin are divided into two categories:
+Aureus ERP plugin are divided into two categories:
 
 ### Core Plugin (System Plugin)
 
@@ -109,7 +109,7 @@ Some plugins require other plugin to function properly. The system will automati
 
 ## Customization
 
-AureusERP is designed to be highly customizable, allowing you to:
+Aureus ERP is designed to be highly customizable, allowing you to:
 
 - Install only the plugin you need
 - Extend existing plugin with custom functionality
