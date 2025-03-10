@@ -1,0 +1,33 @@
+{
+  "name": "erp-docs",
+  "version": "1.0.0",
+  "description": "Documentation for Open Source ERP Platform",
+  "keywords": [
+    "erp",
+    "laravel",
+    "filamentphp",
+    "documentation",
+    "open-source"
+  ],
+  "author": "Webkul",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "docs:dev": "vitepress dev",
+    "docs:build": "vitepress build",
+    "docs:preview": "vitepress preview",
+    "format": "npx prettier --write ."
+  },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "vitepress": "^1.6.3",
+    "vue": "^3.5.13"
+  },
+  "dependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.13.10",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "prismjs": "^1.29.0"
+  }
+}
