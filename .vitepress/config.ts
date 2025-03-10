@@ -70,6 +70,22 @@ export default defineConfig({
             { text: 'Installation', link: 'installation/installation' },
             { text: 'Docker', link: 'installation/docker' }
           ])
+        },
+        {
+          text: 'Architecture concepts',
+          collapsed: false,
+          items: setVersionPrefix([
+            { text: 'Introduction', link: 'architecture/introduction' },
+            { text: 'Packages', link: 'architecture/packages' },
+            { text: 'Frontend', link: 'architecture/frontend' },
+            { text: 'Theme', link: 'architecture/theme' },
+            { text: 'Performance', link: 'architecture/performance' },
+            {
+              text: 'Repository Pattern',
+              link: 'architecture/repository-pattern'
+            },
+            { text: 'Modular Design', link: 'architecture/modular-design' }
+          ])
         }
       ]
     },
@@ -79,7 +95,8 @@ export default defineConfig({
     ],
 
     editLink: {
-      pattern: 'https://github.com/aureuserp/aureuserp-docs/:path',
+      pattern:
+        'https://github.com/aureuserp/dev-docs/blob/master/src/:path',
       text: 'Edit this page on GitHub'
     },
 
@@ -88,10 +105,15 @@ export default defineConfig({
       copyright: 'Copyright © 2025 Webkul'
     },
 
-    algolia: {
-      appId: '',
-      apiKey: '',
-      indexName: 'erp-docs'
+    lastUpdated: {
+      text: 'Last updated',
+      formatOptions: {
+        dateStyle: 'full'
+      }
+    },
+
+    search: {
+      provider: 'local'
     }
   }
 })
