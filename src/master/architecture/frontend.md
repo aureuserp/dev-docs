@@ -1,34 +1,63 @@
-# Bagisto Frontend Overview
+# Introduction
 
-[[Toc]]
+Aureus ERP's frontend is built on modern web technologies to provide an intuitive, responsive, and highly customizable user experience. Leveraging **FilamentPHP**, **Livewire**, **Alpine.js**, and **Tailwind CSS**, the system ensures seamless UI interactions and efficient data handling.
 
-## Introduction
+## FilamentPHP
 
-Bagisto's frontend leverages powerful tools and frameworks to create a dynamic, responsive, and visually appealing user interface. Designed to deliver a seamless shopping experience, Bagisto combines modern technologies and best practices to ensure optimal performance and flexibility.
+[Aureus ERP](#) uses **FilamentPHP** as the core admin panel framework, which provides a powerful and flexible resource management system.
+
+- **Resources**: FilamentPHP simplifies CRUD operations using resources that define how models are listed, created, edited, and managed in the UI.
+- **Pages**: Custom pages extend beyond standard CRUD resources, allowing complex business logic and interactive interfaces.
+
+FilamentPHP integrates smoothly with Laravel and is optimized for rapid development with minimal boilerplate code.
+
+## Livewire
+
+[Livewire](https://livewire.laravel.com/) powers the dynamic interactions in Aureus ERP without requiring a complex JavaScript framework.
+
+- **Reactivity**: Livewire enables real-time updates without a full-page reload.
+- **Component-Based**: Each feature in Aureus ERP is structured as Livewire components, ensuring modularity and maintainability.
+
+Livewire enhances the interactivity of forms, tables, and dashboards while maintaining Laravel’s simplicity.
+
+## Alpine.js
+
+[Alpine.js](https://alpinejs.dev/) is used alongside Livewire to handle lightweight frontend interactions.
+
+- **Minimal JavaScript**: Provides a simple yet powerful way to add dynamic behavior without the overhead of a full JavaScript framework.
+- **Declarative Syntax**: Offers Vue-like reactivity in a minimal package.
+
+Alpine.js is particularly useful for dropdowns, modals, and UI state management in Aureus ERP.
 
 ## Tailwind CSS
 
-Bagisto uses [Tailwind CSS](https://tailwindcss.com/) for its styling needs. Tailwind CSS is a highly customizable, utility-first CSS framework that allows developers to build responsive and modern designs efficiently.
+[Tailwind CSS](https://tailwindcss.com/) is the primary styling framework, offering a **utility-first** approach that makes designing responsive and modern UIs more efficient.
 
-- **Customization**: Tailwind CSS provides extensive configuration options, enabling developers to tailor the design system to specific project requirements.
-- **Utility-First Approach**: It offers utility classes that can be combined to create any design directly in your HTML.
+- **Highly Customizable**: The `tailwind.config.js` file allows for complete theme customization.
+- **Performance Optimized**: Unused styles are purged in production for minimal CSS footprint.
 
-To configure Tailwind CSS in Bagisto, you need to define your Blade file path along with the JavaScript file directory in the `tailwind.config.js` file. Tailwind CSS will compile all the CSS defined at the specified location.
+Tailwind CSS ensures that Aureus ERP maintains a sleek and consistent design system across all modules.
 
-## Vue.js
+## Blade Templates
 
-The dynamic user interfaces in Bagisto are powered by [Vue.js](https://vuejs.org/), a robust and flexible JavaScript framework.
+Aureus ERP relies on Laravel’s **Blade template engine** for rendering UI components efficiently.
 
-- **Reactive Components**: Vue.js enables the development of reactive components that update seamlessly as the data changes.
-- **Component-Based Architecture**: This promotes reusability and maintainability of code by breaking down the UI into isolated, reusable components.
+- **Blade Components**: Reusable UI elements improve maintainability.
+- **Server-Side Rendering**: Optimizes performance by rendering HTML directly on the server.
 
-In conjunction with Vue.js, Bagisto uses [Vite](https://vitejs.dev/) as the build tool. Vite offers a fast and efficient development environment, replacing the older [Laravel Mix](https://laravel.com/docs/10.x/mix) tool. The `vite.config.js` file defines the build directory path, and Vite compiles all CSS and JavaScript assets into the public directory.
+Blade seamlessly integrates with Livewire, enhancing performance while keeping the frontend lightweight.
 
-## Blade
+## Vite Build System
 
-Bagisto utilizes the Blade template engine, which is integrated with [Laravel](https://laravel.com). Blade allows developers to use both Blade components and plain PHP code within templates, providing flexibility and power for crafting dynamic and efficient solutions.
+[Aureus ERP](#) uses **Vite** as its asset bundler, replacing the traditional Laravel Mix setup.
 
-- **Template Inheritance**: Blade supports template inheritance, which allows for a modular and maintainable template structure.
-- **Directives**: Blade includes various directives that simplify common tasks, such as loops and conditionals.
+- **Faster Development**: Hot module replacement (HMR) speeds up frontend development.
+- **Efficient Asset Compilation**: JavaScript and CSS assets are optimized for production.
 
-For more insights into Bagisto's directory structure and package configuration, refer to the [documentation](https://devdocs.bagisto.com/2.x/packages/views.html#directory-structure).
+The `vite.config.js` file defines the build process, ensuring smooth integration with FilamentPHP.
+
+## Conclusion
+
+Aureus ERP’s frontend stack—**FilamentPHP, Livewire, Alpine.js, Tailwind CSS, and Vite**—offers a **modern, reactive, and scalable** architecture. This combination ensures a seamless experience for administrators and users while maintaining high performance and flexibility.
+
+For further details, refer to the **Aureus ERP documentation**. 🚀

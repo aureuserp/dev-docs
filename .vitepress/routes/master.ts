@@ -31,14 +31,8 @@ const masterRoute = [
     collapsed: false,
     items: setVersionPrefix([
       { text: 'Introduction', link: 'architecture/introduction' },
-      { text: 'Packages', link: 'architecture/packages' },
+      { text: 'Plugins', link: 'architecture/plugins' },
       { text: 'Frontend', link: 'architecture/frontend' },
-      { text: 'Theme', link: 'architecture/theme' },
-      { text: 'Performance', link: 'architecture/performance' },
-      {
-        text: 'Repository Pattern',
-        link: 'architecture/repository-pattern'
-      },
       { text: 'Modular Design', link: 'architecture/modular-design' }
     ])
   }
