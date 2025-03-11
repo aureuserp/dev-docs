@@ -38,7 +38,7 @@ const masterRoute = [
       { text: 'Listing Records', link: 'resources/listing-records' },
       { text: 'Creating Record', link: 'resources/creating-record' },
       { text: 'Editing Record', link: 'resources/editing-record' },
-      { text: 'Viewing Record', link: 'resources/viewing-record' },
+      { text: 'Viewing Record', link: 'resources/viewing-record' }
     ])
   }
 ]
