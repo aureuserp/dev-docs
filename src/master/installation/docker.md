@@ -30,7 +30,7 @@ Once the image is pulled, start a new container using the following command:
 docker run -itd -p 80:80 -p 3306:3306 --name aureuserp webkul/aureuserp:latest
 ```
 
-#### Explanation of the Command:
+#### Explanation of the Command
 
 - `-itd`: Runs the container in detached mode.
 - `-p 80:80`: Maps port 80 on the host to port 80 in the container (for web access).

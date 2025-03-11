@@ -213,7 +213,7 @@ php artisan inventories:install
 
 During installation, the system will check for dependencies and prompt you if there are any conflicts or prerequisites:
 
-```
+```bash
 This package products is already installed. What would you like to do? [Skip]:
   [0] Reseed
   [1] Skip

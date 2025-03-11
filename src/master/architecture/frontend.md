@@ -4,7 +4,7 @@ Aureus ERP's frontend is built on modern web technologies to provide an intuitiv
 
 ## FilamentPHP
 
-[Aureus ERP](#) uses **FilamentPHP** as the core admin panel framework, which provides a powerful and flexible resource management system.
+Aureus ERP uses **FilamentPHP** as the core admin panel framework, which provides a powerful and flexible resource management system.
 
 - **Resources**: FilamentPHP simplifies CRUD operations using resources that define how models are listed, created, edited, and managed in the UI.
 - **Pages**: Custom pages extend beyond standard CRUD resources, allowing complex business logic and interactive interfaces.
@@ -49,7 +49,7 @@ Blade seamlessly integrates with Livewire, enhancing performance while keeping t
 
 ## Vite Build System
 
-[Aureus ERP](#) uses **Vite** as its asset bundler, replacing the traditional Laravel Mix setup.
+Aureus ERP uses **Vite** as its asset bundler, replacing the traditional Laravel Mix setup.
 
 - **Faster Development**: Hot module replacement (HMR) speeds up frontend development.
 - **Efficient Asset Compilation**: JavaScript and CSS assets are optimized for production.

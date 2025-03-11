@@ -19,35 +19,27 @@ features:
   - icon: 📊
     title: Project Management System
     details: Streamline projects and collaborate with ease using our comprehensive PMS
-    link: /modules/pms
   - icon: 👥
     title: Contacts Management
     details: Effortlessly manage and organize your contacts with our intuitive system
-    link: /modules/contacts
   - icon: 🛒
     title: Purchase Order System
     details: Simplify and track your purchases with our robust Purchase Order system
-    link: /modules/purchase-order
   - icon: 👨‍💼
     title: Employee Management
     details: Manage and track employee details and performance.
-    link: /modules/employee
   - icon: 💼
     title: Job Position Management
     details: Easily define, manage, and track job positions and roles.
-    link: /modules/job-position
   - icon: 📦
     title: Inventory Management
     details: Stay on top of your stock levels with efficient inventory management.
-    link: /modules/inventory
   - icon: 🏢
     title: Warehouse Management
     details: Simplify warehouse operations with real-time stock tracking.
-    link: /modules/warehouse
   - icon: 🎓
     title: Recruitment System
     details: Simplify recruitment and find the best talent with ease.
-    link: /modules/recruitment
 ---
 
 ## Fully featured & extensible

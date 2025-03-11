@@ -2,18 +2,12 @@ import { setVersionPrefix } from '.vitepress/utils/versionPrefix'
 
 const masterRoute = [
   {
-    text: 'Getting Started',
+    text: 'Prologue',
     collapsed: false,
     items: setVersionPrefix([
-      { text: 'Prologue', link: 'prologue/introduction' },
-      {
-        text: 'Upgrade Guide',
-        link: 'prologue/upgrade-guide'
-      },
-      {
-        text: 'Contribution Guide',
-        link: 'prologue/contribution-guide'
-      }
+      { text: 'Introduction', link: 'prologue/introduction' },
+      { text: 'Upgrade Guide', link: 'prologue/upgrade-guide' },
+      { text: 'Contribution Guide', link: 'prologue/contribution-guide' }
     ])
   },
   {
@@ -27,13 +21,24 @@ const masterRoute = [
     ])
   },
   {
-    text: 'Architecture concepts',
+    text: 'Architecture Concepts',
     collapsed: false,
     items: setVersionPrefix([
       { text: 'Introduction', link: 'architecture/introduction' },
       { text: 'Plugins', link: 'architecture/plugins' },
       { text: 'Frontend', link: 'architecture/frontend' },
       { text: 'Modular Design', link: 'architecture/modular-design' }
+    ])
+  },
+  {
+    text: 'Resources',
+    collapsed: false,
+    items: setVersionPrefix([
+      { text: 'Getting started', link: 'resources/getting-started' },
+      { text: 'Listing Records', link: 'resources/listing-records' },
+      { text: 'Creating Record', link: 'resources/creating-record' },
+      { text: 'Editing Record', link: 'resources/editing-record' },
+      { text: 'Viewing Record', link: 'resources/viewing-record' },
     ])
   }
 ]
