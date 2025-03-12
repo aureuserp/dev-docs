@@ -35,23 +35,45 @@ const masterRoute = [
     ]
   },
   {
-    text: 'Resources',
+    text: 'Getting Started',
     collapsed: false,
     items: [
       {
-        text: 'Getting started',
-        link: '/master/resources/getting-started'
+        text: 'Migrations',
+        collapsed: false,
+        link: '/master/getting-started/migrations'
       },
       {
-        text: 'Listing Records',
-        link: '/master/resources/listing-records'
+        text: 'Policies',
+        collapsed: false,
+        link: '/master/getting-started/policies'
       },
       {
-        text: 'Creating Record',
-        link: '/master/resources/creating-record'
-      },
-      { text: 'Editing Record', link: '/master/resources/editing-record' },
-      { text: 'Viewing Record', link: '/master/resources/viewing-record' }
+        text: 'Resources',
+        collapsed: false,
+        items: [
+          {
+            text: 'Getting started',
+            link: '/master/getting-started/resources/getting-started'
+          },
+          {
+            text: 'Listing Records',
+            link: '/master/getting-started/resources/listing-records'
+          },
+          {
+            text: 'Creating Record',
+            link: '/master/getting-started/resources/creating-record'
+          },
+          {
+            text: 'Editing Record',
+            link: '/master/getting-started/resources/editing-record'
+          },
+          {
+            text: 'Viewing Record',
+            link: '/master/getting-started/resources/viewing-record'
+          }
+        ]
+      }
     ]
   }
 ]
