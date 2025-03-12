@@ -63,6 +63,11 @@ const masterRoute = [
         link: '/master/getting-started/policies'
       },
       {
+        text: 'Clusters',
+        collapsed: false,
+        link: '/master/getting-started/clusters'
+      },
+      {
         text: 'Resources',
         collapsed: true,
         items: [
