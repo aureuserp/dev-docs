@@ -20,7 +20,7 @@ Providing comprehensive reports helps us quickly troubleshoot and resolve issues
 You can contribute to the following Aureus ERP projects:
 
 - [Aureus ERP Core](https://github.com/aureuserp/aureuserp)
-- [Aureus ERP Documentation](https://github.com/aureuserp/aureuserp-docs)
+- [Aureus ERP Documentation](https://github.com/aureuserp/dev-docs)
 
 ## Feature Requests
 

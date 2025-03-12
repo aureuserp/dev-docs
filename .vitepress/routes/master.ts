@@ -63,16 +63,6 @@ const masterRoute = [
         link: '/master/getting-started/policies'
       },
       {
-        text: 'Custom Fields',
-        collapsed: true,
-        items: [
-          {
-            text: 'Introduction',
-            link: '/master/getting-started/custom-fields/introduction'
-          }
-        ]
-      },
-      {
         text: 'Resources',
         collapsed: true,
         items: [
@@ -97,6 +87,54 @@ const masterRoute = [
             link: '/master/getting-started/resources/viewing-record'
           }
         ]
+      }
+    ]
+  },
+  {
+    text: 'Custom Fields',
+    collapsed: false,
+    items: [
+      { text: 'Introduction', link: '/master/custom-fields/introduction' },
+      { text: 'Usage', link: '/master/custom-fields/usage' }
+    ]
+  },
+  {
+    text: 'Table Views',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/master/table-views/overview' },
+      { text: 'Customization', link: '/master/table-views/customization' }
+    ]
+  },
+  {
+    text: 'Chatter',
+    collapsed: false,
+    items: [
+      { text: 'Overview', link: '/master/chatter/overview' },
+      {
+        text: 'Actions',
+        collapsed: true,
+        items: [
+          { text: 'Message', link: '/master/chatter/actions/message' },
+          { text: 'Log Note', link: '/master/chatter/actions/log-note' },
+          { text: 'Activity', link: '/master/chatter/actions/activity' },
+          { text: 'File', link: '/master/chatter/actions/file' },
+          { text: 'Follower', link: '/master/chatter/actions/follower' }
+        ]
+      }
+    ]
+  },
+  {
+    text: 'Progress Stepper',
+    collapsed: false,
+    items: [
+      {
+        text: 'Implementation',
+        link: '/master/progress-stepper/implementation'
+      },
+      {
+        text: 'Customization',
+        link: '/master/progress-stepper/customization'
       }
     ]
   }
