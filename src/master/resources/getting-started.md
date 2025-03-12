@@ -17,8 +17,10 @@ Each resource is stored in the respective module's directory and typically consi
 To generate a Filament resource, use the following command:
 
 ```sh
-php artisan make:filament-resource Product
+php artisan make:filament-resource Product --view --model-namespace=Webkul\\Path\\Models
 ```
+
+for more information visit [Filament Official Documentation](https://filamentphp.com/docs/3.x/panels/resources/getting-started#creating-a-resource)
 
 Upon execution, the command prompts you to select a panel:
 
@@ -33,11 +35,11 @@ After selecting the panel, another prompt appears asking you to choose the names
 
 ```bash
  ┌ Which namespace would you like to create this in? ────────────────────┐
- │ › ● Webkul\Contact\Filament\Clusters\Configurations\Resources       │
- │   ○ Webkul\Employee\Filament\Clusters\Configurations\Resources      │
- │   ○ Webkul\Employee\Filament\Clusters\Reportings\Resources          │
- │   ○ Webkul\Inventory\Filament\Clusters\Configurations\Resources     │
- │   ○ Webkul\Inventory\Filament\Clusters\Operations\Resources         │
+ │ › ● Webkul\Contact\Filament\Clusters\Configurations\Resources         │
+ │   ○ Webkul\Employee\Filament\Clusters\Configurations\Resources        │
+ │   ○ Webkul\Employee\Filament\Clusters\Reportings\Resources            │
+ │   ○ Webkul\Inventory\Filament\Clusters\Configurations\Resources       │
+ │   ○ Webkul\Inventory\Filament\Clusters\Operations\Resources           │
  └───────────────────────────────────────────────────────────────────────┘
 ```
 

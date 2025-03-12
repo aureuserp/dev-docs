@@ -1,95 +1,84 @@
 <script setup>
 import "@theme/styles/version-switcher.css";
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const versions = [{ label: "Master", value: "master" }];
+const versions = [
+  {
+    text: "Master",
+    version: "master",
+    link: "/master/",
+  },
+  {
+    text: "v1.x",
+    version: "v1.x",
+    link: "/v1.x/",
+  },
+];
 
 const isDropdownOpen = ref(false);
-const currentVersionValue = ref("");
-
-const currentVersion = computed(() => {
-  const found = versions.find((v) => v.value === currentVersionValue.value);
-  return found ? found.label : versions[versions.length - 1].label;
-});
+const currentVersion = ref("");
 
 function toggleDropdown() {
   isDropdownOpen.value = !isDropdownOpen.value;
 }
 
-function setVersion(version) {
-  localStorage.setItem("preferred-version", version);
-  currentVersionValue.value = version;
-  isDropdownOpen.value = false;
-}
-
-function getVersionUrl(version) {
-  const currentPath = window.location.pathname;
-  let path = currentPath;
-
-  for (const v of versions) {
-    if (currentPath.includes(`/${v.value}/`)) {
-      path = currentPath.replace(`/${v.value}/`, "/");
-      break;
-    }
-  }
-
-  if (path === "/" || path === "") {
-    return version === versions[versions.length - 1].value ? "/" : `/${version}/`;
-  }
-
-  return version === versions[versions.length - 1].value ? path : `/${version}${path}`;
-}
-
-function clickOutside(event) {
-  const dropdown = document.querySelector(".version-switcher");
-  if (dropdown && !dropdown.contains(event.target)) {
-    isDropdownOpen.value = false;
+function setVersion(versionText) {
+  const version = versions.find((v) => v.text === versionText);
+  if (version) {
+    const currentPath = window.location.pathname;
+    const newPath = currentPath.replace(/^(\/[^/]+\/)/, `/${version.version}/`);
+    window.location.href = newPath;
   }
 }
 
 onMounted(() => {
-  const savedVersion = localStorage.getItem("preferred-version");
+  document.addEventListener("click", closeDropdown);
 
-  if (savedVersion && versions.some((v) => v.value === savedVersion)) {
-    currentVersionValue.value = savedVersion;
+  // Set default version based on URL
+  const currentPath = window.location.pathname;
+  const matchedVersion = versions.find((v) => currentPath.startsWith(`/${v.version}/`));
+  if (matchedVersion) {
+    currentVersion.value = matchedVersion.text;
   } else {
-    for (const version of versions) {
-      if (window.location.pathname.includes(`/${version.value}/`)) {
-        currentVersionValue.value = version.value;
-        break;
-      }
-    }
-
-    if (!currentVersionValue.value) {
-      currentVersionValue.value = versions[versions.length - 1].value;
-    }
+    currentVersion.value = versions[0].text;
   }
-
-  document.addEventListener("click", clickOutside);
 });
 
 onBeforeUnmount(() => {
-  document.removeEventListener("click", clickOutside);
+  document.removeEventListener("click", closeDropdown);
 });
+
+function closeDropdown(event) {
+  if (!event.target.closest(".version-switcher-container")) {
+    isDropdownOpen.value = false;
+  }
+}
 </script>
 
 <template>
   <div class="version-switcher">
-    <div class="version-switcher-container">
-      <button @click="toggleDropdown" class="version-switcher-button">
-        <span class="version-text">{{ currentVersion }}</span>
-        <span class="version-switcher-icon">▼</span>
+    <div class="version-switcher-container relative inline-block text-left">
+      <button
+        @click.stop="toggleDropdown"
+        class="version-switcher-button px-3 py-2 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center"
+      >
+        <span class="version-text text-sm font-semibold">{{ currentVersion }}</span>
+        <span class="version-switcher-icon ml-2">▼</span>
       </button>
       <transition name="fade">
-        <div v-if="isDropdownOpen" class="version-switcher-dropdown">
-          <ul>
-            <li v-for="version in versions" :key="version.value">
+        <div
+          v-if="isDropdownOpen"
+          class="version-switcher-dropdown absolute mt-2 w-40 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg"
+        >
+          <ul class="text-sm space-y-1 p-2">
+            <li v-for="version in versions" :key="version.text">
               <a
-                :href="getVersionUrl(version.value)"
-                :class="{ active: currentVersion === version.label }"
-                @click="setVersion(version.value)"
+                href="#"
+                :class="{ active: currentVersion === version.text }"
+                @click.prevent="setVersion(version.text)"
+                class="block px-2 py-1 rounded-md text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-500 cursor-pointer"
               >
-                {{ version.label }}
+                {{ version.text }}
               </a>
             </li>
           </ul>

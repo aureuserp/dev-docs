@@ -3,9 +3,9 @@ import masterRoute from './routes/master'
 
 export default defineConfig({
   lang: 'en-US',
+  srcDir: 'src',
   title: 'AureusERP',
   description: 'The powerful Open Source ERP platform built on Laravel',
-
   head: [
     ['link', { rel: 'icon', href: '/assets/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3eaf7c' }],
@@ -15,8 +15,6 @@ export default defineConfig({
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }
     ]
   ],
-
-  srcDir: 'src',
 
   themeConfig: {
     logo: {
