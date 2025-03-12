@@ -40,7 +40,7 @@ const masterRoute = [
     items: [
       {
         text: 'Panels',
-        collapsed: false,
+        collapsed: true,
         items: [
           {
             text: 'Admin',
@@ -63,8 +63,18 @@ const masterRoute = [
         link: '/master/getting-started/policies'
       },
       {
+        text: 'Custom Fields',
+        collapsed: true,
+        items: [
+          {
+            text: 'Introduction',
+            link: '/master/getting-started/custom-fields/introduction'
+          }
+        ]
+      },
+      {
         text: 'Resources',
-        collapsed: false,
+        collapsed: true,
         items: [
           {
             text: 'Getting started',
