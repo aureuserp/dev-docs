@@ -26,16 +26,7 @@ const masterRoute = [
     collapsed: false,
     items: [
       { text: 'Introduction', link: '/master/architecture/introduction' },
-      {
-        text: 'Plugins',
-        collapsed: true,
-        items: [
-          {
-            text: 'Introduction',
-            link: '/master/architecture/plugins/introduction'
-          }
-        ]
-      },
+      { text: 'Plugins', link: '/master/architecture/plugins' },
       { text: 'Frontend', link: '/master/architecture/frontend' },
       {
         text: 'Modular Design',
