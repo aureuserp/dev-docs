@@ -8,11 +8,6 @@ const versions = [
     version: "master",
     link: "/master/",
   },
-  {
-    text: "v1.x",
-    version: "v1.x",
-    link: "/v1.x/",
-  },
 ];
 
 const isDropdownOpen = ref(false);
@@ -34,9 +29,10 @@ function setVersion(versionText) {
 onMounted(() => {
   document.addEventListener("click", closeDropdown);
 
-  // Set default version based on URL
   const currentPath = window.location.pathname;
+
   const matchedVersion = versions.find((v) => currentPath.startsWith(`/${v.version}/`));
+
   if (matchedVersion) {
     currentVersion.value = matchedVersion.text;
   } else {
