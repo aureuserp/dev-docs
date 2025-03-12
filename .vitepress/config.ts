@@ -19,7 +19,10 @@ export default defineConfig({
   srcDir: 'src',
 
   themeConfig: {
-    logo: '/assets/images/logo.png',
+    logo: {
+      light: '/assets/images/logo-light.svg',
+      dark: '/assets/images/logo-dark.svg'
+    },
 
     siteTitle: false,
 

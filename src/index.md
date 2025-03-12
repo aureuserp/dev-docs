@@ -5,7 +5,8 @@ hero:
   text: Built on Laravel to optimize your business
   tagline: Streamline operations, boost productivity, and grow your business
   image:
-    src: /assets/images/logo.png
+    light: /assets/images/logo-light.svg
+    dark: /assets/images/logo-dark.svg
     alt: ERP Platform
   actions:
     - theme: brand
