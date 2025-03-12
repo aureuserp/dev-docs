@@ -1,5 +1,5 @@
 <script setup>
-import "../styles/version-switcher.css";
+import "@theme/styles/version-switcher.css";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 const versions = [{ label: "Master", value: "master" }];
