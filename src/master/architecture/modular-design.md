@@ -15,33 +15,40 @@ Aureus ERP follows a **Laravel package structure** inspired by the **package-ske
 
 ### **Overall Directory Structure**
 
-```
-├── plugins
-  ├── plugin-name
-    ├── database
-      ├── factories        # Factory classes for generating test data
-      ├── migrations       # Plugin-specific database migrations
-      └── seeders          # Plugin-specific database seeders
-    ├── resources
-      ├── views           # Blade views for UI templates
-      └── lang            # Language translations
-    ├── src
-      ├── Filament
-        ├── Resources      # Filament resources for CRUD operations
-        ├── Pages          # Custom Filament pages
-        └── Widgets        # Dashboard widgets
-      ├── Livewire         # Livewire components for UI interactivity
-      ├── Models           # Plugin-specific Eloquent models
-      ├── Policies         # Authorization policies for plugin entities
-      ├── Routes
-        ├── web.php        # Web routes (if needed)
-        └── api.php        # API routes (if needed)
-      ├── Services         # Business logic encapsulated in service classes
-      ├── PluginNamePlugin.php # Register the plugin which will useful for registering the filament related stuff.
-      └── PluginNameServiceProvider.php # Register the migrations, settings, install and uninstallation.
-    ├── config            # Plugin-specific configuration files
-    ├── tests             # Unit and feature tests
-    └── composer.json     # Plugin's composer dependencies
+```txt
++-- plugins
+|   +-- plugin-name
+|   |   +-- database
+|   |   |   +-- factories        # Factory classes for generating test data
+|   |   |   +-- migrations       # Plugin-specific database migrations
+|   |   |   +-- seeders          # Plugin-specific database seeders
+|   |   +-- resources
+|   |   |   +-- views            # Blade views for UI templates
+|   |   |   +-- lang             # Language translations
+|   |   +-- src
+|   |   |   +-- Filament
+|   |   |   |   +-- Clusters
+|   |   |   |   |   +-- Products.php
+|   |   |   |   |   +-- Products
+|   |   |   |   |   |   +-- Resources
+|   |   |   |   |   |   |   +-- ProductResource.php
+|   |   |   |   |   |   |   +-- ProductResource
+|   |   |   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   |   |   |   +-- CreateProduct.php
+|   |   |   |   |   |   |   |   |   +-- EditProduct.php
+|   |   |   |   |   |   |   |   |   +-- ListProducts.php
+|   |   |   +-- Livewire         # Livewire components for UI interactivity
+|   |   |   +-- Models           # Plugin-specific Eloquent models
+|   |   |   +-- Policies         # Authorization policies for plugin entities
+|   |   |   +-- Routes
+|   |   |   |   +-- web.php        # Web routes (if needed)
+|   |   |   |   +-- api.php        # API routes (if needed)
+|   |   |   +-- Services         # Business logic encapsulated in service classes
+|   |   |   +-- PluginNamePlugin.php # Registers Filament-related stuff
+|   |   |   +-- PluginNameServiceProvider.php # Handles migrations, settings, install & uninstall
+|   |   +-- config              # Plugin-specific configuration files
+|   |   +-- tests               # Unit and feature tests
+|   |   +-- composer.json       # Plugin's composer dependencies
 ```
 
 ## **Core Technologies in Aureus ERP**

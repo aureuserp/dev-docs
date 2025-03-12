@@ -34,18 +34,29 @@ This will create:
 
 Once a migration or model is created, you need to place them in the appropriate directories within the plugin structure:
 
-```
-└── plugins
-    └── webkul
-        └── inventories
-            ├── database
-            │    ├── factories
-            │    ├── migrations  # Place migration files here
-            │    ├── seeders
-            │    └── settings
-            ├── resources
-            └── src
-                └── Models  # Place your model here and update its namespace
+```txt
++-- plugins
+|   +-- webkul
+|   |   +-- inventories
+|   |   |   +-- database
+|   |   |   |   +-- factories
+|   |   |   |   +-- migrations  # Place migration files here
+|   |   |   |   +-- seeders
+|   |   |   |   +-- settings
+|   |   |   +-- resources
+|   |   |   +-- src
+|   |   |   |   +-- Filament
+|   |   |   |   |   +-- Clusters
+|   |   |   |   |   |   +-- Inventories.php
+|   |   |   |   |   |   +-- Inventories
+|   |   |   |   |   |   |   +-- Resources
+|   |   |   |   |   |   |   |   +-- InventoryResource.php
+|   |   |   |   |   |   |   |   +-- InventoryResource
+|   |   |   |   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   |   |   |   |   +-- CreateInventory.php
+|   |   |   |   |   |   |   |   |   |   +-- EditInventory.php
+|   |   |   |   |   |   |   |   |   |   +-- ListInventories.php
+|   |   |   |   +-- Models  # Place your model here and update its namespace
 ```
 
 ## **Registering Migrations in the Plugin Service Provider**
@@ -174,16 +185,16 @@ For this example, we assume you are creating the setting inside:
 
 This will generate a settings page file in the following directory:
 
-```
-└── plugins
-    └── webkul
-        └── inventories
-            └── src
-                └── Filament
-                    └── Clusters
-                        └── Settings
-                            └── Pages
-                                └── ManageProduct.php
+```txt
++-- plugins
+|   +-- webkul
+|   |   +-- inventories
+|   |   |   +-- src
+|   |   |   |   +-- Filament
+|   |   |   |   |   +-- Clusters
+|   |   |   |   |   |   +-- Settings
+|   |   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   |   |   +-- ManageProduct.php
 ```
 
 ### **Generated Settings Page Class**
@@ -255,15 +266,15 @@ php artisan make:settings-migration create_inventories_products_settings
 
 This will generate a migration file. Place the migration inside:
 
-```
-└── plugins
-    └── webkul
-        └── inventories
-            └── database
-                ├── factories
-                ├── migrations
-                ├── seeders
-                └── settings   # Place migration files here
+```txt
++-- plugins
+|   +-- webkul
+|   |   +-- inventories
+|   |   |   +-- database
+|   |   |   |   +-- factories
+|   |   |   |   +-- migrations
+|   |   |   |   +-- seeders
+|   |   |   |   +-- settings   # Place migration files here
 ```
 
 adding settings according to your need, make sure you have to use same **Webkul\Inventory\Settings\ProductSettings** group name as prefix like shown given below.
