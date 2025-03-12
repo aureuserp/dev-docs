@@ -39,6 +39,20 @@ const masterRoute = [
     collapsed: false,
     items: [
       {
+        text: 'Panels',
+        collapsed: false,
+        items: [
+          {
+            text: 'Admin',
+            link: '/master/getting-started/panels/admin'
+          },
+          {
+            text: 'Customer',
+            link: '/master/getting-started/panels/customer'
+          }
+        ]
+      },
+      {
         text: 'Migrations',
         collapsed: false,
         link: '/master/getting-started/migrations'

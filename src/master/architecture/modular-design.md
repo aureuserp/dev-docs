@@ -9,8 +9,6 @@ Aureus ERP is designed with a **plugin-based architecture** to ensure **scalabil
 3. **Easy Maintenance** – Bugs and enhancements can be managed independently without affecting other parts of the system.
 4. **Scalability** – New features can be added as plugins without altering the core ERP functionality.
 
----
-
 ## **Plugin Structure in Aureus ERP**
 
 Aureus ERP follows a **Laravel package structure** inspired by the **package-skeleton-laravel** repository. Each plugin is structured as an independent package inside the `plugins/` directory.
@@ -46,8 +44,6 @@ Aureus ERP follows a **Laravel package structure** inspired by the **package-ske
     └── composer.json     # Plugin's composer dependencies
 ```
 
----
-
 ## **Core Technologies in Aureus ERP**
 
 ### **FilamentPHP for Admin Panel**
@@ -81,14 +77,12 @@ To register a new plugin, append its class reference inside the `bootstrap/plugi
 <?php
 
 return [
-    //
-    Webkul\PluginNamespace\PluginNamePlugin::class,
+  //
+  Webkul\PluginNamespace\PluginNamePlugin::class,
 ];
 ```
 
 When adding a new plugin, simply append its respective class to this array.
-
----
 
 ## **2. Registering Plugin Service Providers**
 
@@ -107,10 +101,6 @@ return [
 
 By registering the plugin’s service provider, Laravel will automatically handle migrations, routes, views, and other essential components.
 
----
-
 ## **Conclusion**
 
 Aureus ERP's **plugin-based structure** ensures a **scalable, flexible, and maintainable** system. By registering plugins in `bootstrap/plugins.php` and configuring their **service providers** in `bootstrap/providers.php`, you enable smooth integration and efficient management of business features.
-
-📌 **Following this structured approach ensures that your ERP system remains modular, easy to extend, and well-organized.** 🚀
