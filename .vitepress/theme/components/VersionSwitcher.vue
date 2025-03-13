@@ -52,26 +52,19 @@ function closeDropdown(event) {
 
 <template>
   <div class="version-switcher">
-    <div class="version-switcher-container relative inline-block text-left">
-      <button
-        @click.stop="toggleDropdown"
-        class="version-switcher-button px-3 py-2 bg-gray-200 dark:bg-gray-600 rounded-md flex items-center"
-      >
-        <span class="version-text text-sm font-semibold">{{ currentVersion }}</span>
+    <div class="version-switcher-container">
+      <button @click.stop="toggleDropdown" class="version-switcher-button">
+        <span class="version-text">{{ currentVersion }}</span>
         <span class="version-switcher-icon ml-2">▼</span>
       </button>
       <transition name="fade">
-        <div
-          v-if="isDropdownOpen"
-          class="version-switcher-dropdown absolute mt-2 w-40 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-md shadow-lg"
-        >
-          <ul class="text-sm space-y-1 p-2">
+        <div v-if="isDropdownOpen" class="version-switcher-dropdown">
+          <ul>
             <li v-for="version in versions" :key="version.text">
               <a
                 href="#"
                 :class="{ active: currentVersion === version.text }"
                 @click.prevent="setVersion(version.text)"
-                class="block px-2 py-1 rounded-md text-gray-600 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-500 cursor-pointer"
               >
                 {{ version.text }}
               </a>
@@ -129,7 +122,7 @@ function closeDropdown(event) {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 120px; /* Match button width */
+  width: 120px;
   margin-top: 6px;
   border: 1px solid var(--vp-c-divider);
   border-radius: 4px;
