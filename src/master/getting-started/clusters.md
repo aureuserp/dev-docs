@@ -84,7 +84,7 @@ protected static ?string $cluster = Products::class;
 
 For better organization, store related resources and pages inside a directory matching the cluster name:
 
-```txt
+```
 +-- Clusters
 |   +-- Products.php
 |   +-- Products

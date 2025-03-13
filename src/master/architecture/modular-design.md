@@ -15,7 +15,7 @@ Aureus ERP follows a **Laravel package structure** inspired by the **package-ske
 
 ### **Overall Directory Structure**
 
-```txt
+```
 +-- plugins
 |   +-- plugin-name
 |   |   +-- database

@@ -32,7 +32,7 @@ This will create:
 
 Once a migration or model is created, you need to place them in the appropriate directories within the plugin structure:
 
-```txt
+```
 +-- plugins
 |   +-- webkul
 |   |   +-- inventories
@@ -155,7 +155,7 @@ php artisan make:filament-settings-page ManageProduct ProductSettings
 
 This command will prompt you to select the panel where you want to create the settings:
 
-```txt
+```
 ┌ Which panel would you like to create this in? ───────────────┐
 │ › ● admin                                                    │
 │ ○ customer                                                   │
@@ -164,7 +164,7 @@ This command will prompt you to select the panel where you want to create the se
 
 After selecting the panel, another prompt will ask for the namespace in which you want to create the settings page:
 
-```txt
+```
 ┌ Which namespace would you like to create this in? ─────────────────┐
 │ › ● Webkul\Contact\Filament\Clusters\Configurations\Pages          │
 │ ○ Webkul\Employee\Filament\Clusters\Configurations\Pages           │
@@ -175,7 +175,7 @@ After selecting the panel, another prompt will ask for the namespace in which yo
 
 For this example, we assume you are creating the setting inside:
 
-```txt
+```
 ┌ Which namespace would you like to create this in? ───────────┐
 │ Webkul\Support\Filament\Clusters\Settings\Page               │
 └──────────────────────────────────────────────────────────────┘
@@ -183,7 +183,7 @@ For this example, we assume you are creating the setting inside:
 
 This will generate a settings page file in the following directory:
 
-```txt
+```
 +-- plugins
 |   +-- webkul
 |   |   +-- inventories
@@ -264,7 +264,7 @@ php artisan make:settings-migration create_inventories_products_settings
 
 This will generate a migration file. Place the migration inside:
 
-```txt
+```
 +-- plugins
 |   +-- webkul
 |   |   +-- inventories
