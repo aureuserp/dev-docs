@@ -13,13 +13,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@theme/*": [
-        ".vitepress/theme/*"
-      ]
+      "@theme/*": [".vitepress/theme/*"]
     }
   },
-  "include": [
-    "src/**/*",
-    ".vitepress/**/*"
-  ]
+  "include": ["src/**/*", ".vitepress/**/*"]
 }
