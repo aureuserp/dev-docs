@@ -1,6 +1,4 @@
-# Table Views Documentation for Aureus ERP
-
-## Overview
+# Introduction
 
 Table Views is a powerful feature in Aureus ERP that enhances data filtering and organization capabilities. It provides advanced customization options for table filters throughout the application, allowing users to create, save, and manage personalized views of tabular data.
 
