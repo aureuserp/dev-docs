@@ -1,0 +1,21 @@
+/**
+ * -------------------------------------------------------------------------- 
+ * Custom CSS
+ * -------------------------------------------------------------------------- 
+ */
+.mit-license {
+  text-decoration-line: none !important;
+  color: var(--vp-c-brand-1);
+}
+
+.VPHero .name,
+.VPHero .text,
+.VPHero .tagline {
+  max-width: 100% !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+.VPHero .actions {
+  justify-content: center !important;
+}

@@ -4,10 +4,6 @@ hero:
   name: Open Source ERP Platform
   text: Built on Laravel to optimize your business
   tagline: Streamline operations, boost productivity, and grow your business
-  image:
-    light: /assets/images/logo-light.svg
-    dark: /assets/images/logo-dark.svg
-    alt: ERP Platform
   actions:
     - theme: brand
       text: Get Started
