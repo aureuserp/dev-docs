@@ -13,6 +13,9 @@ hero:
       text: Get Started
       link: /master/prologue/introduction/
     - theme: alt
+      text: Demo
+      link: https://demo.aureuserp.com/
+    - theme: alt
       text: View on GitHub
       link: https://github.com/aureuserp/aureuserp
 
