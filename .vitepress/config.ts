@@ -90,8 +90,9 @@ export default defineConfig({
     },
 
     footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025 Webkul'
+      message:
+        'Released under the <a href="https://opensource.org/licenses/MIT" target="_blank" class="mit-license">MIT License</a>.',
+      copyright: `Copyright © ${new Date().getFullYear()} Webkul`
     },
 
     lastUpdated: {
