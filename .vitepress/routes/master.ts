@@ -103,8 +103,7 @@ const routes = [
     text: 'Table Views',
     collapsed: false,
     items: [
-      { text: 'Overview', link: '/master/table-views/overview' },
-      { text: 'Customization', link: '/master/table-views/customization' }
+      { text: 'Introduction', link: '/master/table-views/introduction' }
     ]
   },
   {
