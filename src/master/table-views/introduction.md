@@ -166,6 +166,14 @@ The example shows proper use of translation strings for view labels:
 PresetView::make(__('purchases::filament/admin/clusters/orders/resources/order/pages/list-orders.tabs.my-purchases'))
 ```
 
+## **Example Output of Table View Filters**
+
+![Table View Filters](./images/table-filters-view.png)
+
+## **Example Output of Filters View**
+
+![Table View Filters](./images/filter-view.png)
+
 ## Database Structure
 
 The table views system relies on database tables to store:
