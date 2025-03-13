@@ -1,25 +1,73 @@
-name: Deploy to GitHub pages
+name: Deploy to GitHub Pages
+
 on:
   push:
     branches:
       - master
+
 jobs:
-  publish-docs:
+  format-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
+      - name: Checkout Repository 🛎️
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: npm install 📦
-        uses: bahmutov/npm-install@v1
+      - name: Setup Node.js 🔧
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Build docs 🏗
+      - name: Install Dependencies 📦
+        run: npm ci
+
+      - name: Format Code 🎨
+        run: npm run format
+
+      - name: Check for Code Changes 🔍
+        id: check_changes
+        run: |
+          git add .
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+            echo "changes_found=false" >> $GITHUB_ENV
+          else
+            echo "Changes detected."
+            echo "changes_found=true" >> $GITHUB_ENV
+          fi
+
+      - name: Create Pull Request ✨
+        if: env.changes_found == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: Format code'
+          title: 'Code Formatting Updates'
+          body: 'This PR contains automated code formatting changes.'
+          branch: 'auto-format'
+          base: 'master'
+          delete-branch: true
+
+      - name: Auto-Merge PR 🤖
+        if: env.changes_found == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prs = await github.rest.pulls.list({ owner, repo, head: 'auto-format' });
+            if (prs.data.length > 0) {
+              const prNumber = prs.data[0].number;
+              await github.rest.pulls.merge({ owner, repo, pull_number: prNumber, merge_method: 'squash' });
+              console.log(`Merged PR #${prNumber}`);
+            }
+
+      - name: Build Documentation 🏗
         run: npm run docs:build
 
-      - name: Deploy 🚀
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy to GitHub Pages 🚀
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./vitepress/dist
