@@ -2,7 +2,7 @@
 
 The **Customer Panel Provider** manages the frontend interface for customers. It ensures a smooth login, registration, and password reset process while providing a top navigation layout.
 
-### **Key Features:**
+## **Key Features:**
 
 - **Authentication:** Uses a custom guard (`customer`), supports registration and password reset.
 - **Branding:** Custom logo, favicon, and dark mode toggle.

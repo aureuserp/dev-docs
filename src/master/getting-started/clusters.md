@@ -2,7 +2,7 @@
 
 Clusters in Aures ERP help organize resources and custom pages within the FilamentPHP panel. They allow logical grouping of related sections, reducing sidebar clutter and enhancing navigation.
 
-## When using clusters:
+## When using clusters
 
 - A new navigation item links to the first resource or page within the cluster.
 - Individual navigation items are removed from the main sidebar.

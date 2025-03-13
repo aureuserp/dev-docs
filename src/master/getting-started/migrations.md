@@ -1,5 +1,3 @@
-[[TOC]]
-
 # **Migrations**
 
 Migrations provide a structured way to manage database schemas, enabling version control for database changes. They ensure consistency across development and production environments.
@@ -135,7 +133,7 @@ To reset all migrations and re-run them:
 php artisan migrate:refresh
 ```
 
-# **Settings Migrations**
+## **Settings Migrations**
 
 Spatie’s [Laravel Settings](https://filamentphp.com/plugins/filament-spatie-settings) package provides a structured way to manage system-wide settings using a database instead of configuration files. It allows defining, storing, and retrieving settings dynamically, ensuring consistency across different environments.
 
@@ -157,7 +155,7 @@ php artisan make:filament-settings-page ManageProduct ProductSettings
 
 This command will prompt you to select the panel where you want to create the settings:
 
-```
+```txt
 ┌ Which panel would you like to create this in? ───────────────┐
 │ › ● admin                                                    │
 │ ○ customer                                                   │
@@ -166,7 +164,7 @@ This command will prompt you to select the panel where you want to create the se
 
 After selecting the panel, another prompt will ask for the namespace in which you want to create the settings page:
 
-```
+```txt
 ┌ Which namespace would you like to create this in? ─────────────────┐
 │ › ● Webkul\Contact\Filament\Clusters\Configurations\Pages          │
 │ ○ Webkul\Employee\Filament\Clusters\Configurations\Pages           │
@@ -177,9 +175,9 @@ After selecting the panel, another prompt will ask for the namespace in which yo
 
 For this example, we assume you are creating the setting inside:
 
-```
+```txt
 ┌ Which namespace would you like to create this in? ───────────┐
-│ Webkul\Support\Filament\Clusters\Settings\Page            │
+│ Webkul\Support\Filament\Clusters\Settings\Page               │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -307,7 +305,7 @@ return new class extends SettingsMigration
 
 After placing the migration files, they must be registered within the corresponding **Service Provider** of the plugin to ensure they are loaded when running `php artisan migrate`.
 
-### **Example: InventoryServiceProvider.php**
+## **Example: InventoryServiceProvider.php After setting migrations**
 
 ```php
 <?php

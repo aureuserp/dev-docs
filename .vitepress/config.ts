@@ -4,7 +4,7 @@ import masterRoute from './routes/master'
 export default defineConfig({
   lang: 'en-US',
   srcDir: 'src',
-  title: 'AureusERP',
+  title: 'Aureus ERP',
   description: 'The powerful Open Source ERP platform built on Laravel',
   head: [
     ['link', { rel: 'icon', href: '/assets/favicon.ico' }],
@@ -13,6 +13,44 @@ export default defineConfig({
     [
       'meta',
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }
+    ],
+    [
+      'meta',
+      {
+        name: 'description',
+        content:
+          'An Open-Source Laravel Enterprise Resource Planning (ERP) platform designed for Small and Medium Enterprises (SMEs) as well as large-scale enterprises.'
+      }
+    ],
+    ['link', { rel: 'canonical', href: 'https://aureuserp.com/' }],
+
+    ['meta', { property: 'og:locale', content: 'en-US' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    [
+      'meta',
+      {
+        property: 'og:title',
+        content: 'Aureus ERP - Open Source ERP Platform'
+      }
+    ],
+    [
+      'meta',
+      {
+        property: 'og:description',
+        content:
+          'An Open-Source Laravel Enterprise Resource Planning (ERP) platform designed for Small and Medium Enterprises (SMEs) as well as large-scale enterprises.'
+      }
+    ],
+    [
+      'meta',
+      { property: 'og:url', content: 'https://devdocs.aureuserp.com/' }
+    ],
+    [
+      'meta',
+      {
+        property: 'og:site_name',
+        content: 'Aureus ERP - Open Source ERP Platform'
+      }
     ]
   ],
 

@@ -1,4 +1,4 @@
-# **Filament PHP: Understanding Resources**
+# **Overview**
 
 Filament PHP resources are a core concept used to manage database models in an admin panel. They provide an abstraction layer over CRUD (Create, Read, Update, Delete) operations and allow developers to define how models are managed within the Filament admin panel.
 

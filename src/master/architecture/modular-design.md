@@ -101,8 +101,8 @@ To ensure each plugin functions correctly, its **service provider** must be regi
 <?php
 
 return [
-    //
-    Webkul\PluginNamespace\PluginNameServiceProvider::class,
+  //
+  Webkul\PluginNamespace\PluginNameServiceProvider::class,
 ];
 ```
 
