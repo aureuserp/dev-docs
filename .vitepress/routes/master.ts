@@ -92,15 +92,11 @@ const masterRoute = [
             link: '/master/getting-started/resources/viewing-record'
           }
         ]
+      },
+      {
+        text: 'Custom Fields',
+        link: '/master/getting-started/custom-fields'
       }
-    ]
-  },
-  {
-    text: 'Custom Fields',
-    collapsed: false,
-    items: [
-      { text: 'Introduction', link: '/master/custom-fields/introduction' },
-      { text: 'Usage', link: '/master/custom-fields/usage' }
     ]
   },
   {
