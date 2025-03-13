@@ -8,13 +8,6 @@ To upgrade **Aureus ERP** to the latest version, follow these steps:
 
 Before proceeding with the upgrade, ensure you **back up** your existing database and project files:
 
-```sh
-php artisan db:backup
-cp -r storage/ storage-backup/
-cp -r vendor/ vendor-backup/
-git stash
-```
-
 ### 2. Pull the Latest Code
 
 Navigate to your project’s root directory and pull the latest changes:
