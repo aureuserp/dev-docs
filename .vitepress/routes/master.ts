@@ -1,4 +1,4 @@
-const masterRoute = [
+const routes = [
   {
     text: 'Prologue',
     collapsed: false,
@@ -108,6 +108,13 @@ const masterRoute = [
     ]
   },
   {
+    text: 'Dashboard',
+    collapsed: false,
+    items: [
+      { text: 'Introduction', link: '/master/dashboard/introduction' }
+    ]
+  },
+  {
     text: 'Chatter',
     collapsed: false,
     items: [
@@ -138,7 +145,17 @@ const masterRoute = [
         link: '/master/progress-stepper/customization'
       }
     ]
+  },
+  {
+    text: 'Customer Account',
+    collapsed: false,
+    items: [
+      {
+        text: 'Introduction',
+        link: '/master/customer-account/introduction'
+      }
+    ]
   }
 ]
 
-export default masterRoute
+export default routes
