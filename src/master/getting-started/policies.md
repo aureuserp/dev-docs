@@ -6,30 +6,30 @@ Policies in **Aureus ERP** provide a structured way to manage authorization for 
 
 ### 1. **Defining a Policy**
 
-Policies are stored within the `Webkul\Sale\Policies` or `Webkul\{PluginName}\Policies` directory. Each policy class corresponds to a specific model and defines authorization rules for actions such as viewing, creating, updating, deleting, and restoring records.
+Policies are stored within the `Webkul\Blogs\Policies` or `Webkul\{PluginName}\Policies` directory. Each policy class corresponds to a specific model and defines authorization rules for actions such as viewing, creating, updating, deleting, and restoring records.
 
 Example structure:
 
 ```php
-namespace Webkul\Sale\Policies;
+namespace Webkul\Blogs\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Modules\Sales\Models\Order;
+use Modules\Blogs\Models\Post;
 use Modules\Security\Models\User;
 use Modules\Security\Traits\HasScopedPermissions;
 
-class OrderPolicy
+class PostPolicy
 {
     use HandlesAuthorization, HasScopedPermissions;
 
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_order');
+        return $user->can('view_any_post');
     }
 
-    public function view(User $user, Order $order): bool
+    public function view(User $user, Post $post): bool
     {
-        return $user->can('view_order');
+        return $user->can('view_post');
     }
 }
 ```
@@ -39,11 +39,11 @@ class OrderPolicy
 FilamentPHP automatically registers policies based on naming conventions. However, if you need to manually define policies, you can do so in the `AuthServiceProvider`:
 
 ```php
-use Modules\Sales\Models\Order;
-use Modules\Sales\Policies\OrderPolicy;
+use Modules\Blogs\Models\Post;
+use Modules\Blogs\Policies\PostPolicy;
 
 protected $policies = [
-    Order::class => OrderPolicy::class,
+    Post::class => PostPolicy::class,
 ];
 ```
 
@@ -62,8 +62,6 @@ Each policy method determines whether a user has permission to perform a specifi
 | `delete(User $user, $model)`      | Check if the user can delete a record.               |
 | `restore(User $user, $model)`     | Check if the user can restore a soft-deleted record. |
 | `forceDelete(User $user, $model)` | Check if the user can permanently delete a record.   |
-| `replicate(User $user, $model)`   | Check if the user can duplicate a record.            |
-| `reorder(User $user)`             | Check if the user can reorder records.               |
 
 ## Scoped Permissions Using `HasScopedPermissions`
 
@@ -79,22 +77,50 @@ Aureus ERP policies use the `HasScopedPermissions` trait to provide additional c
 
 The `HasScopedPermissions` trait includes methods to check these permissions:
 
-| Method                                                                           | Description                                                                          |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `hasGlobalAccess(User $user)`                                                    | Returns `true` if the user has global permissions.                                   |
-| `hasGroupAccess(User $user, Model $model, string $ownerAttribute = 'user')`      | Returns `true` if the user has group-based permissions.                              |
-| `hasIndividualAccess(User $user, Model $model, string $ownerAttribute = 'user')` | Returns `true` if the user has access only to their own records.                     |
-| `hasAccess(User $user, Model $model, string $ownerAttribute = 'user')`           | Combines all access checks and determines if the user has the necessary permissions. |
+### **Access Control Methods**
+
+These methods are used to determine a user's access level based on global, group-based, and individual permissions.
+
+| Method                                                                                 | Description                                                                                                                                                                                                 |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `hasGlobalAccess(User $user): bool`                                                    | Checks if the user has global permissions and returns `true` if granted.                                                                                                                                    |
+| `hasGroupAccess(User $user, Model $model, string $ownerAttribute = 'user'): bool`      | Determines if the user has access based on group-level permissions. The `ownerAttribute` specifies the model's ownership attribute (default: `'user'`).                                                     |
+| `hasIndividualAccess(User $user, Model $model, string $ownerAttribute = 'user'): bool` | Verifies if the user has access only to records they own. The `ownerAttribute` represents the ownership field in the model (default: `'user'`).                                                             |
+| `hasAccess(User $user, Model $model, string $ownerAttribute = 'user'): bool`           | Evaluates all access levels (`global`, `group`, and `individual`) to determine if the user has the necessary permissions. The `ownerAttribute` defines the model's ownership field, defaulting to `'user'`. |
 
 ### **Example Usage in Policies**
 
+The following example demonstrates how to implement these access control methods within a policy:
+
 ```php
-public function update(User $user, Order $order): bool
+public function update(User $user, Post $post): bool
 {
-    if (! $user->can('update_order')) {
+    // Check if the user has permission to update posts
+    if (! $user->can('update_post')) {
         return false;
     }
 
-    return $this->hasAccess($user, $order);
+    // Verify if the user has the necessary access rights for the specific post
+    return $this->hasAccess($user, $post);
 }
 ```
+
+- The `hasAccess` method accepts three arguments:
+  1. **`$user`** – The authenticated user model.
+  2. **`$model`** – The model instance being accessed (e.g., `Post`).
+  3. **`$ownerAttribute`** _(optional, default: `'user'`)_ – The attribute that defines model ownership.
+
+for example:
+
+```php
+public function update(User $user, Post $post): bool
+{
+    if (! $user->can('update_post')) {
+        return false;
+    }
+
+    return $this->hasAccess($user, $post, 'created_by');
+}
+```
+
+This structure ensures that users are granted access based on their global, group, or individual permissions, this means only the creator of the Post can update the record.

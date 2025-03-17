@@ -109,6 +109,11 @@ const routes = [
         link: '/master/getting-started/clusters'
       },
       {
+        text: 'Pages',
+        collapsed: false,
+        link: '/master/getting-started/pages'
+      },
+      {
         text: 'Custom Fields',
         link: '/master/getting-started/custom-fields'
       }
