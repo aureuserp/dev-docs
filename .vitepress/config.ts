@@ -7,7 +7,7 @@ export default defineConfig({
   title: 'Aureus ERP',
   description: 'The powerful Open Source ERP platform built on Laravel',
   head: [
-    ['link', { rel: 'icon', href: '/assets/favicon.ico' }],
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3eaf7c' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     [
@@ -56,8 +56,8 @@ export default defineConfig({
 
   themeConfig: {
     logo: {
-      light: '/assets/images/logo-light.svg',
-      dark: '/assets/images/logo-dark.svg'
+      light: '/images/logo-light.svg',
+      dark: '/images/logo-dark.svg'
     },
 
     siteTitle: false,

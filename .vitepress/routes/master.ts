@@ -124,7 +124,7 @@ const routes = [
       },
       {
         text: 'Custom Fields',
-        link: '/master/getting-started/custom-fields'
+        link: '/master/advanced/custom-fields'
       },
       {
         text: 'Chatter',

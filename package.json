@@ -15,7 +15,7 @@
   "scripts": {
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
+    "docs:preview": "npm run docs:build && vitepress preview",
     "docs:format": "npx prettier --write ."
   },
   "devDependencies": {
