@@ -41,7 +41,7 @@ A `EditPost` class can be implemented using Filament’s `EditRecord`.
 ```php
 <?php
 
-namespace Webkul\Post\Filament\Resources\PostResource\Pages;
+namespace Webkul\Blog\Filament\Resources\PostResource\Pages;
 
 use Filament\Actions;
 use Filament\Forms;
@@ -50,7 +50,7 @@ use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 use Webkul\Chatter\Filament\Actions\ChatterAction;
-use Webkul\Post\Filament\Resources\PostResource;
+use Webkul\Blog\Filament\Resources\PostResource;
 
 class EditPost extends EditRecord
 {

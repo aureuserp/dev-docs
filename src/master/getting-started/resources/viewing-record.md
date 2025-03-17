@@ -70,7 +70,7 @@ Actions\DeleteAction::make()
 ```php
 <?php
 
-namespace Webkul\Post\Filament\Resources\PostResource\Pages;
+namespace Webkul\Blog\Filament\Resources\PostResource\Pages;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions;
@@ -79,7 +79,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\ViewRecord;
 use Webkul\Chatter\Filament\Actions\ChatterAction;
-use Webkul\Post\Filament\Resources\PostResource;
+use Webkul\Blog\Filament\Resources\PostResource;
 
 class ViewPost extends ViewRecord
 {
