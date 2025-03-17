@@ -1,101 +1,76 @@
 # **Viewing Records**
 
-When viewing record in Aureus ERP using Filament, you may need to customize the displayed data and allow users to perform actions like printing product details or deleting a product. Filament provides the `ViewRecord` class to handle viewing individual records.
+When viewing record in Aureus ERP using Filament, you may need to customize the displayed data and allow users to perform actions like publish and unpublish post status or deleting a post. Filament provides the `ViewRecord` class to handle viewing individual records.
 
 This class allows you to:
 
-- **Display product details** in a structured manner.
-- **Allow users to print product labels** in different formats.
-- **Provide an option to delete a product** with success notifications.
+- **Display post details** in a structured manner.
+- **Allow users to publish and unpublish post labels** in different formats.
+- **Provide an option to delete a post** with success notifications.
 
 ## **Usage Example**
 
 ### **Basic Implementation**
 
 ```php
-protected static string $resource = ProductResource::class;
+protected static string $resource = PostResource::class;
 ```
 
-This links the `ViewProduct` class to the `ProductResource`.
+This links the `ViewPost` class to the `PostResource`.
 
 ## **Actions Available in View Mode**
 
 ### **1. Chatter Action**
 
-Allows users to discuss product details within the application.
+Allows users to discuss post details within the application.
 
 ```php
 ChatterAction::make()->setResource(static::$resource),
 ```
 
-### **2. Print Action**
+### **2. Publish and Unpublish Actions**
 
-Allows users to generate and print product labels in different formats.
+Allows users to update post status to publish and unpublish.
 
 ```php
-Actions\Action::make('print')
-    ->label(__('Print Product'))
-    ->color('gray')
-    ->icon('heroicon-o-printer')
-    ->form([
-        Forms\Components\TextInput::make('quantity')
-            ->label(__('Quantity'))
-            ->required()
-            ->numeric()
-            ->minValue(1)
-            ->maxValue(100),
-        Forms\Components\Radio::make('format')
-            ->label(__('Print Format'))
-            ->options([
-                'dymo'       => __('Dymo Label'),
-                '2x7_price'  => __('2x7 Price Tag'),
-                '4x7_price'  => __('4x7 Price Tag'),
-                '4x12'       => __('4x12 Label'),
-                '4x12_price' => __('4x12 Price Label'),
-            ])
-            ->default('2x7_price')
-            ->required(),
-    ])
-    ->action(function (array $data, $record) {
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('products::filament.resources.products.actions.print', [
-            'records'  => collect([$record]),
-            'quantity' => $data['quantity'],
-            'format'   => $data['format'],
-        ]);
-
-        $paperSize = match ($data['format']) {
-            'dymo'  => [0, 0, 252.2, 144],
-            default => 'a4',
-        };
-
-        $pdf->setPaper($paperSize, 'portrait');
-
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->output();
-        }, 'Product-'.$record->name.'.pdf');
+Actions\Action::make('publish')
+    ->label(__('Publish'))
+    ->color('primary')
+    ->icon('heroicon-o-check-badge')
+    ->visible(fn($record) => $record->status == PostStatus::UNPUBLISHED->value)
+    ->action(function ($record) {
+        $record->update(['status' => PostStatus::PUBLISHED->value])
+    }),
+Actions\Action::make('un_publish')
+    ->label(__('Unpublish'))
+    ->color('primary')
+    ->icon('heroicon-o-x-circle')
+    ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
+    ->action(function ($record) {
+        $record->update(['status' => PostStatus::UNPUBLISHED->value])
     }),
 ```
 
 ### **3. Delete Action**
 
-Allows users to delete the product with a success notification.
+Allows users to delete the post with a success notification.
 
 ```php
 Actions\DeleteAction::make()
     ->successNotification(
         Notification::make()
             ->success()
-            ->title(__('Product Deleted'))
-            ->body(__('Product has been deleted successfully.')),
+            ->title(__('Post Deleted'))
+            ->body(__('Post has been deleted successfully.')),
     ),
 ```
 
-## **Final `ViewProduct` Implementation**
+## **Final `ViewPost` Implementation**
 
 ```php
 <?php
 
-namespace Webkul\Product\Filament\Resources\ProductResource\Pages;
+namespace Webkul\Post\Filament\Resources\PostResource\Pages;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions;
@@ -104,11 +79,11 @@ use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\ViewRecord;
 use Webkul\Chatter\Filament\Actions\ChatterAction;
-use Webkul\Product\Filament\Resources\ProductResource;
+use Webkul\Post\Filament\Resources\PostResource;
 
-class ViewProduct extends ViewRecord
+class ViewPost extends ViewRecord
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 
     public function getSubNavigationPosition(): SubNavigationPosition
     {
@@ -119,53 +94,28 @@ class ViewProduct extends ViewRecord
     {
         return [
             ChatterAction::make()->setResource(static::$resource),
-            Actions\Action::make('print')
-                ->label(__('Print Product'))
-                ->color('gray')
-                ->icon('heroicon-o-printer')
-                ->form([
-                    Forms\Components\TextInput::make('quantity')
-                        ->label(__('Quantity'))
-                        ->required()
-                        ->numeric()
-                        ->minValue(1)
-                        ->maxValue(100),
-                    Forms\Components\Radio::make('format')
-                        ->label(__('Print Format'))
-                        ->options([
-                            'dymo'       => __('Dymo Label'),
-                            '2x7_price'  => __('2x7 Price Tag'),
-                            '4x7_price'  => __('4x7 Price Tag'),
-                            '4x12'       => __('4x12 Label'),
-                            '4x12_price' => __('4x12 Price Label'),
-                        ])
-                        ->default('2x7_price')
-                        ->required(),
-                ])
-                ->action(function (array $data, $record) {
-                    $pdf = Pdf::loadView('products::filament.resources.products.actions.print', [
-                        'records'  => collect([$record]),
-                        'quantity' => $data['quantity'],
-                        'format'   => $data['format'],
-                    ]);
-
-                    $paperSize = match ($data['format']) {
-                        'dymo'  => [0, 0, 252.2, 144],
-                        default => 'a4',
-                    };
-
-                    $pdf->setPaper($paperSize, 'portrait');
-
-                    return response()->streamDownload(function () use ($pdf) {
-                        echo $pdf->output();
-                    }, 'Product-'.$record->name.'.pdf');
+            Actions\Action::make('publish')
+                ->label(__('Publish'))
+                ->color('primary')
+                ->icon('heroicon-o-check-badge')
+                ->visible(fn($record) => $record->status == PostStatus::UNPUBLISHED->value)
+                ->action(function ($record) {
+                    $record->update(['status' => PostStatus::PUBLISHED->value])
                 }),
+            Actions\Action::make('un_publish')
+                ->label(__('Unpublish'))
+                ->color('primary')
+                ->icon('heroicon-o-x-circle')
+                ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
+                ->action(function ($record) {
+                    $record->update(['status' => PostStatus::UNPUBLISHED->value])
+                }),,
             Actions\DeleteAction::make()
                 ->successNotification(
                     Notification::make()
                         ->success()
-                        ->title(__('Product Deleted'))
-                        ->body(__('Product has been deleted successfully.')),
+                        ->title(__('Post Deleted'))
+                        ->body(__('Post has been deleted successfully.')),
                 ),
         ];
     }
@@ -174,10 +124,10 @@ class ViewProduct extends ViewRecord
 
 ## **Explanation**
 
-- **Handles Product Viewing**: Displays product details in a structured format.
-- **Print Product Feature**: Allows printing labels in different formats.
-- **Delete Product Feature**: Provides an option to delete a product with notifications.
-- **Chatter Integration**: Enables discussion around the product.
+- **Handles Post Viewing**: Displays post details in a structured format.
+- **Publish and Unpublished Post Feature**: Allows users to publish and unpublished post status.
+- **Delete Post Feature**: Provides an option to delete a post with notifications.
+- **Chatter Integration**: Enables discussion around the post.
 - **Navigation Position**: Places the page navigation at the top.
 
 For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/viewing-records)**. 🚀

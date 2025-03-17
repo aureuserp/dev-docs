@@ -1,12 +1,11 @@
-# **Filtering Products Using Tabs**
+# **Filtering Posts Using Tabs**
 
-For filtering product records using **tabs** in the List page. You can define custom tabs in the `getTabs()` method.
+For filtering post records using **tabs** in the List page. You can define custom tabs in the `getTabs()` method.
 
 ## **Example Tabs:**
 
-- **All Products** → Displays all products.
-- **Archived** → Filters soft-deleted (trashed) products.
-- **Out of Stock** → Shows products with `stock = 0`.
+- **All Posts** → Displays all posts.
+- **Archived** → Filters soft-deleted (trashed) posts.
 
 **Code Example:**
 
@@ -14,53 +13,48 @@ For filtering product records using **tabs** in the List page. You can define cu
 public function getTabs(): array
 {
     return [
-        'all' => Tab::make(__('All Products'))->badge(Product::count()),
-        'archived' => Tab::make(__('Archived'))->badge(Product::onlyTrashed()->count())
+        'all' => Tab::make(__('All Posts'))->badge(Post::count()),
+        'archived' => Tab::make(__('Archived'))->badge(Post::onlyTrashed()->count())
             ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
     ];
 }
 ```
 
----
+## **2. Customizing the List Page for Posts**
 
-## **2. Customizing the List Page for Products**
-
-To customize how products are listed, you extend the `ListRecords` class.
+To customize how posts are listed, you extend the `ListRecords` class.
 
 ### **Key Features:**
 
-- Define the **resource** (`ProductResource`).
-- Add **header actions**, such as a button to create new products.
+- Define the **resource** (`PostResource`).
+- Add **header actions**, such as a button to create new posts.
 
 **Code Example:**
 
 ```php
-class ListProducts extends ListRecords
+class ListPosts extends ListRecords
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus-circle')
-                ->label(__('New Product')),
+                ->label(__('New Post')),
         ];
     }
 }
 ```
 
----
-
 ## **3. Using Preset Views for Filtering**
 
-Aureus ERP supports **preset views** to provide predefined product listings.
+Aureus ERP supports **preset views** to provide predefined post listings.
 
 ### **Example Preset Views:**
 
-- **All Products** → Default view showing all records.
-- **Out of Stock** → Filters products with `stock = 0`.
-- **Archived** → Shows deleted products.
+- **All Posts** → Default view showing all records.
+- **Archived** → Shows deleted posts.
 
 **Code Example:**
 
@@ -68,16 +62,12 @@ Aureus ERP supports **preset views** to provide predefined product listings.
 public function getPresetTableViews(): array
 {
     return [
-        'all_products' => PresetView::make(__('All Products'))
+        'all_posts' => PresetView::make(__('All Posts'))
             ->icon('heroicon-s-clipboard-list')
             ->favorite()
             ->default()
             ->modifyQueryUsing(fn (Builder $query) => $query),
-        'out_of_stock' => PresetView::make(__('Out of Stock'))
-            ->icon('heroicon-s-exclamation-circle')
-            ->favorite()
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('stock', 0)),
-        'archived' => PresetView::make(__('Archived Products'))
+        'archived' => PresetView::make(__('Archived Posts'))
             ->icon('heroicon-s-archive-box')
             ->favorite()
             ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
@@ -85,12 +75,10 @@ public function getPresetTableViews(): array
 }
 ```
 
----
-
 ## **Conclusion**
 
 - Use **tabs** for quick filtering.
-- Customize the **list page** to include actions like product creation.
-- Implement **preset views** for predefined product filters.
+- Customize the **list page** to include actions like post creation.
+- Implement **preset views** for predefined post filters.
 
 For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/listing-records)**. 🚀
