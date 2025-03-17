@@ -16,7 +16,7 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "format": "npx prettier --write ."
+    "docs:format": "npx prettier --write ."
   },
   "devDependencies": {
     "typescript": "^5.8.2",
