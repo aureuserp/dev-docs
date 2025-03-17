@@ -7,6 +7,7 @@ These plugin are essential components of the system and are installed by default
 | Analytics  | Business intelligence and reporting tools         |
 | Chatter    | Internal communication and collaboration platform |
 | Fields     | Customizable data structure management            |
+| Partners   | Partner relationship management                   |
 | Security   | Role-based access control and authentication      |
 | Support    | Help desk and documentation                       |
 | Table View | Customizable data presentation framework          |
@@ -23,7 +24,6 @@ These plugin can be installed as needed to extend system functionality:
 | Employees    | Employees management                         |
 | Inventories  | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
-| Partners     | Partner relationship management              |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
 | Projects     | Project planning and management              |

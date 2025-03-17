@@ -58,14 +58,24 @@ const routes = [
         link: '/master/getting-started/migrations'
       },
       {
+        text: 'Settings',
+        collapsed: false,
+        link: '/master/getting-started/settings'
+      },
+      {
+        text: 'Models',
+        collapsed: false,
+        link: '/master/getting-started/models'
+      },
+      {
         text: 'Policies',
         collapsed: false,
         link: '/master/getting-started/policies'
       },
       {
-        text: 'Clusters',
+        text: 'Seeders',
         collapsed: false,
-        link: '/master/getting-started/clusters'
+        link: '/master/getting-started/seeders'
       },
       {
         text: 'Resources',
@@ -92,6 +102,11 @@ const routes = [
             link: '/master/getting-started/resources/viewing-record'
           }
         ]
+      },
+      {
+        text: 'Clusters',
+        collapsed: false,
+        link: '/master/getting-started/clusters'
       },
       {
         text: 'Custom Fields',
