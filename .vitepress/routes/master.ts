@@ -31,27 +31,14 @@ const routes = [
       {
         text: 'Modular Design',
         link: '/master/architecture/modular-design'
-      }
+      },
+      { text: 'Panels', link: '/master/architecture/panels' }
     ]
   },
   {
     text: 'Getting Started',
     collapsed: false,
     items: [
-      {
-        text: 'Panels',
-        collapsed: true,
-        items: [
-          {
-            text: 'Admin',
-            link: '/master/getting-started/panels/admin'
-          },
-          {
-            text: 'Customer',
-            link: '/master/getting-started/panels/customer'
-          }
-        ]
-      },
       {
         text: 'Migrations',
         collapsed: false,
@@ -112,10 +99,6 @@ const routes = [
         text: 'Pages',
         collapsed: false,
         link: '/master/getting-started/pages'
-      },
-      {
-        text: 'Custom Fields',
-        link: '/master/getting-started/custom-fields'
       }
     ]
   },
@@ -137,17 +120,11 @@ const routes = [
       },
       {
         text: 'Progress Stepper',
-        collapsed: true,
-        items: [
-          {
-            text: 'Implementation',
-            link: '/master/advanced/progress-stepper/implementation'
-          },
-          {
-            text: 'Customization',
-            link: '/master/advanced/progress-stepper/customization'
-          }
-        ]
+        link: '/master/advanced/progress-stepper'
+      },
+      {
+        text: 'Custom Fields',
+        link: '/master/getting-started/custom-fields'
       },
       {
         text: 'Chatter',

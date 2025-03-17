@@ -22,7 +22,7 @@ These plugin can be installed as needed to extend system functionality:
 | Accounts     | Financial accounting and reporting           |
 | Contacts     | Contact management for customers and vendors |
 | Employees    | Employees management                         |
-| Inventories  | Inventory and warehouse management           |
+| Blogs        | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
@@ -88,7 +88,7 @@ These plugin can be installed as needed to extend system functionality:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
 
-## **Inventories**
+## **Blogs**
 
 - **Purpose**: Track and manage stock levels across warehouses.
 - **Key Features**:
@@ -205,10 +205,10 @@ To install a plugin, use the following command syntax:
 php artisan <plugin-name>:install
 ```
 
-For example, to install the Inventories plugin:
+For example, to install the Blogs plugin:
 
 ```bash
-php artisan inventories:install
+php artisan blogs:install
 ```
 
 During installation, the system will check for dependencies and prompt you if there are any conflicts or prerequisites:
@@ -234,10 +234,10 @@ To remove a plugin, use the following command syntax:
 php artisan <plugin-name>:uninstall
 ```
 
-For example, to uninstall the Inventories plugin:
+For example, to uninstall the Blogs plugin:
 
 ```bash
-php artisan inventories:uninstall
+php artisan blogs:uninstall
 ```
 
 ## Module Dependencies
