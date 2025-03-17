@@ -4,9 +4,8 @@ When editing record in Aureus ERP using Filament, you may need to validate and m
 
 This method allows you to:
 
-- **Prevent incorrect data updates** (e.g., ensuring `company_id` remains unchanged).
 - **Sanitize or modify input values** before saving.
-- **Ensure business rules are followed** when updating product details.
+- **Ensure business rules are followed** when updating post details.
 
 ## **Usage Example**
 
@@ -17,13 +16,9 @@ Modify the form data to prevent changes to certain fields:
 ```php
 protected function mutateFormDataBeforeSave(array $data): array
 {
-    unset($data['company_id']); // Prevents modification of company ID
-
     return $data;
 }
 ```
-
-In this case, the `company_id` remains unchanged even if a user attempts to modify it.
 
 ## **Mutating Data in Modal Actions**
 
@@ -39,14 +34,14 @@ EditAction::make()
     ]);
 ```
 
-## **Example: Implementing EditProduct**
+## **Example: Implementing EditPost**
 
-A `EditProduct` class can be implemented using Filament’s `EditRecord`.
+A `EditPost` class can be implemented using Filament’s `EditRecord`.
 
 ```php
 <?php
 
-namespace Webkul\Product\Filament\Resources\ProductResource\Pages;
+namespace Webkul\Post\Filament\Resources\PostResource\Pages;
 
 use Filament\Actions;
 use Filament\Forms;
@@ -55,11 +50,11 @@ use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
 use Webkul\Chatter\Filament\Actions\ChatterAction;
-use Webkul\Product\Filament\Resources\ProductResource;
+use Webkul\Post\Filament\Resources\PostResource;
 
-class EditProduct extends EditRecord
+class EditPost extends EditRecord
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 
     public function getSubNavigationPosition(): SubNavigationPosition
     {
@@ -75,18 +70,13 @@ class EditProduct extends EditRecord
     {
         return Notification::make()
             ->success()
-            ->title(__('Product updated'))
-            ->body(__('Product has been updated successfully.'));
+            ->title(__('Post updated'))
+            ->body(__('Post has been updated successfully.'));
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $user = Auth::user();
-
-        // Prevent unauthorized users from modifying critical fields
-        if (!$user->hasPermissionTo('update_product_price')) {
-            unset($data['price']);
-        }
 
         $data['updated_by'] = $user->id;
         $data['updated_at'] = now();
@@ -98,74 +88,44 @@ class EditProduct extends EditRecord
     {
         return [
             ChatterAction::make()->setResource(static::$resource),
-            Actions\Action::make('print')
-                ->label(__('Print Product'))
-                ->color('gray')
-                ->icon('heroicon-o-printer')
-                ->form([
-                    Forms\Components\TextInput::make('quantity')
-                        ->label(__('Quantity'))
-                        ->required()
-                        ->numeric()
-                        ->minValue(1)
-                        ->maxValue(100),
-                    Forms\Components\Radio::make('format')
-                        ->label(__('Print Format'))
-                        ->options([
-                            'dymo'       => __('Dymo Label'),
-                            '2x7_price'  => __('2x7 Price Tag'),
-                            '4x7_price'  => __('4x7 Price Tag'),
-                            '4x12'       => __('4x12 Label'),
-                            '4x12_price' => __('4x12 Price Label'),
-                        ])
-                        ->default('2x7_price')
-                        ->required(),
-                ])
-                ->action(function (array $data, $record) {
-                    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('products::filament.resources.products.actions.print', [
-                        'records'  => collect([$record]),
-                        'quantity' => $data['quantity'],
-                        'format'   => $data['format'],
-                    ]);
-
-                    $paperSize = match ($data['format']) {
-                        'dymo'  => [0, 0, 252.2, 144],
-                        default => 'a4',
-                    };
-
-                    $pdf->setPaper($paperSize, 'portrait');
-
-                    return response()->streamDownload(function () use ($pdf) {
-                        echo $pdf->output();
-                    }, 'Product-' . $record->name . '.pdf');
+                        Actions\Action::make('publish')
+                ->label(__('Publish'))
+                ->color('primary')
+                ->icon('heroicon-o-check-badge')
+                ->visible(fn($record) => $record->status == PostStatus::UNPUBLISHED->value)
+                ->action(function ($record) {
+                    $record->update(['status' => PostStatus::PUBLISHED->value])
+                }),
+            Actions\Action::make('un_publish')
+                ->label(__('Unpublish'))
+                ->color('primary')
+                ->icon('heroicon-o-x-circle')
+                ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
+                ->action(function ($record) {
+                    $record->update(['status' => PostStatus::UNPUBLISHED->value])
                 }),
             Actions\DeleteAction::make()
                 ->successNotification(
                     Notification::make()
                         ->success()
-                        ->title(__('Product Deleted'))
-                        ->body(__('Product has been deleted successfully.')),
+                        ->title(__('Post Deleted'))
+                        ->body(__('Post has been deleted successfully.')),
                 ),
         ];
     }
 
     protected function afterSave(): void
     {
-        $this->getRecord()->variants->each(function ($variant) {
-            $variant->update([
-                'is_storable' => $this->getRecord()->is_storable,
-            ]);
-        });
+        // This block of code executes when the record has been saved.
     }
 }
 ```
 
 ## **Explanation**
 
-- **Handles Product Editing**: This class ensures product updates follow the necessary business rules.
+- **Handles Post Editing**: This class ensures post updates follow the necessary business rules.
 - **Data Mutation**: Assigns the `updated_by` field and prevents unauthorized users from modifying certain fields.
-- **Post-Edit Processing**: Updates product variants to reflect changes in storage settings.
-- **Actions**: Includes printing, deletion, and Chatter integration for discussions.
-- **Redirection & Notifications**: Redirects to the product view and notifies the user on successful update.
+- **Actions**: Includes publish or unpublish, deletion, and Chatter integration for discussions.
+- **Redirection & Notifications**: Redirects to the post view and notifies the user on successful update.
 
 For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/editing-records)**. 🚀

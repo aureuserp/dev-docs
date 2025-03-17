@@ -109,7 +109,7 @@ class ViewPost extends ViewRecord
                 ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
                 ->action(function ($record) {
                     $record->update(['status' => PostStatus::UNPUBLISHED->value])
-                }),,
+                }),
             Actions\DeleteAction::make()
                 ->successNotification(
                     Notification::make()

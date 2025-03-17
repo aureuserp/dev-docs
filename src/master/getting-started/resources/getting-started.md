@@ -8,8 +8,8 @@ A **Resource** in Filament PHP is a class that represents a database model insid
 
 Each resource is stored in the respective module's directory and typically consists of:
 
-- A **resource class** (e.g., `ProductResource.php`)
-- A set of related pages (e.g., `ListProducts`, `CreateProduct`, `EditProduct`, `ViewProduct`)
+- A **resource class** (e.g., `PostResource.php`)
+- A set of related pages (e.g., `ListPosts`, `CreatePost`, `EditPost`, `ViewPost`)
 - Form and table configurations
 
 ## **Creating a Filament Resource**
@@ -17,7 +17,7 @@ Each resource is stored in the respective module's directory and typically consi
 To generate a Filament resource, use the following command:
 
 ```sh
-php artisan make:filament-resource Product --view --model-namespace=Webkul\\Path\\Models
+php artisan make:filament-resource Post --view --model-namespace=Webkul\\Path\\Models
 ```
 
 for more information visit [Filament Official Documentation](https://filamentphp.com/docs/3.x/panels/resources/getting-started#creating-a-resource)
@@ -47,18 +47,18 @@ Here, you can specify where the resource should be generated based on the module
 
 Once generated, the resource files will be located in:
 
-- `Webkul\Inventories\Filament\Admin\Resources\ProductResource.php`
-- `Webkul\Inventories\Filament\Admin\Resources\ProductResource/Pages/`
-  - `ListProducts.php`
-  - `CreateProduct.php`
-  - `EditProduct.php`
-  - `ViewProduct.php` (if enabled)
+- `Webkul\Blog\Filament\Admin\Resources\PostResource.php`
+- `Webkul\Blog\Filament\Admin\Resources\PostResource/Pages/`
+  - `ListPosts.php`
+  - `CreatePost.php`
+  - `EditPost.php`
+  - `ViewPost.php` (if enabled)
 
 For more detailed documentation, refer to the official [Filament PHP Documentation](https://filamentphp.com/docs/3.x/panels/resources/getting-started).
 
 ## **Anatomy of a Filament Resource**
 
-### **(A) Resource Class (`ProductResource.php`)**
+### **(A) Resource Class (`PostResource.php`)**
 
 The main resource file defines:
 
@@ -67,12 +67,12 @@ The main resource file defines:
 - The table display configuration
 - The form fields for creating/editing records
 
-#### **Example `ProductResource.php`**
+#### **Example `PostResource.php`**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources;
+namespace Webkul\Blog\Filament\Admin\Resources;
 
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -81,15 +81,16 @@ use Filament\Tables\Table;
 use Filament\Forms\Form;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
-use Webkul\Inventories\Models\Product;
-use Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages;
+use Webkul\Blog\Models\Post;
+use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
-class ProductResource extends Resource
+class PostResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-product';
-    protected static ?string $navigationGroup = 'Product Management';
+    protected static ?string $navigationIcon = 'heroicon-o-post';
+
+    protected static ?string $navigationGroup = 'Blog';
 
     public static function form(Form $form): Form
     {
@@ -99,7 +100,7 @@ class ProductResource extends Resource
                 ->maxLength(255),
             Forms\Components\TextInput::make('slug')
                 ->required()
-                ->unique(Product::class, 'slug'),
+                ->unique(Post::class, 'slug'),
         ]);
     }
 
@@ -132,17 +133,17 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Define relationships like posts, roles, etc.
+            // Define relationships like comments, tags etc.
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListProducts::route('/'),
-            'create' => Pages\CreateProduct::route('/create'),
-            'edit' => Pages\EditProduct::route('/{record}/edit'),
-            'view' => Pages\ViewProduct::route('/{record}'),
+            'index'  => Pages\ListPosts::route('/'),
+            'create' => Pages\CreatePost::route('/create'),
+            'edit'   => Pages\EditPost::route('/{record}/edit'),
+            'view'   => Pages\ViewPost::route('/{record}'),
         ];
     }
 }
@@ -152,96 +153,83 @@ For more advanced configurations and customizations, refer to the official Filam
 
 ### **(B) Pages**
 
-Each resource has associated pages, found in `Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages`. These define how products interact with the model in the Filament panel.
+Each resource has associated pages, found in `Webkul\Blog\Filament\Admin\Resources\PostResource\Pages`. These define how posts interact with the model in the Filament panel.
 
-#### **`ListProducts.php` (Listing Records)**
+#### **`ListPosts.php` (Listing Records)**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\ProductResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
 
-class ListProducts extends ListRecords
+class ListPosts extends ListRecords
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 }
 ```
 
-- This page lists all `Product` records with the table columns and filters defined in `ProductResource.php`.
+- This page lists all `Post` records with the table columns and filters defined in `PostResource.php`.
 
-#### **`CreateProduct.php` (Creating a Record)**
+#### **`CreatePost.php` (Creating a Record)**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Resources\ProductResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
 
-class CreateProduct extends CreateRecord
+class CreatePost extends CreateRecord
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 }
 ```
 
-- This page provides the form defined in `ProductResource.php` for creating a new product.
+- This page provides the form defined in `PostResource.php` for creating a new post.
 
-#### **`EditProduct.php` (Editing a Record)**
+#### **`EditPost.php` (Editing a Record)**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Resources\ProductResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
 
-class EditProduct extends EditRecord
+class EditPost extends EditRecord
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 }
 ```
 
-- This page allows editing a product’s details using the form schema.
+- This page allows editing a post’s details using the form schema.
 
-#### **`ViewProduct.php` (Viewing a Record)**
+#### **`ViewPost.php` (Viewing a Record)**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources\ProductResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Resources\ProductResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
 
-class ViewProduct extends ViewRecord
+class ViewPost extends ViewRecord
 {
-    protected static string $resource = ProductResource::class;
+    protected static string $resource = PostResource::class;
 }
 ```
 
-- If enabled, this allows detailed viewing of a single product record.
+- If enabled, this allows detailed viewing of a single post record.
 
 ## **Advanced Features**
 
-### **A) Custom Actions**
-
-Filament provides table actions like edit, delete, and view, but you can also create custom actions.
-
-Example: **Activate Product**
-
-```php
-Tables\Actions\Action::make('Activate')
-    ->action(fn (Product $record) => $record->update(['status' => 'active']))
-    ->requiresConfirmation()
-    ->color('success');
-```
-
-### **B) Global Search**
+### **Global Search**
 
 You can enable global search for a resource:
 
@@ -254,34 +242,34 @@ public static function getGloballySearchableAttributes(): array
 }
 ```
 
-### **C) Relationships**
+### **Relationships**
 
-If a product has many posts:
+If a post has many posts:
 
 ```php
 public static function getRelations(): array
 {
     return [
-        RelationManagers\PostsRelationManager::class,
+        RelationManagers\CommentsRelationManager::class,
     ];
 }
 ```
 
-And create a `PostsRelationManager` class inside **Webkul\Inventories\Filament\Admin\Resources\ProductResource\RelationManagers**
+And create a `CommentsRelationManager` class inside **Webkul\Blog\Filament\Admin\Resources\PostResource\RelationManagers**
 
 ```php
 <?php
 
-namespace Webkul\Inventories\Filament\Admin\Resources\ProductResource\RelationManagers;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\RelationManagers;
 
 use Filament\Resources\RelationManagers\RelationManager;
 use Webkul\Employee\Traits\Resources\Employee\EmployeeSkillRelation;
 
-class VariantsRelationManager extends RelationManager
+class CommentsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'variants';
+    protected static string $relationship = 'comments';
 
-    protected static ?string $title = 'Variants';
+    protected static ?string $title = 'Comments';
 }
 
 ```
