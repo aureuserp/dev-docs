@@ -93,20 +93,20 @@ When applied to a resource page, this trait:
 
 ## Implementation Example
 
-The `ListOrders` class demonstrates how to implement table views in a resource page:
+The `ListBlogs` class demonstrates how to implement table views in a resource page:
 
 ```php
-namespace Webkul\Purchase\Filament\Admin\Clusters\Orders\Resources\OrderResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Clusters\Blog\Resources\BlogResource\Pages;
 ```
 
-This class uses the `HasTableViews` trait and defines multiple preset views for the Orders table:
+This class uses the `HasTableViews` trait and defines multiple preset views for the Blogs table:
 
 ```php
 public function getPresetTableViews(): array
 {
     return [
-        'my_purchases' => PresetView::make(__('My Purchases'))
-            ->icon('heroicon-o-shopping-cart')
+        'my_posts' => PresetView::make(__('My Posts'))
+            ->icon('heroicon-o-user')
             ->favorite()
             ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', Auth::id())),
 
@@ -115,22 +115,12 @@ public function getPresetTableViews(): array
 }
 ```
 
-### Available Preset Views in the Example
-
-1. **My Purchases**: Shows orders created by the current user
-2. **Purchase Orders**: Filters orders in PURCHASE or DONE states
-3. **Starred Orders**: Shows high-priority (starred) orders
-4. **Orders**: Shows orders in DRAFT or SENT states
-5. **Draft Orders**: Shows only orders in DRAFT state
-6. **Waiting Orders**: Shows only orders in SENT state
-7. **Late Orders**: Shows orders past their ordered_at date that are still in DRAFT or SENT states
-
 ## Customizing Queries
 
 Each preset view can modify the underlying query using the `modifyQueryUsing` method. This allows for powerful filtering capabilities:
 
 ```php
-->modifyQueryUsing(fn (Builder $query) => $query->where('state', OrderState::DRAFT))
+->modifyQueryUsing(fn (Builder $query) => $query->where('author_id', Auth::id()))
 ```
 
 ## User Favorites System
@@ -163,7 +153,7 @@ Preset views can include icons for better visual recognition:
 The example shows proper use of translation strings for view labels:
 
 ```php
-PresetView::make(__('purchases::filament/admin/clusters/orders/resources/order/pages/list-orders.tabs.my-purchases'))
+PresetView::make(__('blogs::filament/admin/clusters/blogs/resources/posts/pages/list-posts.tabs.my-posts'))
 ```
 
 ## **Example Output of Table View Filters**

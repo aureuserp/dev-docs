@@ -31,11 +31,11 @@ public static function form(Form $form): Form
 {
     return $form
         ->schema([
-            ProgressStepper::make('state')
+            ProgressStepper::make('status')
                 ->hiddenLabel()
                 ->inline()
                 ->options(fn ($record) => self::getStateOptions($record))
-                ->default(OrderState::DRAFT->value)
+                ->default(PostStatus::DRAFT->value)
                 ->disabled()
                 ->live()
                 ->reactive(),
@@ -44,14 +44,17 @@ public static function form(Form $form): Form
 
 protected static function getStateOptions($record): array
 {
-    $options = OrderState::options();
+    $options = PostStatus::options();
 
-    if ($record && $record->state !== OrderState::CANCEL->value) {
-        unset($options[OrderState::CANCEL->value]);
+    if (
+        $record
+        && $record->status !== PostStatus::UNPUBLISHED->value
+    ) {
+        unset($options[PostStatus::UNPUBLISHED->value]);
     }
 
-    if (!$record) {
-        unset($options[OrderState::CANCEL->value]);
+    if (! $record) {
+        unset($options[PostStatus::UNPUBLISHED->value]);
     }
 
     return $options;
@@ -60,19 +63,19 @@ protected static function getStateOptions($record): array
 
 ## **Changing Button Colors**
 
-To modify the colors of different states, use the `colors()` method:
+To modify the colors of different status, use the `colors()` method:
 
 ```php
-ProgressStepper::make('state')
+ProgressStepper::make('status')
     ->options([
-        'draft' => 'Draft',
-        'processing' => 'Processing',
-        'completed' => 'Completed'
+        'draft'       => 'Draft',
+        'unpublished' => 'Unpublished',
+        'published'   => 'Published'
     ])
     ->colors([
-        'draft' => 'gray',
-        'processing' => 'info',
-        'completed' => 'success',
+        'draft'       => 'gray',
+        'unpublished' => 'info',
+        'published'   => 'success',
     ]);
 ```
 
@@ -83,14 +86,14 @@ To display icons alongside state labels, use the `icons()` method:
 ```php
 ProgressStepper::make('state')
     ->options([
-        'draft' => 'Draft',
-        'processing' => 'Processing',
-        'completed' => 'Completed'
+        'draft'       => 'Draft',
+        'unpublished' => 'Unpublished',
+        'published'   => 'Published'
     ])
     ->icons([
-        'draft' => 'heroicon-o-pencil',
-        'processing' => 'heroicon-o-clock',
-        'completed' => 'heroicon-o-check-circle',
+        'draft'       => 'heroicon-o-pencil',
+        'unpublished' => 'heroicon-o-circle',
+        'published'   => 'heroicon-o-check-badge',
     ]);
 ```
 
@@ -99,36 +102,35 @@ ProgressStepper::make('state')
 Instead of defining options manually, you can use an Enum:
 
 ```php
-use App\Enums\OrderState;
+use App\Enums\PostStatus;
 
-ProgressStepper::make('state')
-    ->options(OrderState::options())
-    ->colors(OrderState::colors())
-    ->icons(OrderState::icons());
+ProgressStepper::make('status')
+    ->options(PostStatus::options())
+    ->colors(PostStatus::colors())
+    ->icons(PostStatus::icons());
 ```
 
-This keeps the state definitions centralized in an `OrderState` enum.
+This keeps the status definitions centralized in an `PostStatus` enum.
 
-## **Handling Conditional States**
+## **Handling Conditional Statuses**
 
-To prevent certain states from being displayed (e.g., hiding "Canceled" if the order is active):
+To prevent certain statuses from being displayed (e.g., hiding "UNPUBLISHED" if the status is unpublished):
 
 ```php
-ProgressStepper::make('state')
+ProgressStepper::make('status')
     ->options(function ($record) {
-        $options = OrderState::options();
+        $options = PostStatus::options();
 
-        if ($record && $record->state != OrderState::CANCEL->value) {
-            unset($options[OrderState::CANCEL->value]);
+        if (
+            $record
+            && $record->status != PostStatus::UNPUBLISHED->value
+        ) {
+            unset($options[PostStatus::UNPUBLISHED->value]);
         }
 
         return $options;
     });
 ```
-
-## **Example Output**
-
-![Progress Stepper](./images/progress-stepper.png)
 
 ## **Key Features**
 

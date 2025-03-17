@@ -17,8 +17,6 @@ public function getTabs(): array
         'all' => Tab::make(__('All Products'))->badge(Product::count()),
         'archived' => Tab::make(__('Archived'))->badge(Product::onlyTrashed()->count())
             ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
-        'out_of_stock' => Tab::make(__('Out of Stock'))->badge(Product::where('stock', 0)->count())
-            ->modifyQueryUsing(fn ($query) => $query->where('stock', 0)),
     ];
 }
 ```

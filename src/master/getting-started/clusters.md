@@ -24,10 +24,10 @@ To enable clusters in Aures ERP, configure the panel to discover cluster classes
         $panel
             ->when($panel->getId() == 'admin', function (Panel $panel) {
                 $panel
-                    ->discoverResources(in: $this->getPluginBasePath('/Filament/Resources'), for: 'Webkul\\Inventory\\Filament\\Resources')
-                    ->discoverPages(in: $this->getPluginBasePath('/Filament/Pages'), for: 'Webkul\\Inventory\\Filament\\Pages')
-                    ->discoverClusters(in: $this->getPluginBasePath('/Filament/Clusters'), for: 'Webkul\\Inventory\\Filament\\Clusters')
-                    ->discoverWidgets(in: $this->getPluginBasePath('/Filament/Widgets'), for: 'Webkul\\Inventory\\Filament\\Widgets');
+                    ->discoverResources(in: $this->getPluginBasePath('/Filament/Resources'), for: 'Webkul\\Blog\\Filament\\Resources')
+                    ->discoverPages(in: $this->getPluginBasePath('/Filament/Pages'), for: 'Webkul\\Blog\\Filament\\Pages')
+                    ->discoverClusters(in: $this->getPluginBasePath('/Filament/Clusters'), for: 'Webkul\\Blog\\Filament\\Clusters')
+                    ->discoverWidgets(in: $this->getPluginBasePath('/Filament/Widgets'), for: 'Webkul\\Blog\\Filament\\Widgets');
             });
     }
 ```
@@ -35,37 +35,36 @@ To enable clusters in Aures ERP, configure the panel to discover cluster classes
 Now, generate a cluster using:
 
 ```sh
-php artisan make:filament-cluster Products
+php artisan make:filament-cluster Posts
 ```
 
-This creates a `Products` cluster in `Webkul\Inventory\Filament\Clusters`:
+This creates a `Products` cluster in `Webkul\Blog\Filament\Clusters`:
 
 ```php
 <?php
 
-namespace Webkul\Inventory\Filament\Clusters;
+namespace Webkul\Blog\Filament\Clusters;
 
 use Filament\Clusters\Cluster;
 
-class Products extends Cluster
+class Posts extends Cluster
 {
-    protected static ?string $slug = 'inventory/products';
+    protected static ?string $slug = 'blog/posts';
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
     {
-        return __('Products');
+        return __('Posts');
     }
 
     public static function getNavigationGroup(): string
     {
-        return __('Inventory');
+        return __('Blog');
     }
 }
-
 ```
 
 You can customize the navigation using `$navigationLabel`, `$navigationSort`, and `$navigationGroup`.
@@ -75,9 +74,9 @@ You can customize the navigation using `$navigationLabel`, `$navigationSort`, an
 To assign a resource or page to a cluster, set the `$cluster` property:
 
 ```php
-use Webkul\Inventory\Filament\Clusters\Products;
+use Webkul\Blog\Filament\Clusters\Posts;
 
-protected static ?string $cluster = Products::class;
+protected static ?string $cluster = Posts::class;
 ```
 
 ## Recommended Code Structure
@@ -86,15 +85,15 @@ For better organization, store related resources and pages inside a directory ma
 
 ```
 +-- Clusters
-|   +-- Products.php
-|   +-- Products
+|   +-- Posts.php
+|   +-- Posts
 |   |   +-- Resources
-|   |   |   +-- ProductResource.php
-|   |   |   +-- ProductResource
+|   |   |   +-- PostResource.php
+|   |   |   +-- PostResource
 |   |   |   |   +-- Pages
-|   |   |   |   |   +-- CreateProduct.php
-|   |   |   |   |   +-- EditProduct.php
-|   |   |   |   |   +-- ListProducts.php
+|   |   |   |   |   +-- CreatePost.php
+|   |   |   |   |   +-- EditPost.php
+|   |   |   |   |   +-- ListPosts.php
 ```
 
 Filament will prompt whether to place new resources or pages inside a cluster when using `make:filament-resource` or `make:filament-page`.
