@@ -120,58 +120,70 @@ const routes = [
     ]
   },
   {
-    text: 'Table Views',
-    collapsed: false,
-    items: [
-      { text: 'Introduction', link: '/master/table-views/introduction' }
-    ]
-  },
-  {
-    text: 'Dashboard',
-    collapsed: false,
-    items: [
-      { text: 'Introduction', link: '/master/dashboard/introduction' }
-    ]
-  },
-  {
-    text: 'Chatter',
-    collapsed: false,
-    items: [
-      { text: 'Overview', link: '/master/chatter/overview' },
-      {
-        text: 'Actions',
-        collapsed: true,
-        items: [
-          { text: 'Message', link: '/master/chatter/actions/message' },
-          { text: 'Log Note', link: '/master/chatter/actions/log-note' },
-          { text: 'Activity', link: '/master/chatter/actions/activity' },
-          { text: 'File', link: '/master/chatter/actions/file' },
-          { text: 'Follower', link: '/master/chatter/actions/follower' }
-        ]
-      }
-    ]
-  },
-  {
-    text: 'Progress Stepper',
+    text: 'Digging Deeper',
     collapsed: false,
     items: [
       {
-        text: 'Implementation',
-        link: '/master/progress-stepper/implementation'
+        text: 'Dashboard',
+        link: '/master/advanced/dashboard'
       },
       {
-        text: 'Customization',
-        link: '/master/progress-stepper/customization'
-      }
-    ]
-  },
-  {
-    text: 'Customer Account',
-    collapsed: false,
-    items: [
+        text: 'Customer Account',
+        link: '/master/advanced/customer-account'
+      },
       {
-        text: 'Introduction',
-        link: '/master/customer-account/introduction'
+        text: 'Table Views',
+        link: '/master/advanced/table-views'
+      },
+      {
+        text: 'Progress Stepper',
+        collapsed: true,
+        items: [
+          {
+            text: 'Implementation',
+            link: '/master/advanced/progress-stepper/implementation'
+          },
+          {
+            text: 'Customization',
+            link: '/master/advanced/progress-stepper/customization'
+          }
+        ]
+      },
+      {
+        text: 'Chatter',
+        collapsed: true,
+        items: [
+          {
+            text: 'Introduction',
+            link: '/master/advanced/chatter/introduction'
+          },
+          {
+            text: 'Actions',
+            collapsed: true,
+            items: [
+              {
+                text: 'Message',
+                link: '/master/advanced/chatter/actions/message'
+              },
+              {
+                text: 'Log Note',
+                link: '/master/advanced/chatter/actions/log-note'
+              },
+              {
+                text: 'Activity',
+                link: '/master/advanced/chatter/actions/activity'
+              },
+              {
+                text: 'File',
+                link: '/master/advanced/chatter/actions/file'
+              },
+              {
+                text: 'Follower',
+                link: '/master/advanced/chatter/actions/follower'
+              }
+            ]
+          }
+        ]
       }
     ]
   }

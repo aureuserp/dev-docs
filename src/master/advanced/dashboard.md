@@ -1,4 +1,4 @@
-# **Introduction**
+# Overview
 
 The **Custom Filament Dashboard** in Aureus ERP extends Filament's default dashboard capabilities by integrating with a custom cluster (`DashboardCluster`). This setup enables **widget-based analytics**, **data filtering**, and a modular approach to managing dashboard elements.
 
