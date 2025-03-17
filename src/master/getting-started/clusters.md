@@ -97,8 +97,6 @@ For better organization, store related resources and pages inside a directory ma
 |   |   |   |   |   +-- ListPosts.php
 ```
 
-Filament will prompt whether to place new resources or pages inside a cluster when using `make:filament-resource` or `make:filament-page`.
-
 ## More Information
 
 For more details, refer to the [FilamentPHP Clusters Documentation](https://filamentphp.com/docs/3.x/panels/clusters).
