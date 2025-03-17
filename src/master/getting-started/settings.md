@@ -15,7 +15,7 @@
 You can create a settings page using the following Artisan command:
 
 ```bash
-php artisan make:filament-settings-page ManageProduct ProductSettings
+php artisan make:filament-settings-page ManagePosts PostSettings
 ```
 
 This command will prompt you to select the panel where you want to create the settings:
@@ -42,7 +42,7 @@ For this example, we assume you are creating the setting inside:
 
 ```
 ┌ Which namespace would you like to create this in? ───────────┐
-│ Webkul\Support\Filament\Clusters\Settings\Page               │
+│ Webkul\Blogs\Filament\Clusters\Settings\Page                 │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -51,13 +51,13 @@ This will generate a settings page file in the following directory:
 ```
 +-- plugins
 |   +-- webkul
-|   |   +-- inventories
+|   |   +-- blogs
 |   |   |   +-- src
 |   |   |   |   +-- Filament
 |   |   |   |   |   +-- Clusters
 |   |   |   |   |   |   +-- Settings
 |   |   |   |   |   |   |   +-- Pages
-|   |   |   |   |   |   |   |   +-- ManageProduct.php
+|   |   |   |   |   |   |   |   +-- ManagePosts.php
 ```
 
 ### **Generated Settings Page Class**
@@ -65,19 +65,19 @@ This will generate a settings page file in the following directory:
 ```php
 <?php
 
-namespace Webkul\Inventory\Filament\Clusters\Settings\Pages;
+namespace Webkul\Blog\Filament\Clusters\Settings\Pages;
 
-use Webkul\Support\Filament\Clusters\Settings;
-use App\Settings\ProductSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Webkul\Support\Filament\Clusters\Settings;
+use Webkul\Blog\Settings\PostSettings;
 
-class ManageProduct extends SettingsPage
+class ManagePosts extends SettingsPage
 {
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static string $settings = ProductSettings::class;
+    protected static string $settings = PostSettings::class;
 
     protected static ?string $cluster = Settings::class;
 
@@ -91,40 +91,40 @@ class ManageProduct extends SettingsPage
 }
 ```
 
-## **Creating the ProductSettings Class**
+## **Creating the PostSettings Class**
 
 Next, create a settings class that will store database-based settings:
 
 ```php
 <?php
 
-namespace Webkul\Inventory\Settings;
+namespace Webkul\Blog\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class ProductSettings extends Settings
+class PostSettings extends Settings
 {
-    public bool $enable_variants;
-    public bool $enable_uom;
-    public bool $enable_packagings;
+    public bool $enable_comments;
+    public bool $require_approval_for_comments;
+    public bool $enable_ratings;
 
     public static function group(): string
     {
-        return 'inventories_product';
+        return 'blogs_posts';
     }
 }
 ```
 
-### **Updating the ManageProduct Class**
+### **Updating the ManagePosts Class**
 
-Once you have created the `ProductSettings` class, update the `ManageProduct` settings page to use it.
+Once you have created the `PostSettings` class, update the `ManagePosts` settings page to use it.
 
 ## **Creating a Settings Migration**
 
 To create a migration for the settings, run:
 
 ```bash
-php artisan make:settings-migration create_inventories_products_settings
+php artisan make:settings-migration create_blogs_posts_settings
 ```
 
 This will generate a migration file. Place the migration inside:
@@ -132,7 +132,7 @@ This will generate a migration file. Place the migration inside:
 ```
 +-- plugins
 |   +-- webkul
-|   |   +-- inventories
+|   |   +-- blogs
 |   |   |   +-- database
 |   |   |   |   +-- factories
 |   |   |   |   +-- migrations
@@ -140,7 +140,7 @@ This will generate a migration file. Place the migration inside:
 |   |   |   |   +-- settings   # Place migration files here
 ```
 
-adding settings according to your need, make sure you have to use same **Webkul\Inventory\Settings\ProductSettings** group name as prefix like shown given below.
+adding settings according to your need, make sure you have to use same **Webkul\Blog\Settings\PostSettings** group name as prefix like shown given below.
 
 ```php
 <?php
@@ -151,31 +151,30 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('inventories_product.enable_variants', true);
-        $this->migrator->add('inventories_product.enable_uom', false);
-        $this->migrator->add('inventories_product.enable_packagings', false);
+        $this->migrator->add('blogs_posts.enable_comments', false);
+        $this->migrator->add('blogs_posts.require_approval_for_comments', false);
+        $this->migrator->add('blogs_posts.enable_ratings', false);
     }
 
     public function down(): void
     {
-        $this->migrator->deleteIfExists('inventories_product.enable_variants');
-        $this->migrator->deleteIfExists('inventories_product.enable_uom');
-        $this->migrator->deleteIfExists('inventories_product.enable_packagings');
+        $this->migrator->deleteIfExists('blogs_posts.enable_comments');
+        $this->migrator->deleteIfExists('blogs_posts.require_approval_for_comments');
+        $this->migrator->deleteIfExists('blogs_posts.enable_ratings');
     }
 };
-
 ```
 
 ## **Registering the Migration in the Service Provider**
 
 After placing the migration files, they must be registered within the corresponding **Service Provider** of the plugin to ensure they are loaded when running `php artisan migrate`.
 
-## **Example: InventoryServiceProvider.php After setting migrations**
+## **Example: BlogServiceProvider.php After setting migrations**
 
 ```php
 <?php
 
-namespace Webkul\Inventory;
+namespace Webkul\Blog;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -184,11 +183,11 @@ use Webkul\Support\Console\Commands\UninstallCommand;
 use Webkul\Support\Package;
 use Webkul\Support\PackageServiceProvider;
 
-class InventoryServiceProvider extends PackageServiceProvider
+class BlogServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'inventories';
+    public static string $name = 'blogs';
 
-    public static string $viewNamespace = 'inventories';
+    public static string $viewNamespace = 'blogs';
 
     public function configureCustomPackage(Package $package): void
     {
@@ -196,7 +195,7 @@ class InventoryServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasSettings([
-                '2025_03_12_111247_create_inventories_products_settings'
+                '2025_03_12_111247_create_blogs_posts_settings'
             ])
             ->runsSettings()
             ->hasInstallCommand(function (InstallCommand $command) {})
@@ -210,4 +209,4 @@ class InventoryServiceProvider extends PackageServiceProvider
 }
 ```
 
-after this you can perform laravel default migrations operations like migrate, rollback etc.
+after this you can perform laravel default migrations operations like migrate, rollback etc or it will automatic execute settings migrations when you install plugin.
