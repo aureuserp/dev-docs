@@ -28,10 +28,6 @@ const routes = [
       { text: 'Introduction', link: '/master/architecture/introduction' },
       { text: 'Plugins', link: '/master/architecture/plugins' },
       { text: 'Frontend', link: '/master/architecture/frontend' },
-      {
-        text: 'Modular Design',
-        link: '/master/architecture/modular-design'
-      },
       { text: 'Panels', link: '/master/architecture/panels' }
     ]
   },
@@ -99,6 +95,48 @@ const routes = [
         text: 'Pages',
         collapsed: false,
         link: '/master/getting-started/pages'
+      }
+    ]
+  },
+  {
+    text: 'Plugin Development',
+    collapsed: false,
+    items: [
+      {
+        text: 'Introduction',
+        link: '/master/plugins/introduction'
+      },
+      {
+        text: 'Service Provider',
+        link: '/master/plugins/service-provider'
+      },
+      {
+        text: 'Plugin',
+        link: '/master/plugins/plugin'
+      },
+      {
+        text: 'Database',
+        link: '/master/plugins/database'
+      },
+      {
+        text: 'Resources',
+        link: '/master/plugins/resources'
+      },
+      {
+        text: 'Models',
+        link: '/master/plugins/models'
+      },
+      {
+        text: 'Policies',
+        link: '/master/plugins/policies'
+      },
+      {
+        text: 'Filament',
+        link: '/master/plugins/filament'
+      },
+      {
+        text: 'Clusters',
+        link: '/master/plugins/clusters'
       }
     ]
   },
