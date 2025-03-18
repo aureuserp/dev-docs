@@ -1,5 +1,9 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { useRoute, useRouter } from "vitepress";
+
+const route = useRoute();
+const router = useRouter();
 
 const versions = [
   {
@@ -11,52 +15,100 @@ const versions = [
 
 const isDropdownOpen = ref(false);
 const currentVersion = ref("");
+const isHomePage = ref(false);
 
 function toggleDropdown() {
   isDropdownOpen.value = !isDropdownOpen.value;
 }
 
-function setVersion(versionText) {
-  const version = versions.find((v) => v.text === versionText);
-  if (version) {
-    const currentPath = window.location.pathname;
-    const newPath = currentPath.replace(/^(\/[^/]+\/)/, `/${version.version}/`);
-    window.location.href = newPath;
+function setVersion(version) {
+  const currentPath = window.location.pathname;
+  const currentVersion = detectCurrentVersion(currentPath);
+
+  if (currentVersion) {
+    const newPath = currentPath.replace(`/${currentVersion}/`, `/${version.version}/`);
+    router.go(newPath);
+  } else {
+    router.go(version.link);
   }
 }
 
-onMounted(() => {
-  document.addEventListener("click", closeDropdown);
+function detectCurrentVersion(path) {
+  for (const version of versions) {
+    if (path.includes(`/${version.version}/`)) {
+      return version.version;
+    }
+  }
+  return null;
+}
 
-  const currentPath = window.location.pathname;
+function checkIfHomePage() {
+  const path = route.path || window.location.pathname;
 
-  const matchedVersion = versions.find((v) => currentPath.startsWith(`/${v.version}/`));
+  const homePatterns = ["/", "/index.html"];
 
-  if (matchedVersion) {
-    currentVersion.value = matchedVersion.text;
+  const versionRoots = versions.map((v) => `/${v.version}/`);
+
+  isHomePage.value =
+    homePatterns.some((pattern) => path === pattern) ||
+    versionRoots.some((vRoot) => path === vRoot) ||
+    path.endsWith("/index.html");
+}
+
+function updateVersionFromPath() {
+  const path = route.path || window.location.pathname;
+  const detectedVersion = detectCurrentVersion(path);
+
+  if (detectedVersion) {
+    const matchedVersion = versions.find((v) => v.version === detectedVersion);
+
+    if (matchedVersion) {
+      currentVersion.value = matchedVersion.text;
+    }
   } else {
     currentVersion.value = versions[0].text;
   }
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("click", closeDropdown);
-});
+}
 
 function closeDropdown(event) {
   if (!event.target.closest(".version-switcher-container")) {
     isDropdownOpen.value = false;
   }
 }
+
+onMounted(() => {
+  document.addEventListener("click", closeDropdown);
+  updateVersionFromPath();
+  checkIfHomePage();
+
+  window.addEventListener("popstate", () => {
+    updateVersionFromPath();
+    checkIfHomePage();
+  });
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", closeDropdown);
+  window.removeEventListener("popstate", updateVersionFromPath);
+});
+
+watch(
+  () => route.path,
+  () => {
+    updateVersionFromPath();
+    checkIfHomePage();
+  }
+);
 </script>
 
 <template>
-  <div class="version-switcher">
+  <div v-if="!isHomePage" class="version-switcher">
     <div class="version-switcher-container">
       <button @click.stop="toggleDropdown" class="version-switcher-button">
         <span class="version-text">{{ currentVersion }}</span>
-        <span class="version-switcher-icon ml-2">▼</span>
+        <span class="version-switcher-icon">▼</span>
       </button>
+
       <transition name="fade">
         <div v-if="isDropdownOpen" class="version-switcher-dropdown">
           <ul>
@@ -64,7 +116,7 @@ function closeDropdown(event) {
               <a
                 href="#"
                 :class="{ active: currentVersion === version.text }"
-                @click.prevent="setVersion(version.text)"
+                @click.prevent="setVersion(version)"
               >
                 {{ version.text }}
               </a>

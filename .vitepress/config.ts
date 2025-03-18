@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import masterRoute from './routes/master'
+import sidebar from './routes'
 
 export default defineConfig({
   lang: 'en-US',
@@ -75,9 +75,7 @@ export default defineConfig({
       { component: 'VersionSwitcher' }
     ],
 
-    sidebar: {
-      '/master/': masterRoute
-    },
+    sidebar,
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/aureuserp/aureuserp' }
