@@ -24,6 +24,7 @@ Every plugin must adhere to the following structure (using a blog plugin as an e
 |   |   |   +-- factories                     # Factory classes for generating test data
 |   |   |   +-- migrations                    # Plugin-specific database migrations
 |   |   |   +-- seeders                       # Plugin-specific database seeders
+|   |   |   +-- settings                      # Plugin-specific database settings
 |   |   +-- resources
 |   |   |   +-- views                         # Blade views for UI templates
 |   |   |   +-- lang                          # Language translations
