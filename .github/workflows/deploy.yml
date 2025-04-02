@@ -28,14 +28,13 @@ jobs:
       - name: Build Documentation 🏗
         run: npm run docs:build
 
-      - name: List Directories After Build
-        run: |
-          echo "Current directory: $(pwd)"
-          find . -type d -name "dist" | sort
+      - name: List Build Output 📋
+        run: ls -la .vitepress/dist
 
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./vitepress/dist
+          publish_dir: .vitepress/dist
           cname: devdocs.aureuserp.com
+          force_orphan: true
