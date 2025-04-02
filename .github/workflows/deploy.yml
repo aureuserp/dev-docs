@@ -14,13 +14,12 @@ jobs:
     steps:
       - name: Checkout Repository 🛎️
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - name: Setup Node.js 🔧
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: Install Dependencies 📦
         run: npm ci
@@ -28,13 +27,15 @@ jobs:
       - name: Build Documentation 🏗
         run: npm run docs:build
 
-      - name: List Build Output 📋
-        run: ls -la .vitepress/dist
+      - name: Add CNAME
+        run: echo "devdocs.aureuserp.com" > .vitepress/dist/CNAME
+
+      - name: Create .nojekyll file
+        run: touch .vitepress/dist/.nojekyll
 
       - name: Deploy to GitHub Pages 🚀
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .vitepress/dist
-          cname: devdocs.aureuserp.com
-          force_orphan: true
+          folder: .vitepress/dist
+          branch: gh-pages
+          clean: true
