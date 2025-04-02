@@ -5,6 +5,7 @@ export default defineConfig({
   lang: 'en-US',
   srcDir: 'src',
   title: 'Aureus ERP',
+  base: '/',
   description: 'The powerful Open Source ERP platform built on Laravel',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
