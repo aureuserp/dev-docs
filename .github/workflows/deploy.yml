@@ -28,6 +28,11 @@ jobs:
       - name: Build Documentation 🏗
         run: npm run docs:build
 
+      - name: List Directories After Build
+        run: |
+          echo "Current directory: $(pwd)"
+          find . -type d -name "dist" | sort
+
       - name: Deploy to GitHub Pages 🚀
         uses: peaceiris/actions-gh-pages@v4
         with:
