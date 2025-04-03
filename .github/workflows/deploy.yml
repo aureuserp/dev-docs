@@ -30,4 +30,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./vitepress/dist
+          path: ./vitepress/dist
+          publish_branch: gh-pages
+          publish_repo: ${{ github.repository }}
           cname: devdocs.aureuserp.com
