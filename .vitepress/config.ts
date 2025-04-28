@@ -65,9 +65,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
-      { text: 'Extensions', link: 'https://aureuserp.com/en/extensions/' },
-      { text: 'Community Forum', link: 'https://forums.aureuserp.com/' },
+      // { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
       {
         text: 'Contribute To Aureus ERP',
         link: 'https://github.com/aureuserp/aureuserp'
