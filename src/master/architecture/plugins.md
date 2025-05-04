@@ -22,7 +22,7 @@ These plugin can be installed as needed to extend system functionality:
 | Accounts     | Financial accounting and reporting           |
 | Contacts     | Contact management for customers and vendors |
 | Employees    | Employees management                         |
-| Blogs        | Inventory and warehouse management           |
+| Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
@@ -88,7 +88,7 @@ These plugin can be installed as needed to extend system functionality:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
 
-## **Blogs**
+## **Inventory**
 
 - **Purpose**: Track and manage stock levels across warehouses.
 - **Key Features**:
