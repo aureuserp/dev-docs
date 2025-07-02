@@ -73,7 +73,6 @@ To properly register resources, clusters, and pages, the following directory str
 ## **Usage Guidelines**
 
 - **Admin Panel (`Admin` directory):**
-
   - If you want to display resources and clusters in the **admin panel**, create your Filament components inside the `Admin` directory.
 
 - **Customer Panel (`Customer` directory):**

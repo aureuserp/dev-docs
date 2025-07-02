@@ -57,8 +57,8 @@ export default defineConfig({
 
   themeConfig: {
     logo: {
-      light: '/images/logo-light.svg',
-      dark: '/images/logo-dark.svg'
+      light: '/images/logo-dark.svg',
+      dark: '/images/logo-light.svg'
     },
 
     siteTitle: false,

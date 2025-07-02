@@ -5,24 +5,20 @@ The `FileAction` class extends `Filament\Actions\Action`, creating a custom Fila
 ## **Key Features of `FileAction`**
 
 1. **File Uploading**
-
    - Supports multiple file uploads.
    - Files are stored in the `chats-attachments` directory.
    - Users can preview, download, reorder, and delete files.
 
 2. **File Type Restrictions**
-
    - Accepts only specific file types such as images, PDFs, Word documents, Excel sheets, and plain text files.
    - Files are limited to a maximum size of **10 MB (10,240 KB).**
 
 3. **Notifications**
-
    - Success notifications when files are uploaded or deleted.
    - Warning notifications if there are no new files to upload.
    - Error notifications in case of failures.
 
 4. **Database Integration**
-
    - Uses an `attachments` relationship to fetch existing attachments.
    - Prevents duplicate file uploads by checking already uploaded files.
    - Deletes files both from the database and storage when removed.

@@ -104,13 +104,11 @@ class BlogServiceProvider extends PackageServiceProvider
 ## **Understanding Migration Registration**
 
 1. **`hasMigrations([...])`**
-
    - This method registers the migration file inside the plugin.
    - The filename should match the migration file placed in `database/migrations/`.
    - Example: `'2025_01_06_072032_create_posts_table'`
 
 2. **`runsMigrations()`**
-
    - This method ensures that the registered migrations will run automatically when executing `php artisan migrate`.
 
 When you install plugins all configured migrations, settings and other configuration will be runs else, you can run migrations manually
