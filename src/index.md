@@ -1,7 +1,7 @@
 ---
 layout: home
 hero:
-  name: Open Source ERP Platform
+  name: Dev Documentation – Open Source ERP
   text: Built on Laravel to optimize your business
   tagline: Streamline operations, boost productivity, and grow your business
   actions:
@@ -18,28 +18,28 @@ hero:
 features:
   - icon: 📊
     title: Project Management System
-    details: Streamline projects and collaborate with ease using our comprehensive PMS
+    details: Plan, track, and manage your projects efficiently with powerful collaboration tools.
   - icon: 👥
     title: Contacts Management
-    details: Effortlessly manage and organize your contacts with our intuitive system
+    details: Easily store, organize, and access all your business contacts in one place.
   - icon: 🛒
     title: Purchase Order System
-    details: Simplify and track your purchases with our robust Purchase Order system
+    details: Create, manage, and track purchase orders to streamline your procurement process.
   - icon: 👨‍💼
     title: Employee Management
-    details: Manage and track employee details and performance.
+    details: Efficiently manage employee records, roles, and performance from a central dashboard.
   - icon: 💼
     title: Job Position Management
-    details: Easily define, manage, and track job positions and roles.
+    details: Define job roles, assign responsibilities, and track position availability with ease.
   - icon: 📦
     title: Inventory Management
-    details: Stay on top of your stock levels with efficient inventory management.
+    details: Monitor stock levels, manage product movement, and reduce inventory errors.
   - icon: 🏢
     title: Warehouse Management
-    details: Simplify warehouse operations with real-time stock tracking.
+    details: Control warehouse stock, optimize space, and track inventory in real time.
   - icon: 🎓
     title: Recruitment System
-    details: Simplify recruitment and find the best talent with ease.
+    details: Manage job postings, applications, and hiring workflows to find the right candidates.
 ---
 
 <script setup>
