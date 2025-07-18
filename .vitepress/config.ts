@@ -4,7 +4,7 @@ import sidebar from './routes'
 export default defineConfig({
   lang: 'en-US',
   srcDir: 'src',
-  title: 'Aureus ERP',
+  title: 'Developer Documentation | API, Architecture & Plugins',
   base: '/',
   description: 'The powerful Open Source ERP platform built on Laravel',
   head: [
