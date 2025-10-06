@@ -64,7 +64,7 @@ Once the setup process is finished, go to your browser and log in using the foll
 
 **Admin Panel Login:**
 
-- **URL:** `http://localhost/`
+- **URL:** `http://localhost/admin`
 - **Email:** `admin@example.com`
 - **Password:** `admin123`
 
