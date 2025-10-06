@@ -66,7 +66,7 @@ Once the setup process is finished, go to your browser and log in using the foll
 
 - **URL:** `http://localhost/admin`
 - **Email:** `admin@example.com`
-- **Password:** `admin123`
+- **Password:** `admin@123`
 
 ### **Step 6: Access the Database (Optional)**
 
