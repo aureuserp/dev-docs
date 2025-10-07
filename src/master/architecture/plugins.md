@@ -1,6 +1,10 @@
-# Core Plugin (System Plugin)
+# Plugins
 
-These plugin are essential components of the system and are installed by default:
+Plugins are the building blocks of Aureus ERP, encapsulating specific features and functionalities. Each plugin is designed to be modular, allowing for easy installation, removal, and customization.
+
+## Core Plugins (System Plugins)
+
+These plugins are essential components of the system and are installed by default:
 
 | Module     | Description                                       |
 | ---------- | ------------------------------------------------- |
@@ -12,9 +16,9 @@ These plugin are essential components of the system and are installed by default
 | Support    | Help desk and documentation                       |
 | Table View | Customizable data presentation framework          |
 
-## Installable Plugin
+## Installable Plugins
 
-These plugin can be installed as needed to extend system functionality:
+These plugins can be installed as needed to extend system functionality:
 
 | Module       | Description                                  |
 | ------------ | -------------------------------------------- |
@@ -22,7 +26,7 @@ These plugin can be installed as needed to extend system functionality:
 | Accounts     | Financial accounting and reporting           |
 | Contacts     | Contact management for customers and vendors |
 | Employees    | Employees management                         |
-| Blogs        | Inventory and warehouse management           |
+| Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
@@ -31,10 +35,12 @@ These plugin can be installed as needed to extend system functionality:
 | Recruitments | Applicant tracking and hiring                |
 | Sales        | Sales pipeline and opportunity management    |
 | Timeoffs     | Leave management and tracking                |
-| Timesheet    | Employee work hour tracking                  |
+| Timesheets   | Employee work hour tracking                  |
 | Website      | Website for customer                         |
 
-## **Accounts**
+## Plugin Details
+
+### Accounts
 
 - **Purpose**: Manages financial accounts, including ledgers, journals, and chart of accounts.
 - **Key Features**:
@@ -42,7 +48,7 @@ These plugin can be installed as needed to extend system functionality:
   - Integration with invoices and payments.
   - Comprehensive financial reporting and audit trails.
 
-## **Analytics**
+### Analytics
 
 - **Purpose**: Provides data visualization and insights for better decision-making.
 - **Key Features**:
@@ -50,7 +56,7 @@ These plugin can be installed as needed to extend system functionality:
   - Customizable charts and reports.
   - Supports real-time data analysis.
 
-## **Blogs**
+### Blogs
 
 - **Purpose**: Manages content creation and publishing for company blogs.
 - **Key Features**:
@@ -58,7 +64,7 @@ These plugin can be installed as needed to extend system functionality:
   - Role-based access for authors and editors.
   - Integration with the company website module.
 
-## **Chatter**
+### Chatter
 
 - **Purpose**: Collaborative messaging system for the app.
 - **Key Features**:
@@ -66,7 +72,7 @@ These plugin can be installed as needed to extend system functionality:
   - Log notes, schedule activities, and send email notifications.
   - Polymorphic relationships to associate messages with any model.
 
-## **Contacts**
+### Contacts
 
 - **Purpose**: Centralized contact management system.
 - **Key Features**:
@@ -74,21 +80,21 @@ These plugin can be installed as needed to extend system functionality:
   - Integration with sales and CRM modules.
   - Custom fields support for specific business needs.
 
-## **Employees**
+### Employees
 
 - **Purpose**: Manage employee information and profiles.
 - **Key Features**:
   - Role-based permissions and hierarchy management.
   - Tracks time-offs, timesheets, and attendance.
 
-## **Fields**
+### Fields
 
 - **Purpose**: Custom field management for dynamic data capture.
 - **Key Features**:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
 
-## **Blogs**
+### Inventory
 
 - **Purpose**: Track and manage stock levels across warehouses.
 - **Key Features**:
@@ -96,35 +102,35 @@ These plugin can be installed as needed to extend system functionality:
   - Real-time stock updates linked to sales and purchases.
   - Integration with products and invoices.
 
-## **Invoices**
+### Invoices
 
 - **Purpose**: Generate and manage invoices for sales and services.
 - **Key Features**:
   - Supports recurring invoices and payment tracking.
   - Multi-currency and tax management.
 
-## **Partners**
+### Partners
 
 - **Purpose**: Manage relationships with business partners.
 - **Key Features**:
   - Tracks partnerships, agreements, and contact information.
   - Integration with sales and purchases.
 
-## **Payments**
+### Payments
 
 - **Purpose**: Tracks payments and receipts for financial transactions.
 - **Key Features**:
   - Multiple payment methods (cash, bank, online).
   - Reconciliation with accounts and invoices.
 
-## **Products**
+### Products
 
 - **Purpose**: Centralized product and service management.
 - **Key Features**:
   - Categorization and pricing rules.
   - Inventory tracking and integration with sales and purchases.
 
-## **Projects**
+### Projects
 
 - **Purpose**: Manage projects, tasks, and milestones.
 - **Key Features**:
@@ -132,63 +138,63 @@ These plugin can be installed as needed to extend system functionality:
   - Time tracking and resource allocation.
   - Integration with chatter for communication.
 
-## **Purchases**
+### Purchases
 
 - **Purpose**: Manage procurement and vendor relations.
 - **Key Features**:
   - Generate purchase orders and manage approvals.
   - Vendor performance tracking.
 
-## **Recruitments**
+### Recruitments
 
 - **Purpose**: Streamline the hiring process.
 - **Key Features**:
   - Tracks job applications and candidate information.
   - Customizable recruitment workflows.
 
-## **Sales**
+### Sales
 
 - **Purpose**: Manage sales processes from lead generation to invoicing.
 - **Key Features**:
   - Quotation and order management.
   - Integration with CRM and analytics.
 
-## **Security**
+### Security
 
 - **Purpose**: Manage roles, permissions, and access control.
 - **Key Features**:
   - Role-based permissions using Spatie package.
   - Customizable security policies for data protection.
 
-## **Support**
+### Support
 
 - **Purpose**: Handle customer queries and issue resolution.
 - **Key Features**:
   - Ticketing system for support requests.
   - Automated reminders and escalation rules.
 
-## **Table-Views**
+### Table Views
 
 - **Purpose**: Unified table management system for list views.
 - **Key Features**:
   - Supports column filtering and sorting.
   - Customizable data grids for each module.
 
-## **Timeoffs**
+### Timeoffs
 
 - **Purpose**: Manage employee leave requests and approvals.
 - **Key Features**:
   - Leave balance tracking and policies.
   - Integration with payroll and employee modules.
 
-## **Timesheets**
+### Timesheets
 
 - **Purpose**: Record employee working hours and activities.
 - **Key Features**:
   - Weekly and daily views for time tracking.
   - Export timesheet data for payroll.
 
-## **Website**
+### Website
 
 - **Purpose**: Manage the company's website content.
 - **Key Features**:

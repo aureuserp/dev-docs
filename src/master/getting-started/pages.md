@@ -34,7 +34,7 @@ The **Aureus ERP** Filament plugin provides robust project management capabiliti
 
 ## What are Filament Pages?
 
-[Filament Pages](https://filamentphp.com/docs/3.x/panels/pages) are custom UI components that provide full-page interfaces within your admin panel.
+[Filament Pages](https://filamentphp.com/docs/4.x/panels/pages) are custom UI components that provide full-page interfaces within your admin panel.
 
 ### Key Page Features in FilamentPHP
 

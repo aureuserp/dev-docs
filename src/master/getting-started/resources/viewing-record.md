@@ -130,4 +130,4 @@ class ViewPost extends ViewRecord
 - **Chatter Integration**: Enables discussion around the post.
 - **Navigation Position**: Places the page navigation at the top.
 
-For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/viewing-records)**. 🚀
+For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/4.x/panels/resources/viewing-records)**. 🚀
