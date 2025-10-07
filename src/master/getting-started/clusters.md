@@ -99,4 +99,4 @@ For better organization, store related resources and pages inside a directory ma
 
 ## More Information
 
-For more details, refer to the [FilamentPHP Clusters Documentation](https://filamentphp.com/docs/3.x/panels/clusters).
+For more details, refer to the [FilamentPHP Clusters Documentation](https://filamentphp.com/docs/4.x/panels/clusters).

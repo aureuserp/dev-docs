@@ -77,7 +77,17 @@ php artisan erp:install
 
 During the installation, you will be prompted to provide **Admin Login Credentials** (email and password). These credentials are used to log in to the admin panel.
 
-## 8. Final Steps
+## 8. Filament Installation Notes
+
+- Aureus ERP uses FilamentPHP, which introduces new features and improvements.
+- Ensure your PHP version is compatible (PHP 8.2 or higher recommended).
+- The installation process automatically sets up Filament Shield roles and permissions.
+- Filament resources, pages, clusters, and widgets are registered separately for admin and customer panels.
+- For plugin development, follow the new Filament resource registration structure.
+- The `composer.json` includes a post-autoload-dump script that runs `php artisan filament:upgrade` to handle Filament upgrades.
+- Refer to the [FilamentPHP documentation](https://filamentphp.com/docs/4.x) for detailed information.
+
+## 9. Final Steps
 
 Once the installation is complete, you can start the development server:
 
@@ -92,3 +102,4 @@ http://127.0.0.1:8000
 ```
 
 That’s it! Your Aureus ERP environment is now ready to use.
+php artisan serve

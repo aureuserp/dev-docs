@@ -1,6 +1,6 @@
 # **Settings Migrations**
 
-[Spatie’s Laravel Settings](https://filamentphp.com/plugins/filament-spatie-settings) package provides a structured way to manage system-wide settings using a database instead of configuration files. It allows defining, storing, and retrieving settings dynamically, ensuring consistency across different environments.
+[Spatie’s Laravel Settings](https://filamentphp.com/plugins/filament-spatie-laravel-settings) package provides a structured way to manage system-wide settings using a database instead of configuration files. It allows defining, storing, and retrieving settings dynamically, ensuring consistency across different environments.
 
 ## **Key Features of Spatie Laravel Settings**
 
