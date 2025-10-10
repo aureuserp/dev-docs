@@ -13,7 +13,7 @@ FilamentPHP integrates smoothly with Laravel and is optimized for rapid developm
 
 ## Livewire
 
-[Livewire](https://livewire.laravel.com/) powers the dynamic interactions in Aureus ERP without requiring a complex JavaScript framework.
+<a href="https://livewire.laravel.com/" rel="nofollow external noopener noreferrer" target="_blank">Livewire</a> powers the dynamic interactions in Aureus ERP without requiring a complex JavaScript framework.
 
 - **Reactivity**: Livewire enables real-time updates without a full-page reload.
 - **Component-Based**: Each feature in Aureus ERP is structured as Livewire components, ensuring modularity and maintainability.
@@ -22,7 +22,7 @@ Livewire enhances the interactivity of forms, tables, and dashboards while maint
 
 ## Alpine.js
 
-[Alpine.js](https://alpinejs.dev/) is used alongside Livewire to handle lightweight frontend interactions.
+<a href="https://alpinejs.dev/" rel="nofollow external noopener noreferrer" target="_blank">Alpine.js</a> is used alongside Livewire to handle lightweight frontend interactions.
 
 - **Minimal JavaScript**: Provides a simple yet powerful way to add dynamic behavior without the overhead of a full JavaScript framework.
 - **Declarative Syntax**: Offers Vue-like reactivity in a minimal package.
@@ -31,7 +31,7 @@ Alpine.js is particularly useful for dropdowns, modals, and UI state management 
 
 ## Tailwind CSS
 
-[Tailwind CSS](https://tailwindcss.com/) is the primary styling framework, offering a **utility-first** approach that makes designing responsive and modern UIs more efficient.
+<a href="https://tailwindcss.com/" rel="nofollow external noopener noreferrer" target="_blank">Tailwind CSS</a> is the primary styling framework, offering a **utility-first** approach that makes designing responsive and modern UIs more efficient.
 
 - **Highly Customizable**: The `tailwind.config.js` file allows for complete theme customization.
 - **Performance Optimized**: Unused styles are purged in production for minimal CSS footprint.
