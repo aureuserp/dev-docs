@@ -71,7 +71,7 @@
             reliability, performance, and security for mission-critical operations
           </p>
           <div class="feature-link">
-            <a href="https://laravel.com">Learn more →</a>
+            <a href="https://laravel.com" rel="nofollow external noopener noreferrer">Learn more →</a>
           </div>
         </div>
       </div>
