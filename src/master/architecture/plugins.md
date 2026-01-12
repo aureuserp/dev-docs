@@ -88,7 +88,7 @@ These plugin can be installed as needed to extend system functionality:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
 
-## **Blogs**
+## **Inventory**
 
 - **Purpose**: Track and manage stock levels across warehouses.
 - **Key Features**:
