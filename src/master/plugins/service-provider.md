@@ -14,7 +14,6 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Webkul\PluginManager\Console\Commands\InstallCommand;
 use Webkul\PluginManager\Console\Commands\UninstallCommand;
-use Webkul\PluginManager\Package;
 use Webkul\PluginManager\PackageServiceProvider;
 
 class BlogServiceProvider extends PackageServiceProvider
@@ -57,10 +56,6 @@ class BlogServiceProvider extends PackageServiceProvider
   public function packageRegistered(): void
   {
     Panel::configureUsing(function (Panel $panel): void {
-      if (! Package::isPluginInstalled(static::$name)) {
-          return;
-      }
-
       $panel->plugin(AccountingPlugin::make());
     });
   }
@@ -159,13 +154,9 @@ The `packageRegistered()` method is used to **register your plugin with the appl
 ```php
 public function packageRegistered(): void
 {
-    Panel::configureUsing(function (Panel $panel): void {
-        if (! Package::isPluginInstalled(static::$name)) {
-            return;
-        }
-
-        $panel->plugin(AccountingPlugin::make());
-    });
+  Panel::configureUsing(function (Panel $panel): void {
+    $panel->plugin(AccountingPlugin::make());
+  });
 }
 ```
 
