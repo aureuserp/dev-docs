@@ -24,12 +24,12 @@ class PostPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_post');
+        return $user->can('view_any_blogs_post');
     }
 
     public function view(User $user, Post $post): bool
     {
-        return $user->can('view_post');
+        return $user->can('view_blogs_post');
     }
 }
 ```
@@ -96,7 +96,7 @@ The following example demonstrates how to implement these access control methods
 public function update(User $user, Post $post): bool
 {
     // Check if the user has permission to update posts
-    if (! $user->can('update_post')) {
+    if (! $user->can('update_blogs_post')) {
         return false;
     }
 
@@ -115,7 +115,7 @@ for example:
 ```php
 public function update(User $user, Post $post): bool
 {
-    if (! $user->can('update_post')) {
+    if (! $user->can('update_blogs_post')) {
         return false;
     }
 
