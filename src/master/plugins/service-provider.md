@@ -9,6 +9,7 @@ The service provider is the entry point for your plugin. It handles registration
 
 namespace Webkul\Blog;
 
+use Filament\Panel;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Webkul\PluginManager\Console\Commands\InstallCommand;
@@ -51,6 +52,17 @@ class BlogServiceProvider extends PackageServiceProvider
     FilamentAsset::register([
       Css::make('blogs', __DIR__.'/../resources/dist/blogs.css'),
     ], 'blogs');
+  }
+
+  public function packageRegistered(): void
+  {
+    Panel::configureUsing(function (Panel $panel): void {
+      if (! Package::isPluginInstalled(static::$name)) {
+          return;
+      }
+
+      $panel->plugin(AccountingPlugin::make());
+    });
   }
 }
 ```
@@ -139,6 +151,40 @@ If you attempt to uninstall a plugin that other plugins depend on, you'll receiv
 ```shell
 Package website has dependents: blogs. Please uninstall dependents first!
 ```
+
+### Plugin Registration
+
+The `packageRegistered()` method is used to **register your plugin with the application panel** after the package is loaded. It ensures that the plugin is added **only when it is installed**, keeping the system modular and safe.
+
+```php
+public function packageRegistered(): void
+{
+    Panel::configureUsing(function (Panel $panel): void {
+        if (! Package::isPluginInstalled(static::$name)) {
+            return;
+        }
+
+        $panel->plugin(AccountingPlugin::make());
+    });
+}
+```
+
+#### Why this method is important
+
+* Registers the Filament plugin with the panel
+* Prevents loading UI features when the plugin is not installed
+* Avoids errors caused by missing migrations or settings
+* Keeps plugin loading clean and dependency-aware
+
+#### When to use it
+
+Use `packageRegistered()` to:
+
+* Attach Filament plugins
+* Configure panels conditionally
+* Control when your plugin becomes visible in the admin UI
+
+In short, `packageRegistered()` is the **safe and correct place to register your plugin**, ensuring it loads only when the plugin is properly installed and ready to use.
 
 ### Additional Configuration
 
