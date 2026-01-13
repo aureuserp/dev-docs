@@ -88,6 +88,43 @@ These methods are used to determine a user's access level based on global, group
 | `hasIndividualAccess(User $user, Model $model, string $ownerAttribute = 'user'): bool` | Verifies if the user has access only to records they own. The `ownerAttribute` represents the ownership field in the model (default: `'user'`).                                                             |
 | `hasAccess(User $user, Model $model, string $ownerAttribute = 'user'): bool`           | Evaluates all access levels (`global`, `group`, and `individual`) to determine if the user has the necessary permissions. The `ownerAttribute` defines the model's ownership field, defaulting to `'user'`. |
 
+### How Policy Permissions Are Generated in Aureus ERP
+
+In Aureus ERP, **permission names** used in authorization policies are **automatically generated** by the `PermissionManager` leveraging **Filament Shield**. This approach ensures a consistent, modular, and conflict-free permission system across all plugins.
+
+### Why Policies Use the Plugin Namespace
+
+Policies are placed within each plugin’s own namespace (e.g., `Webkul\Blogs\Policies`) to keep authorization logic:
+
+* **Modular and Organized:** Each plugin manages its own models and policies separately.
+* **Clear Ownership:** Policies are directly tied to the plugin’s models, simplifying maintenance.
+* **Scalable:** Namespacing prevents clutter and collisions as more plugins are added.
+* **Auto-Discovery Friendly:** Laravel and Filament automatically detect policies based on namespace conventions, reducing manual registration.
+
+This design helps Aureus ERP maintain a **clean, scalable, and well-structured permission system** throughout the platform.
+
+### Key Points About Permission Naming
+
+* Permissions include the **action**, **plugin name**, and **entity** to clearly scope access and prevent conflicts.
+* The **plugin key** is extracted from the entity’s namespace (e.g., `Webkul\Blogs` becomes `blogs`).
+* Different permission name formats are used depending on the entity type (Resource, Page, Widget, etc.).
+
+### Example Policy Methods and Permission Keys
+
+| Policy Method | Purpose                           | Permission Checked    | Description                                    |
+| ------------- | --------------------------------- | --------------------- | ---------------------------------------------- |
+| `viewAny`     | Check if the user can list posts  | `view_any_blogs_post` | Allows the user to view the posts listing page |
+| `view`        | Check if the user can view a post | `view_blogs_post`     | Allows the user to view a specific post        |
+
+---
+
+This automatic permission naming system makes Aureus ERP’s authorization:
+
+* **Consistent:** Permission keys follow a clear naming convention.
+* **Scalable:** Easily supports many plugins without collision.
+* **Maintainable:** Simplifies policy writing and permission management.
+* **Modular:** Keeps each plugin’s permissions isolated and organized.
+
 ### **Example Usage in Policies**
 
 The following example demonstrates how to implement these access control methods within a policy:
