@@ -62,17 +62,47 @@ The Admin [Panel](https://filamentphp.com/docs/3.x/panels/configuration) Provide
 - `sidebarCollapsibleOnDesktop()`: Makes the sidebar collapsible on desktop devices
 - `maxContentWidth()`: Sets content width to full screen
 
-### Navigation Structure
+## How Menus Are Registered
+
+Menus are registered through **Filament Resources, Pages, and Widgets** provided by each plugin.
+
+When a plugin is loaded:
+
+1. The **PluginManager** registers the plugin into the panel
+2. Filament automatically discovers:
+   * Resources
+   * Pages
+   * Widgets
+3. Each of these defines its own navigation configuration
+
+Example inside a Resource:
+
+```php
+protected static ?string $navigationGroup = 'Sales';
+protected static ?string $navigationIcon = 'icon-orders';
+protected static ?int $navigationSort = 20;
+```
+
+This ensures:
+
+* The menu appears in the correct group
+* The icon is consistent
+* The menu order is predictable
+
+## Navigation Groups (High-Level Menu Sections)
+
+Navigation groups are **predefined at the panel level** in the `AdminPanelProvider`:
 
 ```php
 ->navigationGroups([
-    NavigationGroup::make()->label('Dashboard'),
-    NavigationGroup::make()->label('Settings'),
+    NavigationGroup::make()->label(__('admin.navigation.sale')),
+    NavigationGroup::make()->label(__('admin.navigation.accounting')),
+    NavigationGroup::make()->label(__('admin.navigation.inventory')),
 ])
 ```
 
-- Creates two main navigation groups: Dashboard and Settings
-- Groups help organize navigation items into logical sections
+These groups act as **containers**.
+Plugins simply reference the group name when registering menus.
 
 ### Plugin Integration
 
