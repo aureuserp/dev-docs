@@ -128,4 +128,4 @@ class EditPost extends EditRecord
 - **Actions**: Includes publish or unpublish, deletion, and Chatter integration for discussions.
 - **Redirection & Notifications**: Redirects to the post view and notifies the user on successful update.
 
-For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/editing-records)**. 🚀
+For more details, check the **<a href="https://filamentphp.com/docs/3.x/panels/resources/editing-records" rel="nofollow external noopener noreferrer" target="_blank">Official Filament Documentation</a>**. 🚀

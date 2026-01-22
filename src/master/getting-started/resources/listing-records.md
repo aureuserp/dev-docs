@@ -81,4 +81,4 @@ public function getPresetTableViews(): array
 - Customize the **list page** to include actions like post creation.
 - Implement **preset views** for predefined post filters.
 
-For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/listing-records)**. 🚀
+For more details, check the **<a href="https://filamentphp.com/docs/3.x/panels/resources/listing-records" rel="nofollow external noopener noreferrer" target="_blank">Official Filament Documentation</a>**. 🚀

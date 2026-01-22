@@ -198,4 +198,4 @@ public function getColumns(): int|string|array
 
 ## More Information
 
-For more details, refer to the [FilamentPHP Dashboard Documentation](https://filamentphp.com/docs/3.x/panels/dashboard).
+For more details, refer to the <a href="https://filamentphp.com/docs/3.x/panels/dashboard" rel="nofollow external noopener noreferrer" target="_blank">FilamentPHP Dashboard Documentation</a>.
