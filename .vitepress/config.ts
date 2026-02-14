@@ -72,7 +72,6 @@ export default defineConfig({
       },
       { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
       { text: 'Contact Us', link: 'https://aureuserp.com/en/contacts/' },
-      { component: 'VersionSwitcher' }
     ],
 
     sidebar,
