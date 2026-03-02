@@ -19,7 +19,6 @@ const routes = [
       { text: 'Requirements', link: '/master/installation/requirements' },
       { text: 'Installation', link: '/master/installation/installation' },
       { text: 'Docker', link: '/master/installation/docker' },
-      { text: 'Skills', link: '/master/installation/skills' }
     ]
   },
   {
@@ -139,6 +138,20 @@ const routes = [
         text: 'Clusters',
         link: '/master/plugins/clusters'
       }
+    ]
+  },
+  {
+    text: 'AI Agents',
+    collapsed: false,
+    items: [
+      {
+        text: 'Agent Skills',
+        link: '/master/ai/skills'
+      },
+      {
+        text: 'MCP Plugin',
+        link: '/master/ai/mcp'
+      },
     ]
   },
   {
