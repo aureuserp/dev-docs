@@ -1,6 +1,6 @@
 # **Migrations**
 
-[Migrations](https://laravel.com/docs/11.x/migrations) provide a structured way to manage database schemas, enabling version control for database changes. They ensure consistency across development and production environments.
+<a href="https://laravel.com/docs/11.x/migrations" rel="nofollow external noopener noreferrer" target="_blank">Migrations</a> provide a structured way to manage database schemas, enabling version control for database changes. They ensure consistency across development and production environments.
 
 ## **Key Features of Migrations**
 
@@ -70,10 +70,10 @@ namespace Webkul\Blog;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Webkul\Support\Console\Commands\InstallCommand;
-use Webkul\Support\Console\Commands\UninstallCommand;
-use Webkul\Support\Package;
-use Webkul\Support\PackageServiceProvider;
+use Webkul\PluginManager\Console\Commands\InstallCommand;
+use Webkul\PluginManager\Console\Commands\UninstallCommand;
+use Webkul\PluginManager\Package;
+use Webkul\PluginManager\PackageServiceProvider;
 
 class BlogServiceProvider extends PackageServiceProvider
 {
@@ -104,6 +104,7 @@ class BlogServiceProvider extends PackageServiceProvider
 ## **Understanding Migration Registration**
 
 1. **`hasMigrations([...])`**
+
    - This method registers the migration file inside the plugin.
    - The filename should match the migration file placed in `database/migrations/`.
    - Example: `'2025_01_06_072032_create_posts_table'`

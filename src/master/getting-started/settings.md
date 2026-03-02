@@ -1,6 +1,6 @@
 # **Settings Migrations**
 
-[Spatie’s Laravel Settings](https://filamentphp.com/plugins/filament-spatie-laravel-settings) package provides a structured way to manage system-wide settings using a database instead of configuration files. It allows defining, storing, and retrieving settings dynamically, ensuring consistency across different environments.
+<a href="https://filamentphp.com/plugins/filament-spatie-settings" rel="nofollow external noopener noreferrer" target="_blank">Spatie’s Laravel Settings</a> package provides a structured way to manage system-wide settings using a database instead of configuration files. It allows defining, storing, and retrieving settings dynamically, ensuring consistency across different environments.
 
 ## **Key Features of Spatie Laravel Settings**
 
@@ -178,10 +178,10 @@ namespace Webkul\Blog;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Webkul\Support\Console\Commands\InstallCommand;
-use Webkul\Support\Console\Commands\UninstallCommand;
-use Webkul\Support\Package;
-use Webkul\Support\PackageServiceProvider;
+use Webkul\PluginManager\Console\Commands\InstallCommand;
+use Webkul\PluginManager\Console\Commands\UninstallCommand;
+use Webkul\PluginManager\Package;
+use Webkul\PluginManager\PackageServiceProvider;
 
 class BlogServiceProvider extends PackageServiceProvider
 {

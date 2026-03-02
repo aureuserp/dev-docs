@@ -70,6 +70,7 @@ export default defineConfig({
         text: 'Contribute To Aureus ERP',
         link: 'https://github.com/aureuserp/aureuserp'
       },
+      { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
       { text: 'Contact Us', link: 'https://aureuserp.com/en/contacts/' },
     ],
 
@@ -87,8 +88,8 @@ export default defineConfig({
 
     footer: {
       message:
-        'Released under the <a href="https://opensource.org/licenses/mit" target="_blank" class="mit-license">MIT License</a>.',
-      copyright: `Copyright © ${new Date().getFullYear()} Webkul`
+        'Released under the <a href="https://opensource.org/licenses/mit" target="_blank" rel="nofollow external noopener noreferrer" class="mit-license">MIT License</a>.',
+      copyright: `Copyright © ${new Date().getFullYear()} Aureus ERP`
     },
 
     lastUpdated: {
