@@ -1,6 +1,6 @@
 # Admin Panel Provider
 
-The Admin <a href="https://filamentphp.com/docs/3.x/panels/configuration" rel="nofollow external noopener noreferrer" target="_blank">Panel</a> Provider configures the administrative backend interface using FilamentPHP. It establishes authentication mechanisms, visual components, middleware configurations, and plugin integrations for administrative users.
+The Admin [Panel](https://filamentphp.com/docs/4.x/panels/configuration) Provider configures the administrative backend interface using FilamentPHP. It establishes authentication mechanisms, visual components, middleware configurations, and plugin integrations for administrative users.
 
 ## Configuration Breakdown
 
@@ -34,14 +34,12 @@ The Admin <a href="https://filamentphp.com/docs/3.x/panels/configuration" rel="n
 
 ```php
 ->favicon(asset('images/favicon.ico'))
-->brandLogo(asset('images/logo-light.svg'))
-->darkModeBrandLogo(asset('images/logo-dark.svg'))
+->brandLogo(asset('images/logo.svg'))
 ->brandLogoHeight('2rem')
 ```
 
 - `favicon()`: Sets the browser tab icon
-- `brandLogo()`: Defines the logo displayed in light mode
-- `darkModeBrandLogo()`: Specifies an alternative logo for dark mode
+- `brandLogo()`: Defines the logo displayed in the panel
 - `brandLogoHeight()`: Controls the displayed logo height
 
 ### User Experience Enhancements
@@ -51,17 +49,29 @@ The Admin <a href="https://filamentphp.com/docs/3.x/panels/configuration" rel="n
     'primary' => Color::Blue,
 ])
 ->unsavedChangesAlerts()
-->spa()
-->sidebarCollapsibleOnDesktop()
-->maxContentWidth(MaxWidth::Full)
+->topNavigation()
+->maxContentWidth(Width::Full)
 ```
 
 - `colors()`: Defines the color scheme with blue as the primary color
 - `unsavedChangesAlerts()`: Warns users when trying to navigate away with unsaved changes
-- `spa()`: Enables Single Page Application mode for smoother transitions
-- `sidebarCollapsibleOnDesktop()`: Makes the sidebar collapsible on desktop devices
+- `topNavigation()`: Enables horizontal navigation at the top
 - `maxContentWidth()`: Sets content width to full screen
 
+### User Menu Configuration
+
+```php
+->userMenuItems([
+    'profile' => Action::make('profile')
+        ->label(fn() => filament()->auth()->user()?->name)
+        ->url(fn(): string => Profile::getUrl()),
+])
+```
+
+- `userMenuItems()`: Adds custom items to the user menu in the top-right corner
+- Creates a profile link that displays the user's name and navigates to the profile page
+
+### Navigation Structure
 ## How Menus Are Registered
 
 Menus are registered through **Filament Resources, Pages, and Widgets** provided by each plugin.
@@ -204,7 +214,7 @@ The Customer Panel Provider configures the frontend interface for customers, off
 
 ```php
 ->favicon(asset('images/favicon.ico'))
-->brandLogo(asset('images/logo-light.svg'))
+->brandLogo(asset('images/logo.svg'))
 ->darkMode(false)
 ->brandLogoHeight('2rem')
 ```
