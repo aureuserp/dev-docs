@@ -18,7 +18,8 @@ const routes = [
       { text: 'Introduction', link: '/master/installation/introduction' },
       { text: 'Requirements', link: '/master/installation/requirements' },
       { text: 'Installation', link: '/master/installation/installation' },
-      { text: 'Docker', link: '/master/installation/docker' }
+      { text: 'Docker', link: '/master/installation/docker' },
+      { text: 'Skills', link: '/master/installation/skills' }
     ]
   },
   {
