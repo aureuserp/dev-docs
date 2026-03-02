@@ -42,7 +42,13 @@ OAuth discovery + registration endpoints are also exposed (via `Mcp::oauthRoutes
 
 ## Install
 
-You can install this plugin in two ways:
+First, require the package via Composer:
+
+```bash
+composer require aureuserp/mcp
+```
+
+You can then complete the installation in two ways:
 
 ### Option 1: Via Command Line
 
