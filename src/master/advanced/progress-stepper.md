@@ -141,4 +141,5 @@ ProgressStepper::make('status')
 
 ## More Information
 
-For more details, refer to the [FilamentPHP Toggle Buttons](https://filamentphp.com/docs/3.x/forms/fields/toggle-buttons).
+For more details, refer to the <a href="https://filamentphp.com/docs/3.x/forms/fields/toggle-buttons" rel="nofollow external noopener noreferrer" target="_blank">FilamentPHP Toggle Buttons</a>.
+
