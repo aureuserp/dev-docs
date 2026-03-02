@@ -17,18 +17,26 @@ To enable clusters in Aures ERP, configure the panel to discover cluster classes
 ```php
     public function register(Panel $panel): void
     {
-        if (! Package::isPluginInstalled($this->getId())) {
-            return;
-        }
-
         $panel
             ->when($panel->getId() == 'admin', function (Panel $panel) {
                 $panel
-                    ->discoverResources(in: $this->getPluginBasePath('/Filament/Resources'), for: 'Webkul\\Blog\\Filament\\Resources')
-                    ->discoverPages(in: $this->getPluginBasePath('/Filament/Pages'), for: 'Webkul\\Blog\\Filament\\Pages')
+                    ->discoverResources(
+                        in: __DIR__.'/Filament/Resources',
+                        for: 'Webkul\\Blog\\Filament\\Resources'
+                    )
+                    ->discoverPages(
+                        in: __DIR__.'/Filament/Pages',
+                        for: 'Webkul\\Blog\\Filament\\Pages'
+                    )
                     // below method is responsible to discover the clusters form blog plugin.
-                    ->discoverClusters(in: $this->getPluginBasePath('/Filament/Clusters'), for: 'Webkul\\Blog\\Filament\\Clusters')
-                    ->discoverWidgets(in: $this->getPluginBasePath('/Filament/Widgets'), for: 'Webkul\\Blog\\Filament\\Widgets');
+                    ->discoverClusters(
+                        in: __DIR__.'/Filament/Clusters',
+                        for: 'Webkul\\Blog\\Filament\\Clusters'
+                    )
+                    ->discoverWidgets(
+                        in: __DIR__.'/Filament/Widgets',
+                        for: 'Webkul\\Blog\\Filament\\Widgets'
+                    );
             });
     }
 ```

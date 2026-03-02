@@ -118,8 +118,8 @@ To make Laravel recognize the Blog module’s seeder, register it inside the `Bl
 
 namespace Webkul\Blog;
 
-use Webkul\Support\Package;
-use Webkul\Support\PackageServiceProvider;
+use Webkul\PluginManager\Package;
+use Webkul\PluginManager\PackageServiceProvider;
 
 class BlogServiceProvider extends PackageServiceProvider
 {

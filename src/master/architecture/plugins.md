@@ -19,7 +19,8 @@ These plugin can be installed as needed to extend system functionality:
 | Module       | Description                                  |
 | ------------ | -------------------------------------------- |
 | Blogs        | Manage blogs                                 |
-| Accounts     | Financial accounting and reporting           |
+| Accounts     | Core financial configuration module that defines chart of accounts, journals, ledgers, currencies, and fiscal structures used by other financial plugins           |
+| Accounting   | Main accounting operations module that handles journal entries, financial reports, period closing, and accounting workflows based on the Accounts setup           |
 | Contacts     | Contact management for customers and vendors |
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
@@ -34,13 +35,38 @@ These plugin can be installed as needed to extend system functionality:
 | Timesheet    | Employee work hour tracking                  |
 | Website      | Website for customer                         |
 
-## **Accounts**
+## Accounts vs Accounting
 
-- **Purpose**: Manages financial accounts, including ledgers, journals, and chart of accounts.
-- **Key Features**:
-  - Supports multi-currency transactions.
-  - Integration with invoices and payments.
-  - Comprehensive financial reporting and audit trails.
+In Aureus ERP, **Accounts** and **Accounting** are intentionally separated to provide a **flexible, scalable, and extensible financial system**.
+
+### **Accounts (Base / Helper Plugin)**
+
+* **Role**: Foundational financial layer
+* **Purpose**: Provides core accounting structures used by other financial modules
+
+**Key Responsibilities:**
+
+* Chart of Accounts (assets, liabilities, income, expenses)
+* Journals and ledger definitions
+* Currency and fiscal configurations
+* Common accounting utilities shared across modules
+
+The **Accounts plugin does not handle business workflows directly**. Instead, it acts as a **shared financial backbone** that ensures consistency across all financial operations.
+
+### **Accounting (Main Functional Plugin)**
+
+* **Role**: Primary accounting engine
+* **Purpose**: Handles real-world accounting workflows and financial operations
+
+**Key Responsibilities:**
+
+* Journal entries and postings
+* Financial reports (Profit & Loss, Balance Sheet, Trial Balance)
+* Period closing and adjustments
+* Integration with invoices, payments, purchases, and sales
+* Audit trails and compliance-ready records
+
+The **Accounting plugin depends on Accounts** to function correctly and uses its structures to execute business logic.
 
 ## **Analytics**
 
