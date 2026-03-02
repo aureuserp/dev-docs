@@ -58,7 +58,7 @@ protected function registerService($service, $definition = null, $shared = false
 
 ## Running Pint Tests
 
-We use [Laravel Pint](https://github.com/laravel/pint) for automated code formatting. Ensure all Pint tests pass before submitting a pull request.
+We use <a href="https://github.com/laravel/pint" rel="nofollow external noopener noreferrer" target="_blank">Laravel Pint</a> for automated code formatting. Ensure all Pint tests pass before submitting a pull request.
 
 To run Pint locally, execute:
 
