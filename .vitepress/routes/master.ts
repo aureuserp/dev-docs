@@ -215,6 +215,13 @@ const routes = [
         ]
       }
     ]
+  },
+  {
+    text: 'AureusERP API',
+    collapsed: false,
+    items: [
+      { text: 'Introduction', link: '/master/api-reference/index' },
+    ]
   }
 ]
 
