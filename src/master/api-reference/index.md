@@ -220,9 +220,78 @@ GET /admin/api/v1/partners/partners?filter[name]=Acme&sort=-created_at
 
 ---
 
+## Regenerating API Documentation with Scribe
+
+After making any changes to your API — such as adding new endpoints, updating request/response structures, or modifying permissions — you must regenerate the Scribe documentation so the interactive explorer stays in sync with your codebase.
+
+### Regenerate Docs
+
+Run the following Artisan command from your project root:
+
+```bash
+php artisan scribe:generate
+```
+
+This scans all your API routes, reads docblock annotations and FormRequest rules, and outputs a fresh set of documentation files.
+
+### When to Regenerate
+
+You should run `scribe:generate` whenever you:
+
+- Add, rename, or remove an API endpoint.
+- Change request validation rules or response fields.
+- Update route middleware (e.g., permission or authentication guards).
+- Change the Scribe configuration file.
+
+### Useful Flags
+
+| Flag | Description |
+|------|-------------|
+| `--force` | Overwrite any manually edited docs without prompting. Cannot be combined with `--no-extraction`. |
+| `--no-extraction` | Skip extracting example responses from your app (useful in CI). Cannot be combined with `--force`. |
+| `--env=testing` | Run generation against a specific environment. |
+
+> **⚠️ Note**
+> The `--force` and `--no-extraction` flags are mutually exclusive — Scribe will throw an error if you pass both at the same time. Choose one based on your use case.
+
+**Example — force overwrite manually edited docs:**
+
+```bash
+php artisan scribe:generate --force
+```
+
+**Example — skip response extraction (useful in CI where the app may not be fully bootable):**
+
+```bash
+php artisan scribe:generate --no-extraction
+```
+
+> **💡 Tip**
+> Add `php artisan scribe:generate` to your deployment script or CI/CD pipeline so docs are always up to date after every release.
+
+---
+
+### Generate and Preview
+
+After adding annotations, regenerate and review:
+
+```bash
+# Regenerate the documentation
+php artisan scribe:generate
+
+# Preview locally (docs are served at /api/docs by default)
+php artisan serve
+```
+
+Open `http://localhost:8000/api/docs` to verify your new endpoints appear correctly.
+
+> **⚠️ Important**
+> If your new endpoints are behind permission middleware, make sure the Scribe config includes the correct authentication headers so that example requests work in the interactive explorer.
+
+---
+
 ## What's Next?
 
 - **[Interactive Explorer](/api/docs)** — Browse and test every endpoint live.
 - **[Authentication](./authentication)** — Full login, logout, and token management reference.
 - **[Prologue](/master/prologue/introduction)** — Understand the platform architecture before integrating.
-
