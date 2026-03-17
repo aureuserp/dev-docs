@@ -287,11 +287,3 @@ Open `http://localhost:8000/api/docs` to verify your new endpoints appear correc
 
 > **⚠️ Important**
 > If your new endpoints are behind permission middleware, make sure the Scribe config includes the correct authentication headers so that example requests work in the interactive explorer.
-
----
-
-## What's Next?
-
-- **[Interactive Explorer](/api/docs)** — Browse and test every endpoint live.
-- **[Authentication](./authentication)** — Full login, logout, and token management reference.
-- **[Prologue](/master/prologue/introduction)** — Understand the platform architecture before integrating.
