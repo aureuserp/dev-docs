@@ -5,7 +5,7 @@ AureusERP exposes a full-featured REST API that gives you programmatic access to
 The API is documented and served interactively by [Scribe](https://scribe.knuckles.wtf/). You can browse every endpoint, inspect request and response schemas, and fire live requests without writing a single line of code.
 
 > **💡 Interactive API Explorer**
-> Open **[/api/docs](/api/docs)** to explore every available endpoint with a built-in request builder.
+> The API documentation is available at your AureusERP installation's `/api/docs` endpoint to explore every available endpoint with a built-in request builder.
 
 ---
 
@@ -216,7 +216,7 @@ GET /admin/api/v1/partners/partners?filter[name]=Acme&sort=-created_at
 - Multiple sort fields can be comma-separated: `sort=name,-created_at`.
 
 > **ℹ️ Note**
-> Refer to each resource's endpoint documentation in the [interactive explorer](/api/docs) for the full list of supported filters and sort fields.
+> Refer to each resource's endpoint documentation in the interactive API explorer for the full list of supported filters and sort fields.
 
 ---
 
