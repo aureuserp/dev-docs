@@ -7,7 +7,7 @@
 - **Node.js & NPM**: Latest stable versions
 - **PHP**: 8.2 or higher
 - **Laravel**: 11.x
-- **FilamentPHP**: 3.x
+- **FilamentPHP**: 5.x
 - **Composer**: Latest version
 - **Database**: MySQL 8.0+ or SQLite
 - **Browser**: A modern browser (Chrome, Firefox, Edge)
