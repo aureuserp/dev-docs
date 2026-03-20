@@ -1,6 +1,6 @@
 # Admin Panel Provider
 
-The Admin [Panel](https://filamentphp.com/docs/4.x/panels/configuration) Provider configures the administrative backend interface using FilamentPHP. It establishes authentication mechanisms, visual components, middleware configurations, and plugin integrations for administrative users.
+The Admin [Panel](https://filamentphp.com/docs/5.x/panel-configuration) Provider configures the administrative backend interface using FilamentPHP. It establishes authentication mechanisms, visual components, middleware configurations, and plugin integrations for administrative users.
 
 ## Configuration Breakdown
 

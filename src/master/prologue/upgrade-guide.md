@@ -100,7 +100,7 @@ composer install --no-dev --optimize-autoloader
 If you’re using Filament, update it as well:
 
 ```bash
-composer update filament/filament --with-dependencies
+composer update filament/filament --with-all-dependencies
 ```
 
 **Note:** Aureus ERP includes a post-autoload script that automatically runs `php artisan filament:upgrade` to handle Filament v4 upgrades and compatibility changes.

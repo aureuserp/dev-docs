@@ -116,4 +116,4 @@ class CreatePost extends CreateRecord
 - **Post-Creation Processing**: Calls `updateStockLevels()` to recalculate stock availability after post creation.
 - **Redirection & Notifications**: Redirects to the post view and notifies the user on successful creation.
 
-For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/4.x/panels/resources/creating-records)**. 🚀
+For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/5.x/resources/creating-records)**. 🚀
