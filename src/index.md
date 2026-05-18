@@ -37,17 +37,49 @@ features:
     details: Define job roles, assign responsibilities, and track position availability with ease.
     link: /master/architecture/plugins.md#projects
   - icon: 📦
-    title: Inventory Management
-    details: Monitor stock levels, manage product movement, and reduce inventory errors.
-    link: /master/architecture/plugins.md#inventory
-  - icon: 🏢
-    title: Warehouse Management
-    details: Control warehouse stock, optimize space, and track inventory in real time.
+    title: Inventory & Warehouse Management
+    details: Monitor stock levels, manage product movement, and track warehouse inventory in real time.
     link: /master/architecture/plugins.md#inventory
   - icon: 🎓
     title: Recruitment System
     details: Manage job postings, applications, and hiring workflows to find the right candidates.
     link: /master/architecture/plugins.md#recruitments
+  - icon: 🏭
+    title: Manufacturing Management
+    details: Manage production with bills of materials, manufacturing orders, work orders, and work centers.
+    link: /master/architecture/plugins.md#manufacturing
+  - icon: 🧮
+    title: Accounting
+    details: Handle journal entries, financial reports, period closing, and accounting workflows.
+    link: /master/architecture/plugins.md#accounting-main-functional-plugin
+  - icon: 🧾
+    title: Invoices
+    details: Generate and manage invoices with recurring billing, multi-currency, and tax support.
+    link: /master/architecture/plugins.md#invoices
+  - icon: 💹
+    title: Sales Management
+    details: Manage the sales pipeline from quotations and orders through to invoicing.
+    link: /master/architecture/plugins.md#sales
+  - icon: 🌴
+    title: Time Off
+    details: Manage employee leave requests, approvals, balances, and leave policies.
+    link: /master/architecture/plugins.md#timeoffs
+  - icon: ⏱️
+    title: Timesheets
+    details: Record employee working hours and activities for payroll and reporting.
+    link: /master/architecture/plugins.md#timesheets
+  - icon: 🌐
+    title: Website & Blogs
+    details: Manage company website content and publish blog posts with a CMS, categories, tags, and SEO tools.
+    link: /master/architecture/plugins.md#website
+  - icon: 💬
+    title: Chatter Collaboration
+    details: Collaborate in-app with followers, logged notes, scheduled activities, and email notifications.
+    link: /master/architecture/plugins.md#chatter
+  - icon: 🔐
+    title: Security & Access Control
+    details: Manage roles, permissions, and customizable security policies for data protection.
+    link: /master/architecture/plugins.md#security
 
 ---
 
