@@ -29,6 +29,7 @@ These plugins can be installed as needed to extend system functionality:
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
+| Manufacturing | Production and shop-floor management with bills of materials, manufacturing orders, work orders, and work centers |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
 | Projects     | Project planning and management              |
@@ -134,6 +135,18 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
 - **Key Features**:
   - Supports recurring invoices and payment tracking.
   - Multi-currency and tax management.
+
+### Manufacturing
+
+- **Purpose**: Manage production processes from bills of materials to finished goods on the shop floor.
+- **Key Features**:
+  - Bills of Materials (BoM) with components, by-products, and operations.
+  - Manufacturing Orders to plan, confirm, and track production runs.
+  - Work Orders and Work Centers for scheduling shop-floor operations and capacity.
+  - Operations and routing definitions, including productivity and loss tracking.
+  - Unbuild Orders to disassemble finished products back into components.
+  - Lot/serial tracking and tight integration with the Products and Inventory modules.
+- **Dependencies**: Requires the **Products** and **Inventory** plugins to be installed.
 
 ### Partners
 
