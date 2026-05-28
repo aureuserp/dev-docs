@@ -29,6 +29,7 @@ These plugins can be installed as needed to extend system functionality:
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
+| Maintenance  | Equipment maintenance management with preventive and corrective maintenance requests, teams, stages, and a calendar view |
 | Manufacturing | Production and shop-floor management with bills of materials, manufacturing orders, work orders, and work centers |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
@@ -135,6 +136,17 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
 - **Key Features**:
   - Supports recurring invoices and payment tracking.
   - Multi-currency and tax management.
+
+### Maintenance
+
+- **Purpose**: Plan, track, and execute equipment maintenance across the organization.
+- **Key Features**:
+  - Equipment catalog with categories for grouping assets.
+  - Preventive and corrective maintenance requests with configurable repeat schedules.
+  - Maintenance teams to assign ownership of requests.
+  - Customizable workflow stages to track request progress (e.g., New, In Progress, Repaired).
+  - Calendar widget for visualising scheduled maintenance across days, weeks, and months.
+- **Dependencies**: Uses the **Full Calendar** plugin to render the maintenance schedule.
 
 ### Manufacturing
 

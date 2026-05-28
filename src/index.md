@@ -64,10 +64,10 @@ features:
     title: Time Off
     details: Manage employee leave requests, approvals, balances, and leave policies.
     link: /master/architecture/plugins.md#timeoffs
-  - icon: ⏱️
-    title: Timesheets
-    details: Record employee working hours and activities for payroll and reporting.
-    link: /master/architecture/plugins.md#timesheets
+  - icon: 🛠️
+    title: Maintenance
+    details: Plan and track equipment maintenance with preventive/corrective requests, teams, stages, and a calendar view.
+    link: /master/architecture/plugins.md#maintenance
   - icon: 🌐
     title: Website & Blogs
     details: Manage company website content and publish blog posts with a CMS, categories, tags, and SEO tools.
