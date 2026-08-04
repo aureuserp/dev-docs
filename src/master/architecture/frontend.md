@@ -1,10 +1,10 @@
 # Introduction
 
-Aureus ERP's frontend is built on modern web technologies to provide an intuitive, responsive, and highly customizable user experience. Leveraging **FilamentPHP**, **Livewire**, **Alpine.js**, and **Tailwind CSS**, the system ensures seamless UI interactions and efficient data handling.
+AureusERP's frontend is built on modern web technologies to provide an intuitive, responsive, and highly customizable user experience. Leveraging **FilamentPHP**, **Livewire**, **Alpine.js**, and **Tailwind CSS**, the system ensures seamless UI interactions and efficient data handling.
 
 ## FilamentPHP
 
-Aureus ERP uses **FilamentPHP** as the core admin panel framework, which provides a powerful and flexible resource management system.
+AureusERP uses **FilamentPHP** as the core admin panel framework, which provides a powerful and flexible resource management system.
 
 - **Resources**: FilamentPHP simplifies CRUD operations using resources that define how models are listed, created, edited, and managed in the UI.
 - **Pages**: Custom pages extend beyond standard CRUD resources, allowing complex business logic and interactive interfaces.
@@ -13,10 +13,10 @@ FilamentPHP integrates smoothly with Laravel and is optimized for rapid developm
 
 ## Livewire
 
-[Livewire](https://livewire.laravel.com/) powers the dynamic interactions in Aureus ERP without requiring a complex JavaScript framework.
+[Livewire](https://livewire.laravel.com/) powers the dynamic interactions in AureusERP without requiring a complex JavaScript framework.
 
 - **Reactivity**: Livewire enables real-time updates without a full-page reload.
-- **Component-Based**: Each feature in Aureus ERP is structured as Livewire components, ensuring modularity and maintainability.
+- **Component-Based**: Each feature in AureusERP is structured as Livewire components, ensuring modularity and maintainability.
 
 Livewire enhances the interactivity of forms, tables, and dashboards while maintaining Laravel’s simplicity.
 
@@ -27,7 +27,7 @@ Livewire enhances the interactivity of forms, tables, and dashboards while maint
 - **Minimal JavaScript**: Provides a simple yet powerful way to add dynamic behavior without the overhead of a full JavaScript framework.
 - **Declarative Syntax**: Offers Vue-like reactivity in a minimal package.
 
-Alpine.js is particularly useful for dropdowns, modals, and UI state management in Aureus ERP.
+Alpine.js is particularly useful for dropdowns, modals, and UI state management in AureusERP.
 
 ## Tailwind CSS
 
@@ -36,11 +36,11 @@ Alpine.js is particularly useful for dropdowns, modals, and UI state management 
 - **Highly Customizable**: The `tailwind.config.js` file allows for complete theme customization.
 - **Performance Optimized**: Unused styles are purged in production for minimal CSS footprint.
 
-Tailwind CSS ensures that Aureus ERP maintains a sleek and consistent design system across all modules.
+Tailwind CSS ensures that AureusERP maintains a sleek and consistent design system across all modules.
 
 ## Blade Templates
 
-Aureus ERP relies on Laravel’s **Blade template engine** for rendering UI components efficiently.
+AureusERP relies on Laravel’s **Blade template engine** for rendering UI components efficiently.
 
 - **Blade Components**: Reusable UI elements improve maintainability.
 - **Server-Side Rendering**: Optimizes performance by rendering HTML directly on the server.
@@ -49,7 +49,7 @@ Blade seamlessly integrates with Livewire, enhancing performance while keeping t
 
 ## Vite Build System
 
-Aureus ERP uses **Vite** as its asset bundler, replacing the traditional Laravel Mix setup.
+AureusERP uses **Vite** as its asset bundler, replacing the traditional Laravel Mix setup.
 
 - **Faster Development**: Hot module replacement (HMR) speeds up frontend development.
 - **Efficient Asset Compilation**: JavaScript and CSS assets are optimized for production.
@@ -58,6 +58,6 @@ The `vite.config.js` file defines the build process, ensuring smooth integration
 
 ## Conclusion
 
-Aureus ERP’s frontend stack—**FilamentPHP, Livewire, Alpine.js, Tailwind CSS, and Vite**—offers a **modern, reactive, and scalable** architecture. This combination ensures a seamless experience for administrators and users while maintaining high performance and flexibility.
+AureusERP’s frontend stack—**FilamentPHP, Livewire, Alpine.js, Tailwind CSS, and Vite**—offers a **modern, reactive, and scalable** architecture. This combination ensures a seamless experience for administrators and users while maintaining high performance and flexibility.
 
-For further details, refer to the **Aureus ERP documentation**. 🚀
+For further details, refer to the **AureusERP documentation**. 🚀

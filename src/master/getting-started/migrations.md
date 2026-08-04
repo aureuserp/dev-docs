@@ -1,6 +1,6 @@
 # **Migrations**
 
-[Migrations](https://laravel.com/docs/11.x/migrations) provide a structured way to manage database schemas, enabling version control for database changes. They ensure consistency across development and production environments.
+[Migrations](https://laravel.com/docs/13.x/migrations) provide a structured way to manage database schemas, enabling version control for database changes. They ensure consistency across development and production environments.
 
 ## **Key Features of Migrations**
 
@@ -44,16 +44,15 @@ Once a migration or model is created, you need to place them in the appropriate 
 |   |   |   +-- resources
 |   |   |   +-- src
 |   |   |   |   +-- Filament
-|   |   |   |   |   +-- Clusters
-|   |   |   |   |   |   +-- Blogs.php
-|   |   |   |   |   |   +-- Blogs
-|   |   |   |   |   |   |   +-- Resources
-|   |   |   |   |   |   |   |   +-- BlogResource.php
-|   |   |   |   |   |   |   |   +-- BlogResource
-|   |   |   |   |   |   |   |   |   +-- Pages
-|   |   |   |   |   |   |   |   |   |   +-- CreateBlog.php
-|   |   |   |   |   |   |   |   |   |   +-- EditBlog.php
-|   |   |   |   |   |   |   |   |   |   +-- ListBlogs.php
+|   |   |   |   |   +-- Admin
+|   |   |   |   |   |   +-- Resources
+|   |   |   |   |   |   |   +-- PostResource.php
+|   |   |   |   |   |   |   +-- PostResource
+|   |   |   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   |   |   |   +-- CreatePost.php
+|   |   |   |   |   |   |   |   |   +-- EditPost.php
+|   |   |   |   |   |   |   |   |   +-- ListPosts.php
+|   |   |   |   |   |   |   |   |   +-- ViewPost.php
 |   |   |   |   +-- Models  # Place your model here and update its namespace
 ```
 
@@ -68,8 +67,6 @@ After placing the migration files, they must be registered within the correspond
 
 namespace Webkul\Blog;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Webkul\PluginManager\Console\Commands\InstallCommand;
 use Webkul\PluginManager\Console\Commands\UninstallCommand;
 use Webkul\PluginManager\Package;
@@ -87,10 +84,14 @@ class BlogServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasMigrations([
-                '2025_01_06_072032_create_posts_table', // Register the migration file
+                '2025_03_06_094011_create_blogs_posts_table', // Register the migration file
             ])
             ->runsMigrations() // Ensure the migrations run when needed
-            ->hasInstallCommand(function (InstallCommand $command) {})
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->installDependencies()
+                    ->runsMigrations();
+            })
             ->hasUninstallCommand(function (UninstallCommand $command) {});
     }
 
@@ -106,7 +107,7 @@ class BlogServiceProvider extends PackageServiceProvider
 1. **`hasMigrations([...])`**
    - This method registers the migration file inside the plugin.
    - The filename should match the migration file placed in `database/migrations/`.
-   - Example: `'2025_01_06_072032_create_posts_table'`
+   - Example: `'2025_03_06_094011_create_blogs_posts_table'`
 
 2. **`runsMigrations()`**
    - This method ensures that the registered migrations will run automatically when executing `php artisan migrate`.

@@ -78,14 +78,19 @@ $this
 
 ## **File Upload Component**
 
-The form contains a `FileUpload` component:
+The schema contains a `FileUpload` component:
 
 ```php
-->form([
-    Forms\Components\FileUpload::make('files')
+use Filament\Forms\Components\FileUpload;
+
+->schema([
+    FileUpload::make('files')
         ->hiddenLabel()
         ->multiple()
         ->directory('chats-attachments')
+        ->disk('public')
+        ->visibility('public')
+        ->preserveFilenames()
         ->downloadable()
         ->openable()
         ->reorderable()
@@ -94,7 +99,7 @@ The form contains a `FileUpload` component:
 ```
 
 - Allows **multiple file uploads**.
-- Stores files in the `chats-attachments` directory.
+- Stores files in the `chats-attachments` directory on the `public` disk, preserving original filenames.
 - Users can **download, preview, reorder, and delete** files.
 
 ## **File Validation**
@@ -119,23 +124,38 @@ The form contains a `FileUpload` component:
 
 ```php
 ->deleteUploadedFileUsing(function ($file, ?Model $record) {
-    $attachment = $record->attachments()
-        ->where('file_path', $file)
-        ->first();
-
-    if ($attachment) {
-        $attachment->delete();
-
-        Notification::make()
-            ->success()
-            ->title(__('chatter::filament/resources/actions/chatter/file-action.setup.form.fields.actions.delete.title'))
-            ->body(__('chatter::filament/resources/actions/chatter/file-action.setup.form.fields.actions.delete.body'))
-            ->send();
+    if (! $record) {
+        return;
     }
+
+    if (method_exists($record, 'removeAttachment')) {
+        $attachment = $record->attachments()->where('file_path', $file)->first();
+
+        if ($attachment) {
+            $record->removeAttachment($attachment->id);
+        } else {
+            Storage::disk('public')->delete($file);
+        }
+    } else {
+        $attachment = $record->attachments()->where('file_path', $file)->first();
+
+        if ($attachment) {
+            $attachment->delete();
+        }
+
+        Storage::disk('public')->delete($file);
+    }
+
+    Notification::make()
+        ->success()
+        ->title(__('chatter::filament/resources/actions/chatter/file-action.setup.form.fields.actions.delete.title'))
+        ->body(__('chatter::filament/resources/actions/chatter/file-action.setup.form.fields.actions.delete.body'))
+        ->send();
 })
 ```
 
-- Finds the attachment in the database and **deletes** it upon user request.
+- Prefers the record's `removeAttachment()` method (from the `HasChatter` trait), which verifies the attachment belongs to the record and removes both the database entry and the stored file.
+- Falls back to deleting the attachment row and the file from the `public` disk directly.
 - Sends a **success notification** when deletion is successful.
 
 ## **Setting Default File List (Preloaded Files)**
@@ -186,7 +206,7 @@ The form contains a `FileUpload` component:
                 ->body(__('chatter::filament/resources/actions/chatter/file-action.setup.actions.notification.warning.body'))
                 ->send();
         }
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         Notification::make()
             ->danger()
             ->title(__('chatter::filament/resources/actions/chatter/file-action.setup.actions.notification.error.title'))
@@ -208,15 +228,20 @@ The form contains a `FileUpload` component:
 ## **Modal Customization**
 
 ```php
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\Width;
+
 ->modalHeading(__('chatter::filament/resources/actions/chatter/file-action.setup.title'))
 ->icon('heroicon-o-paper-clip')
 ->modalIcon('heroicon-o-paper-clip')
 ->iconPosition(IconPosition::Before)
 ->modalSubmitAction(
     fn ($action) => $action
-        ->label('Upload')
+        ->label(__('chatter::filament/resources/actions/chatter/file-action.setup.modal-submit-action-label'))
         ->icon('heroicon-m-paper-airplane')
 )
-->modalWidth(MaxWidth::ThreeExtraLarge)
+->modalWidth(Width::TwoExtraLarge)
 ->slideOver(false);
 ```
+
+After the action completes, a `chatter.refresh` Livewire event is dispatched so the chatter panel reloads the attachment list.

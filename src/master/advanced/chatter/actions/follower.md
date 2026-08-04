@@ -25,6 +25,10 @@ The `FollowerAction` class is a Filament action designed for adding followers to
 
 ## **Methods**
 
+### **`getDefaultName(): ?string`**
+
+- Returns the default action name, `add.followers.action`.
+
 ### **1. `setResource(string $resource): self`**
 
 - Sets the associated Filament resource.
@@ -51,14 +55,14 @@ The `setUp` method defines how this action behaves in Filament.
 
 - **Icon & Tooltip:** Uses `heroicon-s-user` for the button and `heroicon-s-user-plus` for the modal.
 - **Badge:** Displays the count of current followers.
-- **Modal Size:** Uses `MaxWidth::TwoExtraLarge` for a large modal.
+- **Modal Size:** Uses a `2xl` modal width.
 - **Slide Over Disabled:** Uses a standard modal instead.
 
 ### **Form Schema**
 
 - **`Select::make('partners')`**
   - Allows users to select multiple partners to follow the record.
-  - Uses a relationship-based selection (`followable` → `name`).
+  - Searches partners by name or email directly on the `Partner` model.
   - Supports search and preloading.
 - **`Toggle::make('notify')`**
   - Toggles whether the followers should be notified via email.
@@ -76,10 +80,11 @@ When the action is triggered, the following happens:
 
 1. Retrieves the selected partners from the form.
 2. Iterates through each partner:
-   - Adds them as a follower.
-   - Sends an email if the `notify` toggle is enabled.
-3. Displays a **success notification** for each successfully added follower.
+   - Adds them as a follower (adding the same follower twice is a no-op).
+   - Sends an email if the `notify` toggle is enabled and the partner has an email address.
+3. Displays a single **success notification** once all followers are added, or a **warning notification** listing partners that could not be notified because they have no email address.
 4. Catches any errors and logs them, displaying an **error notification** if needed.
+5. Dispatches a `chatter.refresh` Livewire event so the follower list reloads.
 
 ## **Email Notification Handling**
 

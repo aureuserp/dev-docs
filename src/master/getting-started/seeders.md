@@ -1,6 +1,6 @@
 # Introduction
 
-This document provides an overview of how seeders work in Laravel FilamentPHP for the **Aureus ERP** system. It explains how to create and register seeders within the plugin while maintaining a well-structured directory hierarchy.
+This document provides an overview of how seeders work in Laravel FilamentPHP for the **AureusERP** system. It explains how to create and register seeders within the plugin while maintaining a well-structured directory hierarchy.
 
 ## Understanding Seeders in Laravel
 
@@ -14,7 +14,7 @@ Seeders in Laravel allow pre-populating the database with test or initial produc
 
 ## Directory Structure for Seeders
 
-For better organization, seeders are stored in the `plugins/aureus/blogs/src/Database/Seeders/` directory as follows for each plugins :
+For better organization, seeders are stored in the `plugins/webkul/blogs/database/seeders/` directory as follows for each plugins :
 
 ```
 +-- plugins
@@ -46,12 +46,10 @@ Example PostSeeder:
 ```php
 <?php
 
-namespace Webkul\Blogs\Database\Seeders;
+namespace Webkul\Blog\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Aureus\Blog\Models\Post;
 
 class PostSeeder extends Seeder
 {
@@ -65,8 +63,8 @@ class PostSeeder extends Seeder
         DB::table('blogs_posts')->insert([
             [
                 'title'         => 'Sample Post',
-                'sub_title'     => 'Introduction to Aureus ERP',
-                'content'       => 'This is a sample blog post for Aureus ERP.',
+                'sub_title'     => 'Introduction to AureusERP',
+                'content'       => 'This is a sample blog post for AureusERP.',
                 'slug'          => 'sample-post',
                 'author_name'   => 'John Doe',
                 'is_published'  => true,
@@ -90,7 +88,7 @@ The main `DatabaseSeeder` is responsible for calling all individual seeders:
 ```php
 <?php
 
-namespace Webkul\Blogs\Database\Seeders;
+namespace Webkul\Blog\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
@@ -98,18 +96,20 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @param  array  $parameters
+     * @return void
      */
-    public function run(): void
+    public function run($parameters = [])
     {
         $this->call([
-            //
             PostSeeder::class,
         ]);
     }
 }
 ```
 
-## Registering the Seeder in `BlogServiceProvider.php
+## Registering the Seeder in `BlogServiceProvider.php`
 
 To make Laravel recognize the Blog module’s seeder, register it inside the `BlogServiceProvider.php` file:
 
@@ -118,6 +118,8 @@ To make Laravel recognize the Blog module’s seeder, register it inside the `Bl
 
 namespace Webkul\Blog;
 
+use Webkul\PluginManager\Console\Commands\InstallCommand;
+use Webkul\PluginManager\Console\Commands\UninstallCommand;
 use Webkul\PluginManager\Package;
 use Webkul\PluginManager\PackageServiceProvider;
 
@@ -134,17 +136,24 @@ class BlogServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasMigrations([])
             ->runsMigrations()
-            ->hasSeeder('Webkul\\Blog\\Database\\Seeders\\DatabaseSeeder') // Registering the Seeder
+            ->hasSeeder('Webkul\\Blog\\Database\\Seeders\\DatabaseSeeder')
             ->hasDependencies([
-                'products',
+                'website',
             ])
-            ->hasInstallCommand(function ($command) {})
-            ->hasUninstallCommand(function ($command) {});
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->installDependencies()
+                    ->runsMigrations()
+                    ->runsSeeders();
+            })
+            ->hasUninstallCommand(function (UninstallCommand $command) {});
     }
 }
 ```
 
-With this, Laravel automatically executes `DatabaseSeeder.php` whenever the **Blog module is installed**.
+You can register multiple seeder classes at once using `hasSeeders(...)` instead of `hasSeeder(...)`.
+
+With this, the install command automatically executes `DatabaseSeeder.php` whenever the **Blog module is installed** — the `runsSeeders()` call on the `InstallCommand` is what triggers the registered seeder classes during installation.
 
 ## Running the Seeder Manually
 
@@ -157,5 +166,5 @@ php artisan db:seed --class="Webkul\Blog\Database\Seeders\DatabaseSeeder"
 Or, if you only want to seed blog posts:
 
 ```bash
-php artisan db:seed --class="Webkul\Blog\Database\Seeders\BlogSeeder"
+php artisan db:seed --class="Webkul\Blog\Database\Seeders\PostSeeder"
 ```

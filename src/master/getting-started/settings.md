@@ -31,10 +31,10 @@ After selecting the panel, another prompt will ask for the namespace in which yo
 
 ```
 ┌ Which namespace would you like to create this in? ─────────────────┐
-│ › ● Webkul\Contact\Filament\Clusters\Configurations\Pages          │
-│ ○ Webkul\Employee\Filament\Clusters\Configurations\Pages           │
-│ ○ Webkul\Inventory\Filament\Clusters\Configurations\Pages          │
-│ ○ Webkul\Inventory\Filament\Clusters\Operations\Pages              │
+│ › ● Webkul\Inventory\Filament\Clusters\Settings\Pages              │
+│ ○ Webkul\Manufacturing\Filament\Clusters\Settings\Pages            │
+│ ○ Webkul\Website\Filament\Admin\Clusters\Settings\Pages            │
+│ ○ Webkul\Support\Filament\Clusters\Settings\Pages                  │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -42,7 +42,7 @@ For this example, we assume you are creating the setting inside:
 
 ```
 ┌ Which namespace would you like to create this in? ───────────┐
-│ Webkul\Blogs\Filament\Clusters\Settings\Page                 │
+│ Webkul\Blog\Filament\Admin\Clusters\Settings\Pages           │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -54,10 +54,11 @@ This will generate a settings page file in the following directory:
 |   |   +-- blogs
 |   |   |   +-- src
 |   |   |   |   +-- Filament
-|   |   |   |   |   +-- Clusters
-|   |   |   |   |   |   +-- Settings
-|   |   |   |   |   |   |   +-- Pages
-|   |   |   |   |   |   |   |   +-- ManagePosts.php
+|   |   |   |   |   +-- Admin
+|   |   |   |   |   |   +-- Clusters
+|   |   |   |   |   |   |   +-- Settings
+|   |   |   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   |   |   |   +-- ManagePosts.php
 ```
 
 ### **Generated Settings Page Class**
@@ -65,31 +66,35 @@ This will generate a settings page file in the following directory:
 ```php
 <?php
 
-namespace Webkul\Blog\Filament\Clusters\Settings\Pages;
+namespace Webkul\Blog\Filament\Admin\Clusters\Settings\Pages;
 
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
 use Filament\Pages\SettingsPage;
-use Webkul\Support\Filament\Clusters\Settings;
+use Filament\Schemas\Schema;
 use Webkul\Blog\Settings\PostSettings;
+use Webkul\Support\Filament\Clusters\Settings;
 
 class ManagePosts extends SettingsPage
 {
-    protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static string $settings = PostSettings::class;
 
     protected static ?string $cluster = Settings::class;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 // Define form fields here
             ]);
     }
 }
 ```
+
+::: tip Unified Settings
+Every plugin attaches its settings pages to the shared `Webkul\Support\Filament\Clusters\Settings` cluster. This groups all plugin settings under a single **Settings** section in the admin panel, so always set `$cluster` to this class instead of creating a plugin-specific settings cluster.
+:::
 
 ## **Creating the PostSettings Class**
 
@@ -176,8 +181,6 @@ After placing the migration files, they must be registered within the correspond
 
 namespace Webkul\Blog;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Webkul\PluginManager\Console\Commands\InstallCommand;
 use Webkul\PluginManager\Console\Commands\UninstallCommand;
 use Webkul\PluginManager\Package;
@@ -195,10 +198,14 @@ class BlogServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasSettings([
-                '2025_03_12_111247_create_blogs_posts_settings'
+                '2025_03_12_111247_create_blogs_posts_settings',
             ])
             ->runsSettings()
-            ->hasInstallCommand(function (InstallCommand $command) {})
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->installDependencies()
+                    ->runsMigrations();
+            })
             ->hasUninstallCommand(function (UninstallCommand $command) {});
     }
 
@@ -210,3 +217,17 @@ class BlogServiceProvider extends PackageServiceProvider
 ```
 
 after this you can perform laravel default migrations operations like migrate, rollback etc or it will automatic execute settings migrations when you install plugin.
+
+## **Retrieving Settings**
+
+AureusERP provides a centralized `settings()` helper (backed by `Webkul\Support\SettingsRegistry`) for retrieving settings anywhere in your code. The registry resolves each settings class once and reuses the same instance for subsequent calls:
+
+```php
+use Webkul\Blog\Settings\PostSettings;
+
+if (settings(PostSettings::class)->enable_comments) {
+    // Comments are enabled
+}
+```
+
+You can also resolve the settings class directly from the container using `app(PostSettings::class)`, but the `settings()` helper is the preferred approach across plugins.

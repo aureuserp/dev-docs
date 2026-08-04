@@ -14,6 +14,7 @@ use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Webkul\PluginManager\Console\Commands\InstallCommand;
 use Webkul\PluginManager\Console\Commands\UninstallCommand;
+use Webkul\PluginManager\Package;
 use Webkul\PluginManager\PackageServiceProvider;
 
 class BlogServiceProvider extends PackageServiceProvider
@@ -43,7 +44,8 @@ class BlogServiceProvider extends PackageServiceProvider
           ->installDependencies()
           ->runsMigrations();
       })
-      ->hasUninstallCommand(function (UninstallCommand $command) {});
+      ->hasUninstallCommand(function (UninstallCommand $command) {})
+      ->icon('blog');
   }
 
   public function packageBooted(): void
@@ -56,11 +58,13 @@ class BlogServiceProvider extends PackageServiceProvider
   public function packageRegistered(): void
   {
     Panel::configureUsing(function (Panel $panel): void {
-      $panel->plugin(AccountingPlugin::make());
+      $panel->plugin(BlogPlugin::make());
     });
   }
 }
 ```
+
+The base `PackageServiceProvider` class lives in the `plugin-manager` plugin (`Webkul\PluginManager\PackageServiceProvider`) and extends Spatie's `laravel-package-tools` service provider. The `Package` instance passed to `configureCustomPackage()` is `Webkul\PluginManager\Package`, which adds plugin-specific capabilities (settings, seeders, dependencies, install/uninstall commands, icon) on top of the Spatie package class.
 
 ## Service Provider Configuration
 
@@ -79,6 +83,7 @@ public function configureCustomPackage(Package $package): void
             '2025_03_06_094011_create_blogs_posts_table',
             '2025_03_07_065635_create_blogs_tags_table',
             '2025_03_07_065715_create_blogs_post_tags_table',
+            '2025_09_03_070414_alter_blogs_posts_table',
         ])
         ->runsMigrations();
 }
@@ -99,13 +104,40 @@ public function configureCustomPackage(Package $package): void
         ->hasMigrations([...])
         ->runsMigrations()
         ->hasSettings([
-            '2025_03_12_111247_create_blogs_posts_settings'
+            '2025_01_17_094021_create_inventories_operation_settings'
         ])
         ->runsSettings();
 }
 ```
 
-The `hasSettings()` method registers setting migrations, while `runsSettings()` ensures they are executed during plugin installation.
+The `hasSettings()` method registers setting migrations from the plugin's `database/settings` directory, while `runsSettings()` ensures they are executed during plugin installation. The blogs plugin has no settings migrations; the example above uses one from the `inventories` plugin.
+
+### Registering Seeders
+
+[Seeders](../getting-started/seeders.md) populate the database with initial data. Register your seeder class with `hasSeeder()` (or several with `hasSeeders()`), and call `runsSeeders()` on the install command so it runs during installation. The `maintenance` plugin uses this approach:
+
+```php
+use Webkul\Maintenance\Database\Seeders\DatabaseSeeder;
+
+->hasSeeder(DatabaseSeeder::class)
+->hasInstallCommand(function (InstallCommand $command) {
+    $command
+        ->runsMigrations()
+        ->runsSeeders();
+})
+```
+
+The plugin's `Database\Seeders\DatabaseSeeder` class then calls the individual seeders.
+
+### Registering Routes
+
+If your plugin exposes web or API routes, place the files in the plugin's `routes/` directory and register them with `hasRoute()` or `hasRoutes()`:
+
+```php
+->hasRoutes(['web', 'api'])
+```
+
+Route files are only loaded when the plugin is installed (or marked as core), so an uninstalled plugin never exposes its endpoints.
 
 ### Managing Dependencies
 
@@ -134,28 +166,32 @@ The `hasInstallCommand()` and `hasUninstallCommand()` methods define what happen
 });
 ```
 
-When uninstalling a plugin, the system will prompt for confirmation:
+When uninstalling a plugin, the system will prompt for confirmation (pass the `--force` option to skip it):
 
 ```shell
 Are you sure you want to uninstall this package? This action cannot be undone! (yes/no) [no]:
 > yes
 ```
 
-If you attempt to uninstall a plugin that other plugins depend on, you'll receive a warning:
+If you attempt to uninstall a plugin that other installed plugins depend on, the uninstallation is blocked with a warning:
 
 ```shell
-Package website has dependents: blogs. Please uninstall dependents first!
+Package website has installed dependents: blogs. Please uninstall these dependents first!
 ```
+
+You can also hook into both commands with `startWith()` and `endWith()` callbacks to run custom logic before or after the installation or uninstallation.
+
+After every install or uninstall the plugin manager refreshes the application caches (via `optimize:clear`, followed by a background `optimize` in production), so the panel navigation immediately reflects the plugin change.
 
 ### Plugin Registration
 
-The `packageRegistered()` method is used to **register your plugin with the application panel** after the package is loaded. It ensures that the plugin is added **only when it is installed**, keeping the system modular and safe.
+The `packageRegistered()` method is used to **register your plugin with the application panels** after the package is loaded. Combined with the `Package::isPluginInstalled()` check inside the plugin's `register()` method, it ensures the plugin's UI is loaded **only when it is installed**, keeping the system modular and safe.
 
 ```php
 public function packageRegistered(): void
 {
   Panel::configureUsing(function (Panel $panel): void {
-    $panel->plugin(AccountingPlugin::make());
+    $panel->plugin(BlogPlugin::make());
   });
 }
 ```

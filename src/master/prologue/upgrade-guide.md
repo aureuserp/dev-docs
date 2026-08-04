@@ -1,8 +1,20 @@
 # Upgrade Guide
 
+## Upgrading to v1.5.0
+
+AureusERP **v1.5.0** upgrades the underlying stack. Before upgrading, make sure your server meets the new requirements:
+
+- **PHP**: 8.3 or higher
+- **Laravel**: 13.x
+- **FilamentPHP**: 5.x
+
+::: warning
+If you have custom plugins or Filament customizations, review them against Filament 5 and Laravel 13 before upgrading, as these are major framework upgrades.
+:::
+
 ## Upgrade Steps
 
-To upgrade **Aureus ERP** to the latest version, follow these steps:
+To upgrade **AureusERP** to the latest version, follow these steps:
 
 ### 1. Backup Your Project
 
@@ -79,5 +91,4 @@ If your existing project depends on local storage or logs, copy them to the late
 cp -r storage-backup/app/public storage/app/public
 ```
 
-Perform testing on all major features before deploying the upgraded git pull origin master
-.
+Perform testing on all major features before deploying the upgraded application to production.

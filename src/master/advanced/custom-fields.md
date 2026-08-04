@@ -1,6 +1,6 @@
 # Overview
 
-Custom Fields is a powerful feature in Aureus ERP that allows you to dynamically add additional attributes to your resources. This functionality is accessible through **Settings > Custom Fields** and enables you to enhance forms, tables, and infolists with custom attributes tailored to your specific business needs.
+Custom Fields is a powerful feature in AureusERP that allows you to dynamically add additional attributes to your resources. This functionality is accessible through **Settings > Custom Fields** and enables you to enhance forms, tables, and infolists with custom attributes tailored to your specific business needs.
 
 ## Key Benefits
 
@@ -66,24 +66,30 @@ Navigate to **Settings > Custom Fields** to create and manage custom fields:
 Use the methods provided by the `HasCustomFields` trait to incorporate custom fields into your resource:
 
 ```php
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Table;
 use Webkul\Field\Filament\Traits\HasCustomFields;
 
 class YourResource extends Resource
 {
     use HasCustomFields;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 // Your standard form fields
-                Forms\Components\Tabs\Tab::make(__('Additional Information'))
+                Tab::make(__('Additional Information'))
                     ->schema(static::mergeCustomFormFields([
                         // You can add standard fields here as well
-                        Forms\Components\Group::make()
+                        Group::make()
                             ->schema([
-                                Forms\Components\Select::make('user_id')
+                                Select::make('user_id')
                                     ->label(__('Buyer'))
                                     ->relationship('user', 'name')
                                     ->searchable()
@@ -101,17 +107,17 @@ class YourResource extends Resource
                 // Your standard table columns
             ]))
             ->filters(static::mergeCustomTableFilters([
-                Tables\Filters\QueryBuilder::make()
+                QueryBuilder::make()
                     ->constraints(collect(static::mergeCustomTableQueryBuilderConstraints([
                         // Your standard table filters query builder constraints.
                     ]))->filter()->values()->all()),
-            ]))
+            ]));
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema(static::mergeCustomInfolistEntries([
+        return $schema
+            ->components(static::mergeCustomInfolistEntries([
                 // Your standard infolist entries
             ]));
     }
@@ -129,12 +135,15 @@ The `HasCustomFields` trait provides a comprehensive set of methods to seamlessl
 Combines your predefined form schema with dynamically configured custom fields.
 
 ```php
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs\Tab;
+
 // Example: Merging custom fields into a specific tab
-Forms\Components\Tabs\Tab::make('Client Details')
+Tab::make('Client Details')
     ->schema(static::mergeCustomFormFields([
-        Forms\Components\TextInput::make('client_name')
+        TextInput::make('client_name')
             ->required(),
-        Forms\Components\TextInput::make('client_email')
+        TextInput::make('client_email')
             ->email()
             ->required(),
     ], ['contact_preference', 'industry_type'], ['internal_notes']))
@@ -152,8 +161,10 @@ In this example:
 Retrieves only the custom form fields without merging them with existing schema, useful when you need complete control over field placement.
 
 ```php
+use Filament\Schemas\Components\Section;
+
 // Example: Placing custom fields in a specific section
-Forms\Components\Section::make('Advanced Settings')
+Section::make('Advanced Settings')
     ->schema(static::getCustomFormFields())
     ->columns(3)
     ->collapsed()
@@ -166,17 +177,20 @@ Forms\Components\Section::make('Advanced Settings')
 Combines standard table columns with dynamically generated columns from custom fields flagged for table display.
 
 ```php
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
 // Example: Adding custom columns to standard listing
 public static function table(Table $table): Table
 {
     return $table
         ->columns(static::mergeCustomTableColumns([
-            Tables\Columns\TextColumn::make('id')
+            TextColumn::make('id')
                 ->sortable(),
-            Tables\Columns\TextColumn::make('name')
+            TextColumn::make('name')
                 ->searchable()
                 ->sortable(),
-            Tables\Columns\TextColumn::make('created_at')
+            TextColumn::make('created_at')
                 ->dateTime()
                 ->sortable(),
         ]))
@@ -189,16 +203,16 @@ public static function table(Table $table): Table
 Returns only the columns generated from custom fields, giving you flexibility to position them precisely where needed.
 
 ```php
-// Example: Creating a table with standard columns and a specific section for custom fields
+use Filament\Tables\Columns\TextColumn;
+
+// Example: Creating a table with standard columns and custom columns positioned precisely
 return $table
     ->columns([
-        Tables\Columns\TextColumn::make('id')->sortable(),
-        Tables\Columns\TextColumn::make('name')->searchable(),
-        ...
-        // Group of custom columns with a descriptive heading
-        Tables\Columns\Layout\Group::make()
-            ->columns(static::getCustomTableColumns())
-            ->heading('Custom Attributes')
+        TextColumn::make('id')->sortable(),
+        TextColumn::make('name')->searchable(),
+
+        // Custom field columns, placed exactly where you want them
+        ...static::getCustomTableColumns(),
     ]);
 ```
 
@@ -207,18 +221,23 @@ return $table
 Enhances table filtering capabilities by combining standard filters with those generated from filterable custom fields.
 
 ```php
+use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+
 // Example: Adding custom field filters to standard filters
 public static function table(Table $table): Table
 {
     return $table
         ->columns([...])
         ->filters(static::mergeCustomTableFilters([
-            Tables\Filters\SelectFilter::make('status')
+            SelectFilter::make('status')
                 ->options(Status::class),
-            Tables\Filters\Filter::make('created_at')
+            Filter::make('created_at')
                 ->form([
-                    Forms\Components\DatePicker::make('created_from'),
-                    Forms\Components\DatePicker::make('created_until'),
+                    DatePicker::make('created_from'),
+                    DatePicker::make('created_until'),
                 ]),
         ]));
 }
@@ -243,21 +262,25 @@ Returns only the query constraints derived from custom fields, providing granula
 Combines standard infolist entries with those generated from custom fields configured for infolist display.
 
 ```php
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+
 // Example: Incorporating custom fields into a view page
-public static function infolist(Infolist $infolist): Infolist
+public static function infolist(Schema $schema): Schema
 {
-    return $infolist
-        ->schema([
-            Infolists\Components\Section::make('Basic Information')
+    return $schema
+        ->components([
+            Section::make('Basic Information')
                 ->schema([
-                    Infolists\Components\TextEntry::make('name'),
-                    Infolists\Components\TextEntry::make('email'),
-                    Infolists\Components\TextEntry::make('phone'),
+                    TextEntry::make('name'),
+                    TextEntry::make('email'),
+                    TextEntry::make('phone'),
                 ]),
 
-            Infolists\Components\Section::make('Additional Information')
+            Section::make('Additional Information')
                 ->schema(static::mergeCustomInfolistEntries([
-                    Infolists\Components\TextEntry::make('notes')
+                    TextEntry::make('notes')
                         ->columnSpan(2),
                 ]))
                 ->columns(2),
@@ -293,7 +316,7 @@ This ensures that custom fields are available whether you're retrieving an exist
 The trait automatically adds custom field codes to the model's `$fillable` property, ensuring they can be mass-assigned through forms:
 
 ```php
-protected function mergeFillable(array $attributes): void
+public function mergeFillable(array $attributes): void
 {
     $this->fillable = array_unique(array_merge($this->fillable, $attributes));
 }
@@ -322,21 +345,24 @@ This ensures that data is properly formatted when retrieved from and saved to th
 Control which custom fields appear in different contexts:
 
 ```php
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+
 // Only show specific custom fields in a create form
-public static function form(Form $form): Form
+public static function form(Schema $schema): Schema
 {
-    return $form
-        ->schema([
+    return $schema
+        ->components([
             // Standard fields...
 
-            Forms\Components\Section::make('Custom Attributes')
+            Section::make('Custom Attributes')
                 ->schema(
-                    $form->getOperation() === 'create'
+                    $schema->getOperation() === 'create'
                         ? static::getCustomFormFields(['priority', 'source', 'category'])
                         : static::getCustomFormFields()
                 )
                 ->columns(2)
-                ->collapsed($form->getOperation() !== 'create'),
+                ->collapsed($schema->getOperation() !== 'create'),
         ]);
 }
 ```
@@ -346,18 +372,20 @@ public static function form(Form $form): Form
 Group custom fields by their purpose or category:
 
 ```php
+use Filament\Schemas\Components\Section;
+
 // Group custom fields by internal purpose
 $contactFields = static::getCustomFormFields(['phone_type', 'alternate_email', 'preferred_contact_method']);
 $businessFields = static::getCustomFormFields(['industry', 'company_size', 'annual_revenue']);
 
-return $form->schema([
-    Forms\Components\Section::make('Contact Information')
+return $schema->components([
+    Section::make('Contact Information')
         ->schema(array_merge([
             // Standard contact fields
         ], $contactFields))
         ->columns(2),
 
-    Forms\Components\Section::make('Business Information')
+    Section::make('Business Information')
         ->schema(array_merge([
             // Standard business fields
         ], $businessFields))
@@ -383,4 +411,4 @@ return $form->schema([
 
 8. **Regular Auditing**: Periodically review unused or redundant custom fields to maintain system efficiency and user experience clarity.
 
-By leveraging these sophisticated methods, Aureus ERP provides an enterprise-grade solution for extending your data model dynamically, allowing your system to evolve with your business requirements without requiring database schema modifications or developer intervention.
+By leveraging these sophisticated methods, AureusERP provides an enterprise-grade solution for extending your data model dynamically, allowing your system to evolve with your business requirements without requiring database schema modifications or developer intervention.

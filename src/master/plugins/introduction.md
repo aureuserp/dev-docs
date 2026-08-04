@@ -1,55 +1,63 @@
 # Introduction
 
-Aureus ERP employs a plugin-based architecture that treats each business functionality as a standalone module. This approach provides superior modularity, enabling developers to extend the system without modifying core functionality.
+AureusERP employs a plugin-based architecture that treats each business functionality as a standalone module. This approach provides superior modularity, enabling developers to extend the system without modifying core functionality.
 
 ## Creating a New Plugin
 
 ### Plugin Directory Structure
 
-Begin by creating a new directory in the `plugins/` folder with your plugin's name using kebab-case:
+Plugins live in the `plugins/` folder, grouped by vendor. Begin by creating a new directory under your vendor folder with your plugin's name using kebab-case:
 
 ```
 plugins/
-├── my-new-plugin/
+├── webkul/
+│   ├── my-new-plugin/
 ```
+
+The root `composer.json` uses the `wikimedia/composer-merge-plugin` package to merge every `plugins/*/*/composer.json`, so any plugin placed at this depth is picked up automatically.
 
 ### Setting Up the Basic Structure
 
-Every plugin must adhere to the following structure (using a blog plugin as an example):
+Every plugin must adhere to the following structure (using the blog plugin as an example):
 
 ```
 +-- plugins
-|   +-- blogs
-|   |   +-- database
-|   |   |   +-- factories                     # Factory classes for generating test data
-|   |   |   +-- migrations                    # Plugin-specific database migrations
-|   |   |   +-- seeders                       # Plugin-specific database seeders
-|   |   |   +-- settings                      # Plugin-specific database settings
-|   |   +-- resources
-|   |   |   +-- views                         # Blade views for UI templates
-|   |   |   +-- lang                          # Language translations
-|   |   +-- src
-|   |   |   +-- Filament
-|   |   |   |   +-- Clusters
-|   |   |   |   +-- Resources
-|   |   |   |   +-- Pages
-|   |   |   +-- Livewire                      # Livewire components for UI interactivity
-|   |   |   +-- Models                        # Plugin-specific Eloquent models
-|   |   |   +-- Policies                      # Authorization policies for plugin entities
-|   |   |   +-- Routes
-|   |   |   |   +-- web.php                   # Web routes (if needed)
-|   |   |   |   +-- api.php                   # API routes (if needed)
-|   |   |   +-- Services                      # Business logic encapsulated in service classes
-|   |   |   +-- BlogPlugin.php                # Registers Filament-related stuff
-|   |   |   +-- BlogServiceProvider.php       # Handles migrations, settings, install & uninstall
-|   |   +-- .gitignore                        # Github related file.
-|   |   +-- config                            # Plugin-specific configuration files (if needed)
-|   |   +-- package.json                      # Package.json
-|   |   +-- postcss.config.js                 # Postcss config
-|   |   +-- tailwind.config.js                # Tailwind css config
-|   |   +-- tests                             # Unit and feature tests
-|   |   +-- composer.json                     # Plugin's composer dependencies
+|   +-- webkul
+|   |   +-- blogs
+|   |   |   +-- config
+|   |   |   |   +-- filament-shield.php           # Filament Shield permission configuration
+|   |   |   +-- database
+|   |   |   |   +-- factories                     # Factory classes for generating test data
+|   |   |   |   +-- migrations                    # Plugin-specific database migrations
+|   |   |   |   +-- seeders                       # Plugin-specific database seeders (if needed)
+|   |   |   |   +-- settings                      # Plugin-specific settings migrations (if needed)
+|   |   |   +-- resources
+|   |   |   |   +-- css                           # Source CSS assets
+|   |   |   |   +-- dist                          # Compiled assets registered with Filament
+|   |   |   |   +-- lang                          # Language translations
+|   |   |   |   +-- views                         # Blade views for UI templates
+|   |   |   +-- routes                            # Route files (if needed)
+|   |   |   |   +-- web.php                       # Web routes
+|   |   |   |   +-- api.php                       # API routes
+|   |   |   +-- src
+|   |   |   |   +-- Filament
+|   |   |   |   |   +-- Admin                     # Admin panel resources, pages, clusters & widgets
+|   |   |   |   |   +-- Customer                  # Customer panel resources, pages, clusters & widgets
+|   |   |   |   +-- Models                        # Plugin-specific Eloquent models
+|   |   |   |   +-- Policies                      # Authorization policies for plugin entities
+|   |   |   |   +-- BlogPlugin.php                # Registers Filament-related stuff
+|   |   |   |   +-- BlogServiceProvider.php       # Handles migrations, settings, install & uninstall
+|   |   |   +-- tests                             # Unit and feature tests (if needed)
+|   |   |   +-- .gitignore                        # Github related file.
+|   |   |   +-- composer.json                     # Plugin's composer dependencies
+|   |   |   +-- package.json                      # Package.json
+|   |   |   +-- postcss.config.js                 # Postcss config
+|   |   |   +-- tailwind.config.js                # Tailwind css config
 ```
+
+::: tip
+Plugins that serve only the admin panel (for example the `maintenance` plugin) skip the `Admin`/`Customer` split and place their components directly in `src/Filament/Resources`, `src/Filament/Clusters`, and `src/Filament/Widgets`.
+:::
 
 ### Configuring composer.json
 
@@ -58,10 +66,10 @@ Create a `composer.json` file with the following structure:
 ```json
 {
   "name": "webkul/blogs",
-  "description": "Blog posts management for Aureus ERP",
+  "description": "Manage blogs",
   "authors": [
     {
-      "name": "Aureus ERP",
+      "name": "AureusERP",
       "email": "support@aureuserp.in"
     }
   ],

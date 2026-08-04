@@ -2,7 +2,7 @@
 
 Filament PHP resources are a core concept used to manage database models in an admin panel. They provide an abstraction layer over CRUD (Create, Read, Update, Delete) operations and allow developers to define how models are managed within the Filament admin panel.
 
-## **What is a Resource in Aureus ERP?**
+## **What is a Resource in AureusERP?**
 
 A **Resource** in Filament PHP is a class that represents a database model inside the Filament admin panel. It defines how records of that model are displayed, created, updated, and deleted.
 
@@ -20,7 +20,7 @@ To generate a Filament resource, use the following command:
 php artisan make:filament-resource Post --view --model-namespace=Webkul\\Path\\Models
 ```
 
-for more information visit [Filament Official Documentation](https://filamentphp.com/docs/3.x/panels/resources/getting-started#creating-a-resource)
+for more information visit [Filament Official Documentation](https://filamentphp.com/docs/5.x/resources/overview#creating-a-resource)
 
 Upon execution, the command prompts you to select a panel:
 
@@ -54,7 +54,7 @@ Once generated, the resource files will be located in:
   - `EditPost.php`
   - `ViewPost.php` (if enabled)
 
-For more detailed documentation, refer to the official [Filament PHP Documentation](https://filamentphp.com/docs/3.x/panels/resources/getting-started).
+For more detailed documentation, refer to the official [Filament PHP Documentation](https://filamentphp.com/docs/5.x/resources/overview).
 
 ## **Anatomy of a Filament Resource**
 
@@ -74,80 +74,98 @@ The main resource file defines:
 
 namespace Webkul\Blog\Filament\Admin\Resources;
 
+use BackedEnum;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Forms;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use UnitEnum;
+use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages\CreatePost;
+use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages\EditPost;
+use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages\ListPosts;
+use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages\ViewPost;
 use Webkul\Blog\Models\Post;
-use Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
+use Webkul\Support\Enums\NavigationGroup;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-post';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Blog';
-
-    public static function form(Form $form): Form
+    public static function getNavigationGroup(): string|UnitEnum
     {
-        return $form->schema([
-            Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('slug')
-                ->required()
-                ->unique(Post::class, 'slug'),
-        ]);
+        return NavigationGroup::Website;
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('title')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('slug')
+                    ->required()
+                    ->unique(Post::class, 'slug', ignoreRecord: true),
+            ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('slug')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('title')->searchable(),
+                TextColumn::make('slug')->searchable(),
+                TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
-            Infolists\Components\TextEntry::make('name')
-                ->placeholder('—'),
-            Infolists\Components\TextEntry::make('slug')
-                ->placeholder('—'),
-        ]);
+        return $schema
+            ->components([
+                TextEntry::make('title')
+                    ->placeholder('—'),
+                TextEntry::make('slug')
+                    ->placeholder('—'),
+            ]);
     }
 
     public static function getRelations(): array
     {
-        return [
-            // Define relationships like comments, tags etc.
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index'  => Pages\ListPosts::route('/'),
-            'create' => Pages\CreatePost::route('/create'),
-            'edit'   => Pages\EditPost::route('/{record}/edit'),
-            'view'   => Pages\ViewPost::route('/{record}'),
+            'index'  => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'view'   => ViewPost::route('/{record}'),
+            'edit'   => EditPost::route('/{record}/edit'),
         ];
     }
 }
 ```
+
+A few things to note about the current APIs used above:
+
+- Both `form()` and `infolist()` receive and return a `Filament\Schemas\Schema` object, and components are registered with `->components([...])`.
+- Layout components such as `Group` and `Section` live under `Filament\Schemas\Components`, while fields (`TextInput`, `Select`, etc.) remain under `Filament\Forms\Components` and entries (`TextEntry`, `ImageEntry`, etc.) under `Filament\Infolists\Components`.
+- All actions (row actions, bulk actions, page actions) are unified under the `Filament\Actions` namespace. Row actions are registered with `->recordActions([...])` and bulk actions with `->toolbarActions([...])` on the table.
 
 For more advanced configurations and customizations, refer to the official Filament documentation. 🚀
 
@@ -234,17 +252,28 @@ class ViewPost extends ViewRecord
 You can enable global search for a resource:
 
 ```php
-protected static ?string $recordTitleAttribute = 'name';
+protected static ?string $recordTitleAttribute = 'title';
 
 public static function getGloballySearchableAttributes(): array
 {
-    return ['name', 'slug'];
+    return ['title', 'author.name'];
+}
+```
+
+You can also add extra details to each global search result (`Model` here is `Illuminate\Database\Eloquent\Model`):
+
+```php
+public static function getGlobalSearchResultDetails(Model $record): array
+{
+    return [
+        __('Author') => $record->author?->name ?? '—',
+    ];
 }
 ```
 
 ### **Relationships**
 
-If a post has many posts:
+If a post has many comments:
 
 ```php
 public static function getRelations(): array
@@ -263,7 +292,6 @@ And create a `CommentsRelationManager` class inside **Webkul\Blog\Filament\Admin
 namespace Webkul\Blog\Filament\Admin\Resources\PostResource\RelationManagers;
 
 use Filament\Resources\RelationManagers\RelationManager;
-use Webkul\Employee\Traits\Resources\Employee\EmployeeSkillRelation;
 
 class CommentsRelationManager extends RelationManager
 {
@@ -271,5 +299,4 @@ class CommentsRelationManager extends RelationManager
 
     protected static ?string $title = 'Comments';
 }
-
 ```

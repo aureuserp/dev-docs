@@ -1,6 +1,6 @@
 # Models
 
-In Aureus ERP, Laravel models represent database tables and handle the business logic of an application. FilamentPHP extends Laravel's model system by integrating seamlessly with Filament resources, forms, tables, and actions.
+In AureusERP, Laravel models represent database tables and handle the business logic of an application. FilamentPHP extends Laravel's model system by integrating seamlessly with Filament resources, forms, tables, and actions.
 
 ## Key Features of Laravel Models in FilamentPHP:
 
@@ -10,9 +10,9 @@ In Aureus ERP, Laravel models represent database tables and handle the business 
 4. **Accessors & Mutators**: Models provide custom accessors (e.g., `getImageUrlAttribute`) to format data.
 5. **Factories**: Laravel provides model factories to generate dummy data for testing.
 
-## Model Directory Structure in Aureus ERP
+## Model Directory Structure in AureusERP
 
-Aureus ERP follows a modular structure where each module (plugin) has its own models. The `Post` model resides in the **Blog Module**, and its directory structure is:
+AureusERP follows a modular structure where each module (plugin) has its own models. The `Post` model resides in the **Blog Module**, and its directory structure is:
 
 ```
 +-- plugins
@@ -35,7 +35,11 @@ Each module contains models inside the `Models` directory, migrations inside `bl
 
 ## Post Model (`plugins/webkul/blogs/src/Models/Post.php`)
 
-The `Post` model represents blog posts in the system and interacts with the `blogs_posts` database table.
+The `Post` model lives in the `Webkul\Blog\Models` namespace, represents blog posts in the system, and interacts with the `blogs_posts` database table:
+
+```php
+protected $table = 'blogs_posts';
+```
 
 ### Key Attributes
 

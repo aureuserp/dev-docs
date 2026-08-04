@@ -1,6 +1,6 @@
-# Aureus Erp Documentation
+# AureusERP Documentation
 
-You can find the online version of the Aureus Erp documentation at [https://devdocs.aureuserp.com](https://devdocs.aureuserp.com).
+You can find the online version of the AureusERP documentation at [https://devdocs.aureuserp.com](https://devdocs.aureuserp.com).
 
 ## Contribution guide
 
@@ -10,7 +10,7 @@ For contributing to the docs, you first need to set up the project,
 
 - Clone your fork.
 
-- Follow the [Install Dependencies](#Install-dependencies) section.
+- Follow the [Install Dependencies](#install-dependencies) section.
 
 Make sure your PR follows all these points,
 

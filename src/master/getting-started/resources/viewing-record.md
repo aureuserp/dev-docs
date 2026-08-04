@@ -1,12 +1,14 @@
 # **Viewing Records**
 
-When viewing record in Aureus ERP using Filament, you may need to customize the displayed data and allow users to perform actions like publish and unpublish post status or deleting a post. Filament provides the `ViewRecord` class to handle viewing individual records.
+When viewing record in AureusERP using Filament, you may need to customize the displayed data and allow users to perform actions like publish and unpublish post status or deleting a post. Filament provides the `ViewRecord` class to handle viewing individual records.
 
 This class allows you to:
 
-- **Display post details** in a structured manner.
-- **Allow users to publish and unpublish post labels** in different formats.
+- **Display post details** in a structured manner, using the resource's `infolist()` schema.
+- **Allow users to publish and unpublish posts** directly from the view page.
 - **Provide an option to delete a post** with success notifications.
+
+As of v1.5.0, many resources' view pages mirror their edit pages' header actions, so users can perform state changes without switching to edit mode.
 
 ## **Usage Example**
 
@@ -20,35 +22,39 @@ This links the `ViewPost` class to the `PostResource`.
 
 ## **Actions Available in View Mode**
 
+All Filament actions below are imported from the unified `Filament\Actions` namespace; plugin-provided actions like `ChatterAction` keep their own namespaces.
+
 ### **1. Chatter Action**
 
-Allows users to discuss post details within the application.
+Allows users to discuss post details within the application. The `ChatterAction` class is imported from `Webkul\Chatter\Filament\Actions\ChatterAction`.
 
 ```php
-ChatterAction::make()->setResource(static::$resource),
+ChatterAction::make()
+    ->resource($this->getResource()),
 ```
 
-### **2. Publish and Unpublish Actions**
+### **2. Publish and Draft Actions**
 
-Allows users to update post status to publish and unpublish.
+Allows users to publish a post or move it back to draft.
 
 ```php
-Actions\Action::make('publish')
+Action::make('publish')
     ->label(__('Publish'))
-    ->color('primary')
-    ->icon('heroicon-o-check-badge')
-    ->visible(fn($record) => $record->status == PostStatus::UNPUBLISHED->value)
-    ->action(function ($record) {
-        $record->update(['status' => PostStatus::PUBLISHED->value])
-    }),
-Actions\Action::make('un_publish')
-    ->label(__('Unpublish'))
-    ->color('primary')
-    ->icon('heroicon-o-x-circle')
-    ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
-    ->action(function ($record) {
-        $record->update(['status' => PostStatus::UNPUBLISHED->value])
-    }),
+    ->icon('heroicon-o-check-circle')
+    ->action(function (Post $record) {
+        $record->update([
+            'published_at' => now(),
+            'is_published' => true,
+        ]);
+    })
+    ->visible(fn (Post $record) => ! $record->is_published),
+Action::make('draft')
+    ->label(__('Move to draft'))
+    ->icon('heroicon-o-archive-box')
+    ->action(function (Post $record) {
+        $record->update(['is_published' => false]);
+    })
+    ->visible(fn (Post $record) => $record->is_published),
 ```
 
 ### **3. Delete Action**
@@ -56,7 +62,7 @@ Actions\Action::make('un_publish')
 Allows users to delete the post with a success notification.
 
 ```php
-Actions\DeleteAction::make()
+DeleteAction::make()
     ->successNotification(
         Notification::make()
             ->success()
@@ -65,52 +71,47 @@ Actions\DeleteAction::make()
     ),
 ```
 
-## **Final `ViewPost` Implementation**
+## **Extended `ViewPost` Example**
+
+The actual `ViewPost` page in the blogs plugin defines only the delete action; this extended example adds the publish and draft actions to show how a view page can mirror its edit page.
 
 ```php
 <?php
 
-namespace Webkul\Blog\Filament\Resources\PostResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
-use Barryvdh\DomPDF\Facade\Pdf;
-use Filament\Actions;
-use Filament\Forms;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
-use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Pages\ViewRecord;
-use Webkul\Chatter\Filament\Actions\ChatterAction;
-use Webkul\Blog\Filament\Resources\PostResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
+use Webkul\Blog\Models\Post;
 
 class ViewPost extends ViewRecord
 {
     protected static string $resource = PostResource::class;
 
-    public function getSubNavigationPosition(): SubNavigationPosition
-    {
-        return SubNavigationPosition::Top;
-    }
-
     protected function getHeaderActions(): array
     {
         return [
-            ChatterAction::make()->setResource(static::$resource),
-            Actions\Action::make('publish')
+            Action::make('publish')
                 ->label(__('Publish'))
-                ->color('primary')
-                ->icon('heroicon-o-check-badge')
-                ->visible(fn($record) => $record->status == PostStatus::UNPUBLISHED->value)
-                ->action(function ($record) {
-                    $record->update(['status' => PostStatus::PUBLISHED->value])
-                }),
-            Actions\Action::make('un_publish')
-                ->label(__('Unpublish'))
-                ->color('primary')
-                ->icon('heroicon-o-x-circle')
-                ->visible(fn($record) => $record->status == PostStatus::PUBLISHED->value)
-                ->action(function ($record) {
-                    $record->update(['status' => PostStatus::UNPUBLISHED->value])
-                }),
-            Actions\DeleteAction::make()
+                ->icon('heroicon-o-check-circle')
+                ->action(function (Post $record) {
+                    $record->update([
+                        'published_at' => now(),
+                        'is_published' => true,
+                    ]);
+                })
+                ->visible(fn (Post $record) => ! $record->is_published),
+            Action::make('draft')
+                ->label(__('Move to draft'))
+                ->icon('heroicon-o-archive-box')
+                ->action(function (Post $record) {
+                    $record->update(['is_published' => false]);
+                })
+                ->visible(fn (Post $record) => $record->is_published),
+            DeleteAction::make()
                 ->successNotification(
                     Notification::make()
                         ->success()
@@ -124,10 +125,9 @@ class ViewPost extends ViewRecord
 
 ## **Explanation**
 
-- **Handles Post Viewing**: Displays post details in a structured format.
-- **Publish and Unpublished Post Feature**: Allows users to publish and unpublished post status.
+- **Handles Post Viewing**: Displays post details in a structured format using the resource's infolist schema.
+- **Publish and Draft Feature**: Allows users to publish a post or move it back to draft, mirroring the edit page's header actions.
 - **Delete Post Feature**: Provides an option to delete a post with notifications.
-- **Chatter Integration**: Enables discussion around the post.
-- **Navigation Position**: Places the page navigation at the top.
+- **Chatter Integration**: Enables discussion around the record on resources that support it.
 
-For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/3.x/panels/resources/viewing-records)**. 🚀
+For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/5.x/resources/viewing-records)**. 🚀

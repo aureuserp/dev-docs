@@ -1,12 +1,12 @@
 # Overview
 
-The **Table Views** is a powerful feature in Aureus ERP that enhances data filtering and organization capabilities. It provides advanced customization options for table filters throughout the application, allowing users to create, save, and manage personalized views of tabular data.
+The **Table Views** is a powerful feature in AureusERP that enhances data filtering and organization capabilities. It provides advanced customization options for table filters throughout the application, allowing users to create, save, and manage personalized views of tabular data.
 
 ## Core Components
 
 ### PresetView Class
 
-The `PresetView` class extends Filament's `Tab` component and serves as the foundation for creating predefined table views. It provides functionality for creating customizable, savable views with various properties.
+The `PresetView` class extends Filament's `Tab` schema component (`Filament\Schemas\Components\Tabs\Tab`) and serves as the foundation for creating predefined table views. It provides functionality for creating customizable, savable views with various properties.
 
 ```php
 namespace Webkul\TableViews\Filament\Components;
@@ -32,7 +32,7 @@ public function color(string|Closure|null $color): static
 public function favorite(bool|Closure $condition = true): static
 
 // Set as the default view
-public function default(bool|Closure $condition = true): static
+public function setAsDefault(bool|Closure $condition = true): static
 
 // Check if view is set as default
 public function isDefault(): bool
@@ -44,6 +44,9 @@ public function isFavorite(string|int|null $id = null): bool
 public function isEditable(): bool
 public function isReplaceable(): bool
 public function isDeletable(): bool
+
+// Icon shown next to the view to indicate its visibility
+public function getVisibilityIcon(): string
 ```
 
 ## Saved View System
@@ -60,18 +63,18 @@ namespace Webkul\TableViews\Filament\Components;
 
 ```php
 // Associate with a TableView model
-public function model(TableView $model): static
+public function model(Model|array|string|Closure|null $model = null): static
 
 // Get the associated model
-public function getModel(): TableView
+public function getModel(): ?string
 
 // Check favorite status
 public function isFavorite(string|int|null $id = null): bool
 
-// Check public visibility
+// Check public visibility (reads the underlying record)
 public function isPublic(): bool
 
-// Permission checks
+// Permission checks (the view owner is resolved from the record's user_id)
 public function isEditable(): bool
 public function isReplaceable(): bool
 public function isDeletable(): bool
@@ -93,25 +96,42 @@ When applied to a resource page, this trait:
 
 ## Implementation Example
 
-The `ListBlogs` class demonstrates how to implement table views in a resource page:
+The `ListPosts` class from the Blog plugin demonstrates how to implement table views in a resource page:
 
 ```php
-namespace Webkul\Blog\Filament\Admin\Clusters\Blog\Resources\BlogResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 ```
 
-This class uses the `HasTableViews` trait and defines multiple preset views for the Blogs table:
+This class uses the `HasTableViews` trait and defines multiple preset views for the Posts table:
 
 ```php
-public function getPresetTableViews(): array
-{
-    return [
-        'my_posts' => PresetView::make(__('My Posts'))
-            ->icon('heroicon-o-user')
-            ->favorite()
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('user_id', Auth::id())),
+use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
+use Webkul\TableViews\Filament\Components\PresetView;
+use Webkul\TableViews\Filament\Concerns\HasTableViews;
 
-        // Additional views defined...
-    ];
+class ListPosts extends ListRecords
+{
+    use HasTableViews;
+
+    protected static string $resource = PostResource::class;
+
+    public function getPresetTableViews(): array
+    {
+        return [
+            'my_posts' => PresetView::make(__('My Posts'))
+                ->icon('heroicon-s-user')
+                ->favorite()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('author_id', Auth::id())),
+
+            'archived' => PresetView::make(__('Archived'))
+                ->icon('heroicon-s-archive-box')
+                ->favorite()
+                ->modifyQueryUsing(fn (Builder $query) => $query->onlyTrashed()),
+        ];
+    }
 }
 ```
 
@@ -125,13 +145,12 @@ Each preset view can modify the underlying query using the `modifyQueryUsing` me
 
 ## User Favorites System
 
-The system includes a favorites mechanism through the `TableViewFavorite` model, which stores user preferences for views:
+The system includes a favorites mechanism through the `TableViewFavorite` model, which stores user preferences for views. The `PresetView` component caches the current user's favorites and checks them when rendering:
 
 ```php
 public function isFavorite(string|int|null $id = null): bool
 {
-    $tableViewFavorite = TableViewFavorite::query()
-        ->where('user_id', auth()->id())
+    $tableViewFavorite = $this->getCachedFavoriteTableViews()
         ->where('view_type', 'preset')
         ->where('view_key', $id)
         ->first();
@@ -153,7 +172,7 @@ Preset views can include icons for better visual recognition:
 The example shows proper use of translation strings for view labels:
 
 ```php
-PresetView::make(__('blogs::filament/admin/clusters/blogs/resources/posts/pages/list-posts.tabs.my-posts'))
+PresetView::make(__('blogs::filament/admin/resources/post/pages/list-posts.tabs.my-posts'))
 ```
 
 ## **Example Output of Table View Filters**
@@ -194,4 +213,4 @@ The Table Views system can be extended with:
 - Export functionality for specific views
 - Scheduled or automated view generation
 
-By leveraging Table Views in Aureus ERP, you can create a more personalized and efficient data browsing experience for your users, allowing them to quickly access the specific data subsets they need.
+By leveraging Table Views in AureusERP, you can create a more personalized and efficient data browsing experience for your users, allowing them to quickly access the specific data subsets they need.

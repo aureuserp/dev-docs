@@ -31,7 +31,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:title',
-        content: 'Aureus ERP - Open Source ERP Platform'
+        content: 'AureusERP - Open Source ERP Platform'
       }
     ],
     [
@@ -50,7 +50,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:site_name',
-        content: 'Aureus ERP - Open Source ERP Platform'
+        content: 'AureusERP - Open Source ERP Platform'
       }
     ]
   ],
@@ -67,7 +67,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       // { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
       {
-        text: 'Contribute To Aureus ERP',
+        text: 'Contribute To AureusERP',
         link: 'https://github.com/aureuserp/aureuserp'
       },
       { text: 'Contact Us', link: 'https://aureuserp.com/en/contacts/' },

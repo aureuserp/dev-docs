@@ -40,6 +40,15 @@ features:
   - icon: 🎓
     title: Recruitment System
     details: Manage job postings, applications, and hiring workflows to find the right candidates.
+  - icon: 🏬
+    title: Multi-Company Support
+    details: Run multiple companies from a single installation with company scoping and a built-in company switcher.
+  - icon: 🛠️
+    title: Maintenance Management
+    details: Track equipment, schedule maintenance requests, and keep your assets running smoothly.
+  - icon: 📷
+    title: Barcode Scanning
+    details: Speed up inventory operations with native barcode scanning support.
 ---
 
 <script setup>
