@@ -19,36 +19,76 @@ features:
   - icon: 📊
     title: Project Management System
     details: Plan, track, and manage your projects efficiently with powerful collaboration tools.
+    link: /master/architecture/plugins.md#projects
   - icon: 👥
     title: Contacts Management
     details: Easily store, organize, and access all your business contacts in one place.
+    link: /master/architecture/plugins.md#contacts
   - icon: 🛒
     title: Purchase Order System
     details: Create, manage, and track purchase orders to streamline your procurement process.
+    link: /master/architecture/plugins.md#purchases
   - icon: 👨‍💼
     title: Employee Management
     details: Efficiently manage employee records, roles, and performance from a central dashboard.
+    link: /master/architecture/plugins.md#employees
   - icon: 💼
     title: Job Position Management
     details: Define job roles, assign responsibilities, and track position availability with ease.
+    link: /master/architecture/plugins.md#projects
   - icon: 📦
-    title: Inventory Management
-    details: Monitor stock levels, manage product movement, and reduce inventory errors.
-  - icon: 🏢
-    title: Warehouse Management
-    details: Control warehouse stock, optimize space, and track inventory in real time.
+    title: Inventory & Warehouse Management
+    details: Monitor stock levels, manage product movement, and track warehouse inventory in real time.
+    link: /master/architecture/plugins.md#inventory
   - icon: 🎓
     title: Recruitment System
     details: Manage job postings, applications, and hiring workflows to find the right candidates.
+    link: /master/architecture/plugins.md#recruitments
+  - icon: 🏭
+    title: Manufacturing Management
+    details: Manage production with bills of materials, manufacturing orders, work orders, and work centers.
+    link: /master/architecture/plugins.md#manufacturing
+  - icon: 🧮
+    title: Accounting
+    details: Handle journal entries, financial reports, period closing, and accounting workflows.
+    link: /master/architecture/plugins.md#accounting-main-functional-plugin
+  - icon: 🧾
+    title: Invoices
+    details: Generate and manage invoices with recurring billing, multi-currency, and tax support.
+    link: /master/architecture/plugins.md#invoices
+  - icon: 💹
+    title: Sales Management
+    details: Manage the sales pipeline from quotations and orders through to invoicing.
+    link: /master/architecture/plugins.md#sales
+  - icon: 🌴
+    title: Time Off
+    details: Manage employee leave requests, approvals, balances, and leave policies.
+    link: /master/architecture/plugins.md#time-off
+  - icon: 🛠️
+    title: Maintenance
+    details: Plan and track equipment maintenance with preventive/corrective requests, teams, stages, and a calendar view.
+    link: /master/architecture/plugins.md#maintenance
+  - icon: 🌐
+    title: Website & Blogs
+    details: Manage company website content and publish blog posts with a CMS, categories, tags, and SEO tools.
+    link: /master/architecture/plugins.md#website
+  - icon: 💬
+    title: Chatter Collaboration
+    details: Collaborate in-app with followers, logged notes, scheduled activities, and email notifications.
+    link: /master/architecture/plugins.md#chatter
+  - icon: 🔐
+    title: Security & Access Control
+    details: Manage roles, permissions, and customizable security policies for data protection.
+    link: /master/architecture/plugins.md#security
   - icon: 🏬
     title: Multi-Company Support
     details: Run multiple companies from a single installation with company scoping and a built-in company switcher.
-  - icon: 🛠️
-    title: Maintenance Management
-    details: Track equipment, schedule maintenance requests, and keep your assets running smoothly.
+    link: /master/architecture/introduction.md#multi-company-support
   - icon: 📷
     title: Barcode Scanning
     details: Speed up inventory operations with native barcode scanning support.
+    link: /master/architecture/plugins.md#barcode
+
 ---
 
 <script setup>

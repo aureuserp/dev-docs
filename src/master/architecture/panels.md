@@ -82,6 +82,20 @@ The panel also uses a custom global search provider:
 
 where `GlobalSearchProvider` is `Webkul\Support\GlobalSearchProvider`. In addition, the Support plugin injects two UI components into the admin panel via render hooks: a **company switcher** (rendered before the global search, listing the companies the user is allowed to act in) and the **quick navigation** command palette (opened with `Ctrl+K` / `Cmd+K`).
 
+### User Menu Configuration
+
+```php
+->userMenuItems([
+    'profile' => Action::make('profile')
+        ->label(fn() => filament()->auth()->user()?->name)
+        ->url(fn(): string => Profile::getUrl()),
+])
+```
+
+- `userMenuItems()`: Adds custom items to the user menu in the top-right corner
+- Creates a profile link that displays the user's name and navigates to the profile page
+
+### Navigation Structure
 ## How Menus Are Registered
 
 Menus are registered through **Filament Resources, Pages, Clusters, and Widgets** provided by each plugin.

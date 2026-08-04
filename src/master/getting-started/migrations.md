@@ -105,6 +105,7 @@ class BlogServiceProvider extends PackageServiceProvider
 ## **Understanding Migration Registration**
 
 1. **`hasMigrations([...])`**
+
    - This method registers the migration file inside the plugin.
    - The filename should match the migration file placed in `database/migrations/`.
    - Example: `'2025_03_06_094011_create_blogs_posts_table'`

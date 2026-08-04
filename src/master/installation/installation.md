@@ -101,7 +101,17 @@ During the installation, you will be prompted to provide **Admin Login Credentia
 If AureusERP is already installed, running `php artisan erp:install` again will ask for explicit confirmation and then **wipe the database** before reinstalling. This action cannot be undone.
 :::
 
-## 8. Final Steps
+## 8. Filament Installation Notes
+
+- AureusERP uses FilamentPHP, which introduces new features and improvements.
+- Ensure your PHP version is compatible (PHP 8.3 or higher required).
+- The installation process automatically sets up Filament Shield roles and permissions.
+- Filament resources, pages, clusters, and widgets are registered separately for admin and customer panels.
+- For plugin development, follow the new Filament resource registration structure.
+- The `composer.json` includes a post-autoload-dump script that runs `php artisan filament:upgrade` to handle Filament upgrades.
+- Refer to the [FilamentPHP documentation](https://filamentphp.com/docs/5.x) for detailed information.
+
+## 9. Final Steps
 
 Once the installation is complete, you can start the development server:
 

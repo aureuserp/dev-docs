@@ -1,6 +1,10 @@
-# Core Plugin (System Plugin)
+# Plugins
 
-These plugin are essential components of the system and are installed by default:
+Plugins are the building blocks of AureusERP, encapsulating specific features and functionalities. Each plugin is designed to be modular, allowing for easy installation, removal, and customization.
+
+## Core Plugins (System Plugins)
+
+These plugins are essential components of the system and are installed by default:
 
 | Module         | Description                                       |
 | -------------- | ------------------------------------------------- |
@@ -14,9 +18,9 @@ These plugin are essential components of the system and are installed by default
 | Support        | Help desk and documentation                       |
 | Table View     | Customizable data presentation framework          |
 
-## Installable Plugin
+## Installable Plugins
 
-These plugin can be installed as needed to extend system functionality:
+These plugins can be installed as needed to extend system functionality:
 
 | Module       | Description                                  |
 | ------------ | -------------------------------------------- |
@@ -28,8 +32,8 @@ These plugin can be installed as needed to extend system functionality:
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
-| Maintenance  | Equipment and maintenance request management |
-| Manufacturing | Manufacturing orders and bill of materials management |
+| Maintenance  | Equipment maintenance management with preventive and corrective maintenance requests, teams, stages, and a calendar view |
+| Manufacturing | Production and shop-floor management with bills of materials, manufacturing orders, work orders, and work centers |
 | Payments     | Payment processing and tracking              |
 | Products     | Product catalog and management               |
 | Projects     | Project planning and management              |
@@ -39,6 +43,8 @@ These plugin can be installed as needed to extend system functionality:
 | Time Off     | Leave management and tracking                |
 | Timesheets   | Employee work hour tracking                  |
 | Website      | Website for customer                         |
+
+## Plugin Details
 
 ## Accounts vs Accounting
 
@@ -73,7 +79,7 @@ The **Accounts plugin does not handle business workflows directly**. Instead, it
 
 The **Accounting plugin depends on Accounts** to function correctly and uses its structures to execute business logic.
 
-## **Analytics**
+### Analytics
 
 - **Purpose**: Provides data visualization and insights for better decision-making.
 - **Key Features**:
@@ -81,7 +87,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Customizable charts and reports.
   - Supports real-time data analysis.
 
-## **Barcode**
+### Barcode
 
 - **Purpose**: Barcode-driven interface for warehouse operations.
 - **Key Features**:
@@ -89,7 +95,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Perform inventory adjustments from a dedicated lightweight interface.
   - Launched from the admin panel with its own dashboard and login.
 
-## **Blogs**
+### Blogs
 
 - **Purpose**: Manages content creation and publishing for company blogs.
 - **Key Features**:
@@ -97,7 +103,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Role-based access for authors and editors.
   - Integration with the company website module.
 
-## **Chatter**
+### Chatter
 
 - **Purpose**: Collaborative messaging system for the app.
 - **Key Features**:
@@ -105,7 +111,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Log notes, schedule activities, and send email notifications.
   - Polymorphic relationships to associate messages with any model.
 
-## **Contacts**
+### Contacts
 
 - **Purpose**: Centralized contact management system.
 - **Key Features**:
@@ -113,28 +119,28 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Integration with sales and CRM modules.
   - Custom fields support for specific business needs.
 
-## **Employees**
+### Employees
 
 - **Purpose**: Manage employee information and profiles.
 - **Key Features**:
   - Role-based permissions and hierarchy management.
   - Tracks time-offs, timesheets, and attendance.
 
-## **Fields**
+### Fields
 
 - **Purpose**: Custom field management for dynamic data capture.
 - **Key Features**:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
 
-## **Full Calendar**
+### Full Calendar
 
 - **Purpose**: Calendar infrastructure used across the system.
 - **Key Features**:
   - Calendar widgets and actions for displaying records as events.
   - Used by other plugins such as Time Off and Maintenance.
 
-## **Inventory**
+### Inventory
 
 - **Purpose**: Track and manage stock levels across warehouses.
 - **Key Features**:
@@ -142,44 +148,51 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Real-time stock updates linked to sales and purchases.
   - Integration with products and invoices.
 
-## **Invoices**
+### Invoices
 
 - **Purpose**: Generate and manage invoices for sales and services.
 - **Key Features**:
   - Supports recurring invoices and payment tracking.
   - Multi-currency and tax management.
 
-## **Maintenance**
+### Maintenance
 
-- **Purpose**: Manage equipment and maintenance operations.
+- **Purpose**: Plan, track, and execute equipment maintenance across the organization.
 - **Key Features**:
-  - Track equipment and equipment categories.
-  - Manage maintenance requests through configurable stages.
-  - Organize maintenance teams.
+  - Equipment catalog with categories for grouping assets.
+  - Preventive and corrective maintenance requests with configurable repeat schedules.
+  - Maintenance teams to assign ownership of requests.
+  - Customizable workflow stages to track request progress (e.g., New, In Progress, Repaired).
+  - Calendar widget for visualising scheduled maintenance across days, weeks, and months.
+- **Dependencies**: Uses the **Full Calendar** plugin to render the maintenance schedule.
 
-## **Manufacturing**
+### Manufacturing
 
-- **Purpose**: Manage production and manufacturing workflows.
+- **Purpose**: Manage production processes from bills of materials to finished goods on the shop floor.
 - **Key Features**:
-  - Manufacturing orders and work orders.
-  - Bills of materials and operations.
-  - Work centers, lots, and internal transfers.
+  - Bills of Materials (BoM) with components, by-products, and operations.
+  - Manufacturing Orders to plan, confirm, and track production runs.
+  - Work Orders and Work Centers for scheduling shop-floor operations and capacity.
+  - Operations and routing definitions, including productivity and loss tracking.
+  - Unbuild Orders to disassemble finished products back into components.
+  - Lot/serial tracking and tight integration with the Products and Inventory modules.
+- **Dependencies**: Requires the **Products** and **Inventory** plugins to be installed.
 
-## **Partners**
+### Partners
 
 - **Purpose**: Manage relationships with business partners.
 - **Key Features**:
   - Tracks partnerships, agreements, and contact information.
   - Integration with sales and purchases.
 
-## **Payments**
+### Payments
 
 - **Purpose**: Tracks payments and receipts for financial transactions.
 - **Key Features**:
   - Multiple payment methods (cash, bank, online).
   - Reconciliation with accounts and invoices.
 
-## **Plugin Manager**
+### Plugin Manager
 
 - **Purpose**: Manage the lifecycle of all plugins.
 - **Key Features**:
@@ -187,14 +200,14 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Provides the `<plugin-name>:install` and `<plugin-name>:uninstall` Artisan commands.
   - Plugins screen in the admin panel to install and uninstall plugins from the UI.
 
-## **Products**
+### Products
 
 - **Purpose**: Centralized product and service management.
 - **Key Features**:
   - Categorization and pricing rules.
   - Inventory tracking and integration with sales and purchases.
 
-## **Projects**
+### Projects
 
 - **Purpose**: Manage projects, tasks, and milestones.
 - **Key Features**:
@@ -202,63 +215,63 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Time tracking and resource allocation.
   - Integration with chatter for communication.
 
-## **Purchases**
+### Purchases
 
 - **Purpose**: Manage procurement and vendor relations.
 - **Key Features**:
   - Generate purchase orders and manage approvals.
   - Vendor performance tracking.
 
-## **Recruitments**
+### Recruitments
 
 - **Purpose**: Streamline the hiring process.
 - **Key Features**:
   - Tracks job applications and candidate information.
   - Customizable recruitment workflows.
 
-## **Sales**
+### Sales
 
 - **Purpose**: Manage sales processes from lead generation to invoicing.
 - **Key Features**:
   - Quotation and order management.
   - Integration with CRM and analytics.
 
-## **Security**
+### Security
 
 - **Purpose**: Manage roles, permissions, and access control.
 - **Key Features**:
   - Role-based permissions using Spatie package.
   - Customizable security policies for data protection.
 
-## **Support**
+### Support
 
 - **Purpose**: Handle customer queries and issue resolution.
 - **Key Features**:
   - Ticketing system for support requests.
   - Automated reminders and escalation rules.
 
-## **Table-Views**
+### Table Views
 
 - **Purpose**: Unified table management system for list views.
 - **Key Features**:
   - Supports column filtering and sorting.
   - Customizable data grids for each module.
 
-## **Time Off**
+### Time Off
 
 - **Purpose**: Manage employee leave requests and approvals.
 - **Key Features**:
   - Leave balance tracking and policies.
   - Integration with payroll and employee modules.
 
-## **Timesheets**
+### Timesheets
 
 - **Purpose**: Record employee working hours and activities.
 - **Key Features**:
   - Weekly and daily views for time tracking.
   - Export timesheet data for payroll.
 
-## **Website**
+### Website
 
 - **Purpose**: Manage the company's website content.
 - **Key Features**:

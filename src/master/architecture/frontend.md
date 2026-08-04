@@ -22,7 +22,7 @@ Livewire enhances the interactivity of forms, tables, and dashboards while maint
 
 ## Alpine.js
 
-[Alpine.js](https://alpinejs.dev/) is used alongside Livewire to handle lightweight frontend interactions.
+<a href="https://alpinejs.dev/" rel="nofollow external noopener noreferrer" target="_blank">Alpine.js</a> is used alongside Livewire to handle lightweight frontend interactions.
 
 - **Minimal JavaScript**: Provides a simple yet powerful way to add dynamic behavior without the overhead of a full JavaScript framework.
 - **Declarative Syntax**: Offers Vue-like reactivity in a minimal package.
@@ -31,7 +31,7 @@ Alpine.js is particularly useful for dropdowns, modals, and UI state management 
 
 ## Tailwind CSS
 
-[Tailwind CSS](https://tailwindcss.com/) is the primary styling framework, offering a **utility-first** approach that makes designing responsive and modern UIs more efficient.
+<a href="https://tailwindcss.com/" rel="nofollow external noopener noreferrer" target="_blank">Tailwind CSS</a> is the primary styling framework, offering a **utility-first** approach that makes designing responsive and modern UIs more efficient.
 
 - **Highly Customizable**: The `tailwind.config.js` file allows for complete theme customization.
 - **Performance Optimized**: Unused styles are purged in production for minimal CSS footprint.

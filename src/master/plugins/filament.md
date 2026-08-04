@@ -1,12 +1,12 @@
 # **Overview**
 
-The `Filament` directory is used to define clusters, resources, and pages within the FilamentPHP panel. This structure allows for better organization and management of different sections in the plugin.
+The `Filament` directory is used to define clusters, resources, pages, and widgets within the FilamentPHP panel. This structure allows for better organization and management of different sections in the plugin.
 
 For more details, refer to [Resources](../getting-started/resources/getting-started.md).
 
 ## **Types of Resource Registrations in the Plugin**
 
-In the `BlogPlugin`, we register resources, pages, and clusters for two main panels:
+In the `BlogPlugin`, we register resources, pages, clusters, and widgets for two main panels:
 
 1. **Admin Panel** (`Admin` directory)
 2. **Customer Panel** (`Customer` directory)
@@ -15,11 +15,13 @@ Each panel has its own directory structure for managing Filament-related compone
 
 ## **Registering Resources and Clusters**
 
-The `register` method ensures that resources, pages, and clusters are only registered if the plugin is installed. It also distinguishes between `admin` and `customer` panels, dynamically loading their respective components.
+The `register` method ensures that resources, pages, clusters, and widgets are only registered if the plugin is installed. It also distinguishes between `admin` and `customer` panels, dynamically loading their respective components.
 
 ### **Implementation in `BlogPlugin.php`**
 
 ```php
+use Filament\Panel;
+
 public function register(Panel $panel): void
 {
     if (! Package::isPluginInstalled($this->getId())) {
@@ -78,7 +80,7 @@ Here `Package` is the `Webkul\PluginManager\Package` class, whose static `isPlug
 
 ## **Directory Structure**
 
-To properly register resources, clusters, and pages, the following directory structure must be followed:
+To properly register resources, clusters, pages, and widgets, the following directory structure must be followed:
 
 ```
 +-- plugins
@@ -100,15 +102,31 @@ To properly register resources, clusters, and pages, the following directory str
 
 ## **Usage Guidelines**
 
-- **Admin Panel (`Admin` directory):**
-  - If you want to display resources and clusters in the **admin panel**, create your Filament components inside the `Admin` directory.
+### **1. Admin Panel (`Admin` directory)**
 
-- **Customer Panel (`Customer` directory):**
-  - If you want to show Filament resources and clusters in the **customer panel**, create them inside the `Customer` directory.
+If you want to display resources, clusters, pages, or widgets in the **admin panel**, create your Filament components inside the `Admin` directory.
+
+Example:
+
+```
+plugins/webkul/blogs/src/Filament/Admin/Resources/PostResource.php
+```
+
+These files are automatically discovered and registered when the admin panel is initialized.
 
 ::: tip
 Plugins that only target the admin panel (for example the `maintenance` plugin) skip the `Admin`/`Customer` split and place their components directly in `src/Filament/Resources`, `src/Filament/Clusters`, and `src/Filament/Widgets`, discovering them from those paths inside the `admin` panel check.
 :::
+
+### **2. Customer Panel (`Customer` directory)**
+
+If you want to display Filament components (resources, clusters, pages, or widgets) in the **customer panel**, create them inside the `Customer` directory.
+
+Example:
+
+```
+plugins/webkul/blogs/src/Filament/Customer/Resources/PostResource.php
+```
 
 By following this structure, AureusERP ensures clear separation between admin and customer functionalities, making the plugin more maintainable and scalable.
 
@@ -131,3 +149,20 @@ public static function getNavigationGroup(): string|\UnitEnum
 ```
 
 Use one of the existing enum cases so your plugin's navigation items appear under the correct top-level group. New groups are added as cases to the `NavigationGroup` enum in the `support` plugin.
+
+## **Best Practices**
+
+* Keep admin and customer logic isolated for cleaner code maintenance.
+* Always ensure your namespace matches the directory structure (e.g., `Webkul\Blog\Filament\Admin\Resources`).
+* Clear and rebuild caches after creating or modifying Filament components:
+
+```bash
+php artisan optimize:clear
+php artisan filament:optimize
+```
+
+* If new components don’t appear in the panel, verify that:
+
+  * The plugin is installed (`Package::isPluginInstalled()`).
+  * The directory paths in `discoverResources()` match your folder structure.
+  * The namespaces are correct and autoloaded via Composer.

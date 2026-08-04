@@ -18,7 +18,7 @@ const routes = [
       { text: 'Introduction', link: '/master/installation/introduction' },
       { text: 'Requirements', link: '/master/installation/requirements' },
       { text: 'Installation', link: '/master/installation/installation' },
-      { text: 'Docker', link: '/master/installation/docker' }
+      { text: 'Docker', link: '/master/installation/docker' },
     ]
   },
   {
@@ -141,6 +141,20 @@ const routes = [
     ]
   },
   {
+    text: 'AI Agents',
+    collapsed: false,
+    items: [
+      {
+        text: 'Agent Skills',
+        link: '/master/ai/skills'
+      },
+      {
+        text: 'MCP Plugin',
+        link: '/master/ai/mcp'
+      },
+    ]
+  },
+  {
     text: 'Digging Deeper',
     collapsed: false,
     items: [
@@ -200,6 +214,13 @@ const routes = [
           }
         ]
       }
+    ]
+  },
+  {
+    text: 'AureusERP API',
+    collapsed: false,
+    items: [
+      { text: 'Introduction', link: '/master/api-reference/index' },
     ]
   }
 ]

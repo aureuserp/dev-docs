@@ -234,4 +234,4 @@ The Inventory plugin likewise ships dashboard widgets (`OperationTypeCardWidget`
 
 ## More Information
 
-For more details, refer to the [FilamentPHP Widgets Documentation](https://filamentphp.com/docs/5.x/widgets/overview).
+For more details, refer to the [FilamentPHP Dashboard Documentation](https://filamentphp.com/docs/5.x/widgets/overview#customizing-the-dashboard-page).

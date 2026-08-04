@@ -20,7 +20,7 @@ To generate a Filament resource, use the following command:
 php artisan make:filament-resource Post --view --model-namespace=Webkul\\Path\\Models
 ```
 
-for more information visit [Filament Official Documentation](https://filamentphp.com/docs/5.x/resources/overview#creating-a-resource)
+For more information visit [Filament Official Documentation](https://filamentphp.com/docs/5.x/resources/overview#creating-a-resource)
 
 Upon execution, the command prompts you to select a panel:
 
