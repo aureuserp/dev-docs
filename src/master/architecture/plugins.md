@@ -1,20 +1,22 @@
 # Plugins
 
-Plugins are the building blocks of Aureus ERP, encapsulating specific features and functionalities. Each plugin is designed to be modular, allowing for easy installation, removal, and customization.
+Plugins are the building blocks of AureusERP, encapsulating specific features and functionalities. Each plugin is designed to be modular, allowing for easy installation, removal, and customization.
 
 ## Core Plugins (System Plugins)
 
 These plugins are essential components of the system and are installed by default:
 
-| Module     | Description                                       |
-| ---------- | ------------------------------------------------- |
-| Analytics  | Business intelligence and reporting tools         |
-| Chatter    | Internal communication and collaboration platform |
-| Fields     | Customizable data structure management            |
-| Partners   | Partner relationship management                   |
-| Security   | Role-based access control and authentication      |
-| Support    | Help desk and documentation                       |
-| Table View | Customizable data presentation framework          |
+| Module         | Description                                       |
+| -------------- | ------------------------------------------------- |
+| Analytics      | Business intelligence and reporting tools         |
+| Chatter        | Internal communication and collaboration platform |
+| Fields         | Customizable data structure management            |
+| Full Calendar  | Calendar components for displaying records as events |
+| Partners       | Partner relationship management                   |
+| Plugin Manager | Plugin installation and lifecycle management      |
+| Security       | Role-based access control and authentication      |
+| Support        | Help desk and documentation                       |
+| Table View     | Customizable data presentation framework          |
 
 ## Installable Plugins
 
@@ -25,6 +27,7 @@ These plugins can be installed as needed to extend system functionality:
 | Blogs        | Manage blogs                                 |
 | Accounts     | Core financial configuration module that defines chart of accounts, journals, ledgers, currencies, and fiscal structures used by other financial plugins           |
 | Accounting   | Main accounting operations module that handles journal entries, financial reports, period closing, and accounting workflows based on the Accounts setup           |
+| Barcode      | Barcode-driven warehouse operations interface |
 | Contacts     | Contact management for customers and vendors |
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
@@ -37,7 +40,7 @@ These plugins can be installed as needed to extend system functionality:
 | Purchases    | Procurement and purchase order management    |
 | Recruitments | Applicant tracking and hiring                |
 | Sales        | Sales pipeline and opportunity management    |
-| Timeoffs     | Leave management and tracking                |
+| Time Off     | Leave management and tracking                |
 | Timesheets   | Employee work hour tracking                  |
 | Website      | Website for customer                         |
 
@@ -45,7 +48,7 @@ These plugins can be installed as needed to extend system functionality:
 
 ## Accounts vs Accounting
 
-In Aureus ERP, **Accounts** and **Accounting** are intentionally separated to provide a **flexible, scalable, and extensible financial system**.
+In AureusERP, **Accounts** and **Accounting** are intentionally separated to provide a **flexible, scalable, and extensible financial system**.
 
 ### **Accounts (Base / Helper Plugin)**
 
@@ -84,6 +87,14 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Customizable charts and reports.
   - Supports real-time data analysis.
 
+### Barcode
+
+- **Purpose**: Barcode-driven interface for warehouse operations.
+- **Key Features**:
+  - Scan barcodes to process transfers and operations.
+  - Perform inventory adjustments from a dedicated lightweight interface.
+  - Launched from the admin panel with its own dashboard and login.
+
 ### Blogs
 
 - **Purpose**: Manages content creation and publishing for company blogs.
@@ -121,6 +132,13 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
 - **Key Features**:
   - Add custom fields to any entity in the system.
   - Supports text, numbers, dropdowns, and file uploads.
+
+### Full Calendar
+
+- **Purpose**: Calendar infrastructure used across the system.
+- **Key Features**:
+  - Calendar widgets and actions for displaying records as events.
+  - Used by other plugins such as Time Off and Maintenance.
 
 ### Inventory
 
@@ -173,6 +191,14 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
 - **Key Features**:
   - Multiple payment methods (cash, bank, online).
   - Reconciliation with accounts and invoices.
+
+### Plugin Manager
+
+- **Purpose**: Manage the lifecycle of all plugins.
+- **Key Features**:
+  - Tracks installed plugins in the `plugins` database table.
+  - Provides the `<plugin-name>:install` and `<plugin-name>:uninstall` Artisan commands.
+  - Plugins screen in the admin panel to install and uninstall plugins from the UI.
 
 ### Products
 
@@ -231,7 +257,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Supports column filtering and sorting.
   - Customizable data grids for each module.
 
-### Timeoffs
+### Time Off
 
 - **Purpose**: Manage employee leave requests and approvals.
 - **Key Features**:
@@ -283,6 +309,16 @@ Options:
 - **Skip**: Continue without modifying an already installed dependency
 - **Show Seeders**: Display the available data seeders for the plugin
 
+The command name always uses the plugin's package name, which matches its directory under `plugins/webkul` (for example `php artisan time-off:install` or `php artisan inventories:install`).
+
+Plugins can also be installed and uninstalled from the admin panel through the **Plugins** screen provided by the Plugin Manager plugin.
+
+To install the ERP system itself (Filament, Filament Shield, and the base schema and seed data — core plugins are always active and need no separate install), use:
+
+```bash
+php artisan erp:install
+```
+
 ### Uninstalling a Plugin
 
 To remove a plugin, use the following command syntax:
@@ -303,7 +339,7 @@ Some plugins require other plugin to function properly. The system will automati
 
 ## Customization
 
-Aureus ERP is designed to be highly customizable, allowing you to:
+AureusERP is designed to be highly customizable, allowing you to:
 
 - Install only the plugin you need
 - Extend existing plugin with custom functionality

@@ -6,10 +6,13 @@ The `resources` directory in the `BlogPlugin` is used to manage UI assets, langu
 
 ```
 +-- plugins
-|   +-- blogs
-|   |   +-- resources
-|   |   |   +-- views  # Blade views for UI templates
-|   |   |   +-- lang   # Language translations
+|   +-- webkul
+|   |   +-- blogs
+|   |   |   +-- resources
+|   |   |   |   +-- css    # Source CSS assets
+|   |   |   |   +-- dist   # Compiled assets registered with Filament
+|   |   |   |   +-- lang   # Language translations
+|   |   |   |   +-- views  # Blade views for UI templates
 ```
 
 ### **Views**
@@ -33,10 +36,6 @@ In `BlogServiceProvider`, we define the namespace for views and language files s
 
 namespace Webkul\Blog;
 
-use Filament\Support\Assets\Css;
-use Filament\Support\Facades\FilamentAsset;
-use Webkul\PluginManager\Console\Commands\InstallCommand;
-use Webkul\PluginManager\Console\Commands\UninstallCommand;
 use Webkul\PluginManager\Package;
 use Webkul\PluginManager\PackageServiceProvider;
 
@@ -52,9 +51,16 @@ class BlogServiceProvider extends PackageServiceProvider
      */
     public static string $viewNamespace = 'blogs';
 
-    //
+    public function configureCustomPackage(Package $package): void
+    {
+        $package->name(static::$name)
+            ->hasViews()
+            ->hasTranslations();
+    }
 }
 ```
+
+The `hasViews()` and `hasTranslations()` calls register the `resources/views` and `resources/lang` directories under the plugin's namespace.
 
 ### **Using Views in Blade Templates**
 
@@ -78,6 +84,12 @@ Where `messages.php` (inside `resources/lang/en`) contains:
 return [
     'welcome' => 'Welcome to the Blog Plugin!',
 ];
+```
+
+In practice, plugins organize their language files to mirror the `src/Filament` directory structure. For example, the blogs plugin stores the admin post resource strings in `resources/lang/en/filament/admin/resources/post.php` and references them as:
+
+```php
+__('blogs::filament/admin/resources/post.navigation.title')
 ```
 
 ## Managing CSS and JavaScript Files

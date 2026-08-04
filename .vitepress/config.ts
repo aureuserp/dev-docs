@@ -31,7 +31,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:title',
-        content: 'Aureus ERP - Open Source ERP Platform'
+        content: 'AureusERP - Open Source ERP Platform'
       }
     ],
     [
@@ -50,7 +50,7 @@ export default defineConfig({
       'meta',
       {
         property: 'og:site_name',
-        content: 'Aureus ERP - Open Source ERP Platform'
+        content: 'AureusERP - Open Source ERP Platform'
       }
     ]
   ],
@@ -67,7 +67,7 @@ export default defineConfig({
       { text: 'Home', link: '/' },
       // { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
       {
-        text: 'Contribute To Aureus ERP',
+        text: 'Contribute To AureusERP',
         link: 'https://github.com/aureuserp/aureuserp'
       },
       { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
@@ -89,7 +89,7 @@ export default defineConfig({
     footer: {
       message:
         'Released under the <a href="https://opensource.org/licenses/mit" target="_blank" rel="nofollow external noopener noreferrer" class="mit-license">MIT License</a>.',
-      copyright: `Copyright © ${new Date().getFullYear()} Aureus ERP`
+      copyright: `Copyright © ${new Date().getFullYear()} AureusERP`
     },
 
     lastUpdated: {

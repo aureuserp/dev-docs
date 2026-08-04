@@ -1,6 +1,6 @@
 # Overview
 
-The **Aureus ERP** Filament plugin provides robust project management capabilities integrated seamlessly into your Aureus ERP ecosystem. Built on **FilamentPHP**.
+The **AureusERP** Filament plugin provides robust project management capabilities integrated seamlessly into your AureusERP ecosystem. Built on **FilamentPHP**.
 
 ## Directory Structure
 
@@ -15,26 +15,24 @@ The **Aureus ERP** Filament plugin provides robust project management capabiliti
 |   |   |   +-- resources
 |   |   |   +-- src
 |   |   |   |   +-- Filament                        # Filament components
-|   |   |   |   |   +-- Pages                       # Custom Filament pages
-|   |   |   |   |   |   +-- Dashboard.php
-|   |   |   |   |   |   +-- BlogList.php
-|   |   |   |   |   |   +-- BlogStats.php
-|   |   |   |   |   +-- Resources                   # Filament resources
-|   |   |   |   |   |   +-- BlogResource.php
-|   |   |   |   |   |   +-- CategoryResource.php
-|   |   |   |   |   +-- Widgets                     # Dashboard widgets
-|   |   |   |   |   |   +-- BlogsOverviewWidget.php
-|   |   |   |   |   |   +-- RecentBlogsWidget.php
-|   |   |   |   |   +-- Clusters                    # Feature clusters
+|   |   |   |   |   +-- Admin                       # Admin panel components
+|   |   |   |   |   |   +-- Pages                   # Custom Filament pages
+|   |   |   |   |   |   |   +-- Dashboard.php
+|   |   |   |   |   |   +-- Resources               # Filament resources
+|   |   |   |   |   |   |   +-- PostResource.php
+|   |   |   |   |   |   +-- Widgets                 # Dashboard widgets
+|   |   |   |   |   |   +-- Clusters                # Feature clusters
+|   |   |   |   |   +-- Customer                    # Customer panel components
+|   |   |   |   |   |   +-- Pages
+|   |   |   |   |   |   +-- Resources
 |   |   |   |   +-- Models                          # Eloquent models
-|   |   |   |   +-- Providers                       # Service providers & Plugins
-|   |   |   |   |   |   +-- BlogPlugin.php          # Blogs Plugin
-|   |   |   |   |   |   +-- BlogServiceProvider.php # Service Provider
+|   |   |   |   +-- BlogPlugin.php                  # Blog Plugin
+|   |   |   |   +-- BlogServiceProvider.php         # Service Provider
 ```
 
 ## What are Filament Pages?
 
-[Filament Pages](https://filamentphp.com/docs/5.x/plugins/configurable-resources-and-pages#configurable-pages) are custom UI components that provide full-page interfaces within your admin panel.
+[Filament Pages](https://filamentphp.com/docs/5.x/navigation/custom-pages) are custom UI components that provide full-page interfaces within your admin panel.
 
 ### Key Page Features in FilamentPHP
 
@@ -48,86 +46,96 @@ The **Aureus ERP** Filament plugin provides robust project management capabiliti
 
 ### Dashboard Page
 
-The Dashboard provides an overview of blog statistics with multiple filtering options and widgets.
+The following illustrative example shows a dashboard with multiple filtering options and widgets, following the pattern of the real `Dashboard` page in the projects plugin (the blogs plugin itself does not ship a dashboard).
 
-#### **File:** `Filament/Pages/Dashboard.php`
+#### **File:** `Filament/Admin/Pages/Dashboard.php`
 
 ```php
-namespace Webkul\Blogs\Filament\Pages;
+namespace Webkul\Blog\Filament\Admin\Pages;
 
-use Filament\Pages\Dashboard as BaseDashboard;
+use BackedEnum;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
-use Illuminate\Support\Carbon;
-use Webkul\Blogs\Models\Category;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Schema;
+use UnitEnum;
+use Webkul\Blog\Filament\Admin\Widgets\BlogsOverviewWidget;
+use Webkul\Blog\Filament\Admin\Widgets\RecentBlogsWidget;
+use Webkul\Blog\Models\Category;
+use Webkul\Support\Enums\NavigationGroup;
 
 class Dashboard extends BaseDashboard
 {
-    protected static ?string $title = 'Blogs Dashboard';
+    use BaseDashboard\Concerns\HasFiltersForm;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string $routePath = 'blog';
+
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 1;
 
-    public function filtersForm(Form $form): Form
+    public static function getNavigationLabel(): string
     {
-        return $form
-            ->schema([
-                Select::make('category')
-                    ->label('Category')
-                    ->options(Category::pluck('name', 'id'))
-                    ->placeholder('All Categories')
-                    ->live(),
+        return __('Blog Dashboard');
+    }
 
-                DatePicker::make('date_range')
-                    ->label('Date Range')
-                    ->default(Carbon::now()->subDays(30))
-                    ->range()
-                    ->live(),
+    public static function getNavigationGroup(): string|UnitEnum
+    {
+        return NavigationGroup::Dashboard;
+    }
+
+    public function filtersForm(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('selectedCategories')
+                    ->label(__('Category'))
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->options(fn () => Category::pluck('name', 'id'))
+                    ->reactive(),
 
                 Select::make('status')
-                    ->label('Status')
+                    ->label(__('Status'))
                     ->options([
-                        'published' => 'Published',
-                        'draft' => 'Draft',
-                        'scheduled' => 'Scheduled',
+                        'published' => __('Published'),
+                        'draft'     => __('Draft'),
                     ])
-                    ->placeholder('All Statuses')
-                    ->live(),
+                    ->placeholder(__('All Statuses'))
+                    ->reactive(),
             ]);
     }
 
     public function getWidgets(): array
     {
         return [
-            Widgets\BlogsOverviewWidget::class,
-            Widgets\RecentBlogsWidget::class,
-            Widgets\TopAuthorsWidget::class,
-            Widgets\CategoryDistributionWidget::class,
+            BlogsOverviewWidget::class,
+            RecentBlogsWidget::class,
         ];
     }
 }
 ```
 
-## BlogsPlugin Registration System
+::: info Filament 5 API
+In Filament 5, page forms are built with `Filament\Schemas\Schema` (`->components([...])`) instead of the older `Filament\Forms\Form` (`->schema([...])`), and `$navigationIcon` is typed `string|BackedEnum|null`. The dashboard filters form requires the `HasFiltersForm` concern.
+:::
 
-The BlogsPlugin class serves as the central registration point for all Filament components in the Aureus ERP system.
+## BlogPlugin Registration System
+
+The BlogPlugin class serves as the central registration point for all Filament components in the AureusERP system. Each plugin registers its components per panel (for example, `admin` and `customer`), and skips registration entirely when the plugin is not installed.
 
 ### Plugin Registration
 
 ```php
 <?php
 
-namespace Webkul\Blogs;
+namespace Webkul\Blog;
 
 use Filament\Contracts\Plugin;
-use Filament\Navigation\NavigationItem;
 use Filament\Panel;
-use Webkul\Blogs\Filament\Pages\Dashboard;
 use Webkul\PluginManager\Package;
 
-class BlogsPlugin implements Plugin
+class BlogPlugin implements Plugin
 {
     public function getId(): string
     {
@@ -149,20 +157,31 @@ class BlogsPlugin implements Plugin
             ->when($panel->getId() == 'admin', function (Panel $panel) {
                 $panel
                     ->discoverResources(
-                        in: __DIR__.'/Filament/Resources',
-                        for: 'Webkul\Blogs\Filament\Resources'
+                        in: __DIR__.'/Filament/Admin/Resources',
+                        for: 'Webkul\\Blog\\Filament\\Admin\\Resources'
                     )
                     ->discoverPages(
-                        in: __DIR__.'/Filament/Pages',
-                        for: 'Webkul\Blogs\Filament\Pages'
+                        in: __DIR__.'/Filament/Admin/Pages',
+                        for: 'Webkul\\Blog\\Filament\\Admin\\Pages'
                     )
                     ->discoverClusters(
-                        in: __DIR__.'/Filament/Clusters',
-                        for: 'Webkul\Blogs\Filament\Clusters'
+                        in: __DIR__.'/Filament/Admin/Clusters',
+                        for: 'Webkul\\Blog\\Filament\\Admin\\Clusters'
                     )
                     ->discoverWidgets(
-                        in: __DIR__.'/Filament/Widgets',
-                        for: 'Webkul\Blogs\Filament\Widgets'
+                        in: __DIR__.'/Filament/Admin/Widgets',
+                        for: 'Webkul\\Blog\\Filament\\Admin\\Widgets'
+                    );
+            })
+            ->when($panel->getId() == 'customer', function (Panel $panel) {
+                $panel
+                    ->discoverResources(
+                        in: __DIR__.'/Filament/Customer/Resources',
+                        for: 'Webkul\\Blog\\Filament\\Customer\\Resources'
+                    )
+                    ->discoverPages(
+                        in: __DIR__.'/Filament/Customer/Pages',
+                        for: 'Webkul\\Blog\\Filament\\Customer\\Pages'
                     );
             });
     }

@@ -1,6 +1,6 @@
 # **Overview**
 
-The **Progress Stepper** component extends FilamentPHP’s `ToggleButtons` to visually represent order states. It is particularly useful for displaying the current progress of an entity, such as an order, with predefined states in **Aureus ERP**.
+The **Progress Stepper** component extends FilamentPHP’s `ToggleButtons` to visually represent order states. It is particularly useful for displaying the current progress of an entity, such as an order, with predefined states in **AureusERP**.
 
 ## **Definition**
 
@@ -21,16 +21,16 @@ class ProgressStepper extends ToggleButtons
 
 ## **Usage in Forms**
 
-To integrate the `ProgressStepper` component into a Filament form, use the following configuration:
+To integrate the `ProgressStepper` component into a Filament form schema, use the following configuration:
 
 ```php
+use Filament\Schemas\Schema;
 use Webkul\Field\Filament\Forms\Components\ProgressStepper;
-use Filament\Forms\Form;
 
-public static function form(Form $form): Form
+public static function form(Schema $schema): Schema
 {
-    return $form
-        ->schema([
+    return $schema
+        ->components([
             ProgressStepper::make('status')
                 ->hiddenLabel()
                 ->inline()
@@ -132,6 +132,28 @@ ProgressStepper::make('status')
     });
 ```
 
+## **Usage in Infolists**
+
+A dedicated infolist variant of the component is also available for read-only pages. The `Webkul\Field\Filament\Infolists\Components\ProgressStepper` class extends Filament's `Filament\Infolists\Components\Entry` and renders the same stepper UI (view `fields::filament.infolists.components.progress-stepper`) from the record's state.
+
+It exposes `options()` and `inline()` methods, and its `getColor()` helper highlights the option matching the current state (`primary` for the active state, `gray` otherwise):
+
+```php
+use Filament\Schemas\Schema;
+use Webkul\Field\Filament\Infolists\Components\ProgressStepper;
+
+public static function infolist(Schema $schema): Schema
+{
+    return $schema
+        ->components([
+            ProgressStepper::make('status')
+                ->hiddenLabel()
+                ->inline()
+                ->options(fn ($record) => self::getStateOptions($record)),
+        ]);
+}
+```
+
 ## **Key Features**
 
 - **Extends Filament’s `ToggleButtons`**: Ensures seamless integration with Filament forms.
@@ -141,4 +163,4 @@ ProgressStepper::make('status')
 
 ## More Information
 
-For more details, refer to the [FilamentPHP Toggle Buttons](https://filamentphp.com/docs/5.x/forms/toggle-buttons#toggle-buttons).
+For more details, refer to the [FilamentPHP Toggle Buttons](https://filamentphp.com/docs/5.x/forms/toggle-buttons).

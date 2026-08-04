@@ -2,7 +2,7 @@
 
 ## Bug Reports
 
-At Aureus ERP, we highly value community collaboration to enhance our platform's performance and reliability. We encourage users to report bugs and submit pull requests to help improve the system.
+At AureusERP, we highly value community collaboration to enhance our platform's performance and reliability. We encourage users to report bugs and submit pull requests to help improve the system.
 
 Instead of just reporting issues, we appreciate contributions that include fixes or negative test cases highlighting the problem. This approach not only identifies issues but also provides solutions, making the resolution process more efficient.
 
@@ -17,10 +17,10 @@ Providing comprehensive reports helps us quickly troubleshoot and resolve issues
 
 ## Projects to Contribute
 
-You can contribute to the following Aureus ERP projects:
+You can contribute to the following AureusERP projects:
 
-- [Aureus ERP Core](https://github.com/aureuserp/aureuserp)
-- [Aureus ERP Documentation](https://github.com/aureuserp/dev-docs)
+- [AureusERP Core](https://github.com/aureuserp/aureuserp)
+- [AureusERP Documentation](https://github.com/aureuserp/dev-docs)
 
 ## Feature Requests
 
@@ -32,19 +32,19 @@ Before submitting a pull request, follow these branch selection guidelines:
 
 - **Bug Fixes**: Submit fixes to the `master` branch.
 - **Critical Bug Fixes**: Apply fixes to the latest stable version before merging them into `master`.
-- **New Features**: Submit to the `develop` branch for inclusion in the next major release.
+- **New Features**: Create a dedicated feature branch (e.g. `feature/your-feature-name`) and submit a pull request targeting the `master` branch.
 
 ## Coding Standards
 
-Aureus ERP follows PHP coding best practices based on **PSR-12** standards for consistency and maintainability. Adhering to these guidelines helps keep the codebase clean and readable.
+AureusERP follows PHP coding best practices based on **PSR-12** standards for consistency and maintainability. Adhering to these guidelines helps keep the codebase clean and readable.
 
 ### PHPDoc
 
-Below is an example of a valid Aureus ERP doc block:
+Below is an example of a valid AureusERP doc block:
 
 ```php
 /**
- * Registers a service with the Aureus ERP Service Provider.
+ * Registers a service with the AureusERP Service Provider.
  *
  * @param  string|array  $service
  * @param  \Closure|string|null  $definition
@@ -68,8 +68,8 @@ vendor/bin/pint
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability in Aureus ERP, please notify us immediately by sending an email to [security@aureuserp.com](mailto:security@aureuserp.com). Security issues are taken seriously and addressed promptly.
+If you discover a security vulnerability in AureusERP, please notify us immediately by sending an email to [security@aureuserp.com](mailto:security@aureuserp.com). Security issues are taken seriously and addressed promptly.
 
 ---
 
-By contributing to Aureus ERP, you help make the platform more robust, secure, and feature-rich. Thank you for being a part of our growing open-source community!
+By contributing to AureusERP, you help make the platform more robust, secure, and feature-rich. Thank you for being a part of our growing open-source community!

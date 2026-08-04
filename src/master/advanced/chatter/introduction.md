@@ -1,8 +1,10 @@
 # Overview
 
-The `HasChatter` trait provides a flexible communication system for Laravel models within the Aureus ERP system. When applied to a model, it enables chatter functionality, including messages, activities, attachments, and follower management.
+The `HasChatter` trait provides a flexible communication system for Laravel models within the AureusERP system. When applied to a model, it enables chatter functionality, including messages, activities, attachments, and follower management.
 
-Additionally, the `HasLogActivity` trait works alongside `HasChatter` to automatically log model changes as activity messages. It monitors model events (create, update, delete) and records them as structured activity entries that can be displayed in the chatter feed.
+Additionally, the `HasLogActivity` trait works alongside `HasChatter` to automatically log model changes as activity messages. It monitors model events (create, update, delete, soft delete, restore) and records them as structured activity entries that can be displayed in the chatter feed. The `HasLogActivity` trait already includes `HasChatter` internally, so a model using `HasLogActivity` gets the full chatter functionality as well.
+
+When a model uses `HasChatter`, followers are managed automatically: the record's creator (`creator_id`) and its responsible user are added as followers when the record is created, and the new responsible user is added as a follower whenever the responsible column changes.
 
 ## Using `HasChatter`
 
@@ -21,7 +23,7 @@ class YourModel extends Model
 
 ## Using `HasChatter` with `HasLogActivity`
 
-To log model changes as activity messages, include both `HasChatter` and `HasLogActivity` traits:
+To log model changes as activity messages, include both `HasChatter` and `HasLogActivity` traits. `HasLogActivity` declares an abstract `getModelTitle()` method, which your model must implement — it is used to build the activity description (e.g. "Product has been updated"):
 
 ```php
 use Webkul\Chatter\Traits\HasChatter;
@@ -31,36 +33,69 @@ class YourModel extends Model
 {
     use HasChatter, HasLogActivity;
 
+    public function getModelTitle(): string
+    {
+        return __('your-plugin::models/your-model.title');
+    }
+
     // Rest of your model definition
 }
 ```
 
 ## Logging Attributes
 
-The following `$logAttributes` array defines the attributes that will be logged when changes occur in the model. This includes both direct model attributes and related model properties.
+The `getLogAttributeLabels()` method defines the attributes that will be logged when changes occur in the model, along with the label displayed for each attribute. This includes both direct model attributes and related model properties (using `relation.attribute` dot notation):
 
 ```php
-protected array $logAttributes = [
-    'medium.name'          => 'Medium',
-    'utmSource.name'       => 'UTM Source',
-    'partner.name'         => 'Customer',
-    //
-];
+protected function getLogAttributeLabels(): array
+{
+    return [
+        'medium.name'    => 'Medium',
+        'utmSource.name' => 'UTM Source',
+        'partner.name'   => 'Customer',
+        //
+    ];
+}
 ```
 
 ## Customizing Relationship Titles
 
-If you want to change the title of a relationship attribute in the logs, you should update the corresponding key in the `$logAttributes` array.
+If you want to change the title of a relationship attribute in the logs, you should update the corresponding value in the array returned by `getLogAttributeLabels()`.
 
 For example, if you want to change the log title for the `partner.name` attribute from "Customer" to "Client", you can do:
 
 ```php
-protected array $logAttributes = [
-    'partner.name' => 'Client',
-];
+protected function getLogAttributeLabels(): array
+{
+    return [
+        'partner.name' => 'Client',
+    ];
+}
 ```
 
 This ensures that when logging changes, the updated title will be reflected instead of the default one.
+
+## Responsible Users as Followers
+
+The `HasChatter` trait automatically keeps the record's responsible user in sync as a follower. By default it watches the `user_id` column; you may override this in your model:
+
+```php
+public function getChatterResponsibleColumn(): ?string
+{
+    return 'user_id';
+}
+```
+
+If the record has additional responsible relationships (e.g. a `BelongsTo` or `BelongsToMany` of users), list their relation names in `chatterResponsibles()`:
+
+```php
+public function chatterResponsibles(): array
+{
+    return ['salesperson', 'members'];
+}
+```
+
+Whenever a responsible user is assigned, the corresponding partner is added as a follower of the record.
 
 ## Available Methods
 
@@ -132,7 +167,7 @@ $reply = $department->replyToMessage($existingMessage, [
 
 #### `removeMessage($messageId, $type = 'messages'): bool`
 
-Removes a message by its ID.
+Removes a message by its ID. The message is only deleted if it actually belongs to the model — messages owned by other records cannot be removed through this method.
 
 ```php
 $deleted = $department->removeMessage(5);
@@ -140,7 +175,7 @@ $deleted = $department->removeMessage(5);
 
 #### `pinMessage(Message $message): bool`
 
-Pins a message to make it prominent.
+Pins a message to make it prominent. Like `unpinMessage()` and `removeMessage()`, this verifies that the message belongs to the model before modifying it.
 
 ```php
 $pinned = $department->pinMessage($message);
@@ -207,11 +242,30 @@ Retrieves all activity messages for the model.
 $activities = $department->activities;
 ```
 
-#### `activityPlans(): mixed`
+#### `addActivity(array $data): Message`
 
-Returns a collection of activity plans (empty by default, can be overridden).
+Adds a new activity message to the model. The `type` is set to `activity` automatically, and `assigned_to` defaults to the authenticated user when not provided.
 
 ```php
+$activity = $department->addActivity([
+    'summary' => 'Follow up with the team',
+    'date_deadline' => now()->addDays(3),
+    'activity_type_id' => 2,
+]);
+```
+
+#### `activityPlans(): mixed`
+
+Returns a collection of activity plans available for the model. Plans are resolved through the `ACTIVITY_PLAN_PLUGIN` class constant; when the constant is not defined, an empty collection is returned.
+
+```php
+class Department extends Model
+{
+    use HasChatter;
+
+    public const ACTIVITY_PLAN_PLUGIN = 'employees';
+}
+
 $plans = $department->activityPlans();
 ```
 
@@ -301,7 +355,7 @@ $followers = $department->followers;
 
 #### `addFollower(Partner $partner): Follower`
 
-Adds a partner as a follower of the model.
+Adds a partner as a follower of the model. The operation is idempotent — if the partner is already following the record, the existing follower entry is returned instead of creating a duplicate.
 
 ```php
 $follower = $department->addFollower($partner);
@@ -362,4 +416,11 @@ When using the `withFilters` method, you can apply the following filters:
 | `assigned_to`      | ID of assigned user                  | `3`                                |
 | `activity_type_id` | Activity type ID                     | `2`                                |
 | `company_id`       | Company ID                           | `1`                                |
-| `search`           | Search term for subject/body/summary | `'important'`                      |
+| `search`           | Search term for subject/body/summary/name | `'important'`                 |
+
+## Notifications
+
+Whenever a chatter message is created, followers of the record are notified automatically through the `ChatterNotificationService`. Two channels are used:
+
+- **Database notifications**: Filament database notifications are sent to the users linked to the record's followers, to users mentioned with `@` in the message body (mentioned users are also added as followers), and to the assignee of activities or record updates. The notification includes a **View** action linking to the record.
+- **Email notifications**: followers with an email address receive an email rendered with the `chatter::mail.message-mail` view. The message author is excluded from both channels.

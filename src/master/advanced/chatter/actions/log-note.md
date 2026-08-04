@@ -1,6 +1,6 @@
 # Overview
 
-The `LogAction` is a FilamentPHP action designed for logging internal messages or notes related to a specific record within Aureus ERP. It allows users to add detailed logs with subjects, rich-text descriptions, and file attachments while ensuring that internal messages remain properly categorized and attributed to the correct user.
+The `LogAction` is a FilamentPHP action designed for logging internal messages or notes related to a specific record within AureusERP. It allows users to add detailed logs with subjects, rich-text descriptions, and file attachments while ensuring that internal messages remain properly categorized and attributed to the correct user.
 
 ## Features
 
@@ -14,7 +14,7 @@ The `LogAction` is a FilamentPHP action designed for logging internal messages o
 
 ## Action Registration
 
-The `LogAction` is a FilamentPHP action that should be registered within your Filament resource or component:
+The `LogAction` is a FilamentPHP action that should be registered within your Filament resource or component. Its default name is `log.action`.
 
 ```php
 use Webkul\Chatter\Filament\Actions\Chatter\LogAction;
@@ -41,13 +41,14 @@ A button labeled `Add Subject` or `Hide Subject` controls the visibility of the 
 ### Rich Text Editor
 
 - Enables detailed descriptions with text formatting.
-- Supports file attachments within the editor.
-- Disables Grammarly to prevent conflicts.
+- Supports `@` user mentions through the chatter mention provider.
+- Supports file attachments within the editor (stored in the `log-attachments` directory).
 
 ### File Upload
 
 - Supports multiple file types: images, PDFs, Word, Excel, and text files.
-- Uploads files to the `log-attachments` directory.
+- Uploads files to the `log-attachments` directory on the `public` disk.
+- Limits each file to 10 MB.
 - Displays preview for uploaded files.
 
 ## Action Execution
@@ -58,11 +59,18 @@ When executed, `LogAction`:
 2. Saves the message as an internal note (`is_internal = true`).
 3. Attaches uploaded files to the log message.
 4. Displays success or error notifications based on the operation result.
+5. Dispatches a `chatter.refresh` Livewire event so the chatter panel reloads.
 
 ```php
+use Exception;
+use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
 ->action(function (array $data, ?Model $record = null) {
     try {
-        $user = filament()->auth()->user();
+        $user = Filament::auth()->user() ?? Auth::user();
 
         $data['name'] = $record->name;
         $data['causer_type'] = $user->getMorphClass();
@@ -79,7 +87,7 @@ When executed, `LogAction`:
             ->success()
             ->title('Log entry added successfully')
             ->send();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         report($e);
         Notification::make()
             ->danger()

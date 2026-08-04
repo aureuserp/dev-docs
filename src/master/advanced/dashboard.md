@@ -1,8 +1,8 @@
 # Overview
 
-The **Custom Filament Dashboard** in Aureus ERP extends Filament's default dashboard capabilities by integrating with a custom cluster (`DashboardCluster`). This setup enables **widget-based analytics**, **data filtering**, and a modular approach to managing dashboard elements.
+The **Custom Filament Dashboard** in AureusERP extends Filament's default dashboard capabilities with per-plugin dashboard pages. This setup enables **widget-based analytics**, **data filtering**, and a modular approach to managing dashboard elements.
 
-Unlike the default Filament dashboard, this implementation utilizes **Webkul\Support\Filament\Clusters\Dashboard** for **centralized widget management**, providing a scalable and extensible structure.
+Each plugin ships its own dashboard page that extends `Filament\Pages\Dashboard` and registers itself under the shared **Dashboard** navigation group (`Webkul\Support\Enums\NavigationGroup`), providing a scalable and extensible structure. Access to each dashboard is guarded through Filament Shield page permissions.
 
 ## Dashboard Implementation (`Dashboard.php`)
 
@@ -13,42 +13,64 @@ Located in: `Webkul\Project\Filament\Pages\Dashboard.php`
 ```php
 namespace Webkul\Project\Filament\Pages;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
+use BackedEnum;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Illuminate\Contracts\Support\Htmlable;
 use Webkul\Partner\Models\Partner;
-use Webkul\Project\Filament\Widgets;
+use Webkul\Project\Filament\Widgets\StatsOverviewWidget;
+use Webkul\Project\Filament\Widgets\TaskByStageChart;
+use Webkul\Project\Filament\Widgets\TaskByStateChart;
+use Webkul\Project\Filament\Widgets\TopAssigneesWidget;
+use Webkul\Project\Filament\Widgets\TopProjectsWidget;
 use Webkul\Project\Models\Project;
 use Webkul\Project\Models\Tag;
 use Webkul\Security\Models\User;
-use Webkul\Support\Filament\Clusters\Dashboard as DashboardCluster;
+use Webkul\Support\Enums\NavigationGroup;
+use Webkul\Support\Filament\Forms\Components\DashboardDateRange;
 ```
 
 ### **Extending Filament’s Dashboard**
 
-This class extends `Filament\Pages\Dashboard`, inheriting base functionalities while adding custom logic.
+This class extends `Filament\Pages\Dashboard`, inheriting base functionalities while adding custom logic. The `HasFiltersForm` concern enables the filters form, and `HasPageShield` restricts access through a page permission.
 
 ```php
 class Dashboard extends BaseDashboard
 {
     use BaseDashboard\Concerns\HasFiltersForm;
+    use HasPageShield;
 }
 ```
 
-### **Key Properties**
+### **Key Properties & Methods**
 
-| Property          | Type     | Description                                       |
-| ----------------- | -------- | ------------------------------------------------- |
-| `$routePath`      | `string` | Defines the dashboard’s route (e.g., `project`).  |
-| `$navigationIcon` | `string` | Sets the dashboard’s icon (`heroicon-o-folder`).  |
-| `$cluster`        | `class`  | Associates the dashboard with `DashboardCluster`. |
+| Member                 | Type     | Description                                                            |
+| ---------------------- | -------- | ---------------------------------------------------------------------- |
+| `$routePath`           | `string` | Defines the dashboard’s route (e.g., `project`).                       |
+| `getPagePermission()`  | `method` | Returns the Shield permission key (`page_project_dashboard`).          |
+| `getNavigationGroup()` | `method` | Places the page in the shared `NavigationGroup::Dashboard` group.      |
+| `getNavigationIcon()`  | `method` | Returns the navigation icon (`null` here; the group provides its own). |
 
 ```php
 protected static string $routePath = 'project';
-protected static ?string $navigationIcon = 'heroicon-o-folder';
-protected static ?string $cluster = DashboardCluster::class;
+
+protected static function getPagePermission(): ?string
+{
+    return 'page_project_dashboard';
+}
+
+public static function getNavigationGroup(): string|\UnitEnum
+{
+    return NavigationGroup::Dashboard;
+}
+
+public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+{
+    return null;
+}
 ```
 
 ### **Navigation Label**
@@ -69,7 +91,7 @@ public static function getNavigationLabel(): string
 The `filtersForm()` method provides UI elements for filtering dashboard data dynamically.
 
 ```php
-public function filtersForm(Form $form): Form
+public function filtersForm(Schema $schema): Schema
 ```
 
 ## **Available Filters**
@@ -80,34 +102,70 @@ public function filtersForm(Form $form): Form
 | `selectedAssignees` | Multi-select | Fetches users (`User::pluck('name', 'id')`).                 |
 | `selectedTags`      | Multi-select | Fetches task tags (`Tag::pluck('name', 'id')`).              |
 | `selectedPartners`  | Multi-select | Fetches partners/customers (`Partner::pluck('name', 'id')`). |
-| `startDate`         | Date picker  | Restricts dates to past values.                              |
-| `endDate`           | Date picker  | Restricts dates to future values.                            |
+| `date_range`        | Date range   | `DashboardDateRange` picker; defaults to the current year.   |
 
 ### **Implementation**
 
 ```php
-return $form->schema([
-    Section::make()->schema([
-        Select::make('selectedProjects')
-            ->label(__('projects::filament/pages/dashboard.filters-form.project'))
-            ->multiple()
-            ->searchable()
-            ->preload()
-            ->options(fn () => Project::pluck('name', 'id'))
-            ->reactive(),
-        Select::make('selectedAssignees')
-            ->label(__('projects::filament/pages/dashboard.filters-form.assignees'))
-            ->multiple()
-            ->searchable()
-            ->preload()
-            ->options(fn () => User::pluck('name', 'id'))
-            ->reactive(),
-        DatePicker::make('startDate')
-            ->label(__('projects::filament/pages/dashboard.filters-form.start-date'))
-            ->maxDate(fn (Get $get) => $get('endDate') ?: now())
-            ->default(now()->subMonth()->format('Y-m-d')),
-    ])
-]);
+public function filtersForm(Schema $schema): Schema
+{
+    return $schema
+        ->components([
+            Section::make()
+                ->columns([
+                    'default' => 1,
+                    'sm'      => 2,
+                    'md'      => 3,
+                    'xl'      => 6,
+                ])
+                ->schema([
+                    Select::make('selectedProjects')
+                        ->label(__('projects::filament/pages/dashboard.filters-form.project'))
+                        ->multiple()
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () => Project::pluck('name', 'id'))
+                        ->reactive(),
+                    Select::make('selectedAssignees')
+                        ->label(__('projects::filament/pages/dashboard.filters-form.assignees'))
+                        ->multiple()
+                        ->searchable()
+                        ->preload()
+                        ->options(fn () => User::pluck('name', 'id'))
+                        ->reactive(),
+                    ...DashboardDateRange::make(
+                        __('projects::filament/pages/dashboard.filters-form.date-range'),
+                    ),
+                ])->columnSpanFull(),
+        ]);
+}
+```
+
+## **Date Range Filter (`DashboardDateRange`)**
+
+Located in: `Webkul\Support\Filament\Forms\Components\DashboardDateRange`
+
+Introduced in v1.5.0, this shared component provides a consistent date-range filter across all dashboards. It wraps a `DateRangePicker` and mirrors the picked range into two hidden filter keys (`startDate` and `endDate`) so widgets can keep reading separate start/end values.
+
+```php
+public static function make(
+    string $label,
+    string $startKey = 'startDate',
+    string $endKey = 'endDate',
+    string $name = 'date_range',
+): array
+```
+
+Key behaviors:
+
+- **Defaults to the current year** (`defaultThisYear()`); the hidden keys default to `now()->startOfYear()` and `now()->endOfYear()`.
+- **Preset ranges**: Today, Yesterday, This Month, Last Month, This Quarter, Last Quarter, This Year, and Last Year via the `ranges()` method.
+- **Live updates**: when the picker changes, `afterStateUpdated()` splits the range and updates the `startDate`/`endDate` keys, so dependent widgets refresh immediately.
+
+Because `make()` returns an array of components (the picker plus two hidden fields), spread it into your schema:
+
+```php
+...DashboardDateRange::make(__('projects::filament/pages/dashboard.filters-form.date-range')),
 ```
 
 ## **Widgets Integration**
@@ -118,11 +176,11 @@ Widgets provide real-time analytics and insights on dashboard data.
 public function getWidgets(): array
 {
     return [
-        Widgets\StatsOverviewWidget::class,
-        Widgets\TaskByStageChart::class,
-        Widgets\TaskByStateChart::class,
-        Widgets\TopAssigneesWidget::class,
-        Widgets\TopProjectsWidget::class,
+        StatsOverviewWidget::class,
+        TaskByStageChart::class,
+        TaskByStateChart::class,
+        TopAssigneesWidget::class,
+        TopProjectsWidget::class,
     ];
 }
 ```
@@ -135,66 +193,44 @@ public function getWidgets(): array
 | `TopAssigneesWidget`  | Highlights users with the most tasks.    |
 | `TopProjectsWidget`   | Displays the most active projects.       |
 
-## Dashboard Cluster (`DashboardCluster.php`)
+## **Other Plugin Dashboards**
 
-## **Class Overview**
-
-Located in: `Webkul\Support\Filament\Clusters\Dashboard.php`
-
-## **Namespace & Imports**
+The same pattern is used by other plugins. For example, the Time Off plugin (dashboard widgets added in v1.5.0) registers its dashboard inside the `MyTime` cluster and splits widgets between the header and the body:
 
 ```php
-namespace Webkul\Support\Filament\Clusters;
+namespace Webkul\TimeOff\Filament\Pages;
 
-use Filament\Clusters\Cluster;
-use Filament\Facades\Filament;
-use Filament\Widgets\Widget;
-```
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Webkul\TimeOff\Filament\Clusters\MyTime;
+use Webkul\TimeOff\Filament\Widgets\CalendarWidget;
+use Webkul\TimeOff\Filament\Widgets\MyTimeOffWidget;
 
-### **Extending Cluster**
-
-```php
-class Dashboard extends Cluster
-```
-
-### **Key Properties**
-
-| Property          | Type     | Description                                                       |
-| ----------------- | -------- | ----------------------------------------------------------------- |
-| `$slug`           | `string` | Sets the base slug (`/`).                                         |
-| `$routePath`      | `string` | Defines the default route.                                        |
-| `$navigationIcon` | `string` | Sets the dashboard’s icon (`heroicon-o-squares-2x2`).             |
-| `$navigationSort` | `int`    | Determines navigation order (`0`).                                |
-| `$view`           | `string` | Specifies the view template (`filament-panels::pages.dashboard`). |
-
-### **Widget Management**
-
-#### **Retrieve Registered Widgets**
-
-```php
-public function getWidgets(): array
+class Dashboard extends BaseDashboard
 {
-    return Filament::getWidgets();
+    use HasPageShield;
+
+    protected static string $routePath = 'time-off';
+
+    protected static ?string $cluster = MyTime::class;
+
+    public function getWidgets(): array
+    {
+        return [
+            CalendarWidget::class,
+        ];
+    }
+
+    public function getHeaderWidgets(): array
+    {
+        return [
+            MyTimeOffWidget::make(),
+        ];
+    }
 }
 ```
 
-#### **Filter Visible Widgets**
-
-```php
-public function getVisibleWidgets(): array
-{
-    return $this->filterVisibleWidgets($this->getWidgets());
-}
-```
-
-#### **Set Widget Columns**
-
-```php
-public function getColumns(): int|string|array
-{
-    return 2;
-}
-```
+The Inventory plugin likewise ships dashboard widgets (`OperationTypeCardWidget`, `OperationTypeOverviewWidget` in `Webkul\Inventory\Filament\Widgets`) added in v1.5.0.
 
 ## More Information
 

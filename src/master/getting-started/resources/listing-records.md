@@ -1,6 +1,6 @@
 # **Filtering Posts Using Tabs**
 
-For filtering post records using **tabs** in the List page. You can define custom tabs in the `getTabs()` method.
+For filtering post records using **tabs** in the List page. You can define custom tabs in the `getTabs()` method. The `Tab` component is imported from `Filament\Schemas\Components\Tabs\Tab`.
 
 ## **Example Tabs:**
 
@@ -10,11 +10,15 @@ For filtering post records using **tabs** in the List page. You can define custo
 **Code Example:**
 
 ```php
+use Filament\Schemas\Components\Tabs\Tab;
+
 public function getTabs(): array
 {
     return [
-        'all' => Tab::make(__('All Posts'))->badge(Post::count()),
-        'archived' => Tab::make(__('Archived'))->badge(Post::onlyTrashed()->count())
+        'all' => Tab::make(__('All Posts'))
+            ->badge(Post::count()),
+        'archived' => Tab::make(__('Archived'))
+            ->badge(Post::onlyTrashed()->count())
             ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
     ];
 }
@@ -27,11 +31,15 @@ To customize how posts are listed, you extend the `ListRecords` class.
 ### **Key Features:**
 
 - Define the **resource** (`PostResource`).
-- Add **header actions**, such as a button to create new posts.
+- Add **header actions**, such as a button to create new posts. Page actions like `CreateAction` are imported from the unified `Filament\Actions` namespace.
 
 **Code Example:**
 
 ```php
+use Filament\Actions\CreateAction;
+use Filament\Resources\Pages\ListRecords;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
+
 class ListPosts extends ListRecords
 {
     protected static string $resource = PostResource::class;
@@ -39,9 +47,9 @@ class ListPosts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->icon('heroicon-o-plus-circle')
-                ->label(__('New Post')),
+            CreateAction::make()
+                ->label(__('New Post'))
+                ->icon('heroicon-o-plus-circle'),
         ];
     }
 }
@@ -49,29 +57,43 @@ class ListPosts extends ListRecords
 
 ## **3. Using Preset Views for Filtering**
 
-Aureus ERP supports **preset views** to provide predefined post listings.
+AureusERP supports **preset views** to provide predefined post listings. To use them, add the `HasTableViews` trait from the `table-views` plugin to your list page and define the views in `getPresetTableViews()`.
 
 ### **Example Preset Views:**
 
-- **All Posts** → Default view showing all records.
+- **My Posts** → Shows posts authored by the current user.
 - **Archived** → Shows deleted posts.
 
 **Code Example:**
 
 ```php
-public function getPresetTableViews(): array
+use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
+use Webkul\TableViews\Filament\Components\PresetView;
+use Webkul\TableViews\Filament\Concerns\HasTableViews;
+
+class ListPosts extends ListRecords
 {
-    return [
-        'all_posts' => PresetView::make(__('All Posts'))
-            ->icon('heroicon-s-clipboard-list')
-            ->favorite()
-            ->default()
-            ->modifyQueryUsing(fn (Builder $query) => $query),
-        'archived' => PresetView::make(__('Archived Posts'))
-            ->icon('heroicon-s-archive-box')
-            ->favorite()
-            ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
-    ];
+    use HasTableViews;
+
+    protected static string $resource = PostResource::class;
+
+    public function getPresetTableViews(): array
+    {
+        return [
+            'my_posts' => PresetView::make(__('My Posts'))
+                ->icon('heroicon-s-user')
+                ->favorite()
+                ->setAsDefault()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('author_id', Auth::id())),
+            'archived' => PresetView::make(__('Archived Posts'))
+                ->icon('heroicon-s-archive-box')
+                ->favorite()
+                ->modifyQueryUsing(fn ($query) => $query->onlyTrashed()),
+        ];
+    }
 }
 ```
 

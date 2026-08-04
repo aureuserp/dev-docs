@@ -63,7 +63,7 @@ features:
   - icon: 🌴
     title: Time Off
     details: Manage employee leave requests, approvals, balances, and leave policies.
-    link: /master/architecture/plugins.md#timeoffs
+    link: /master/architecture/plugins.md#time-off
   - icon: 🛠️
     title: Maintenance
     details: Plan and track equipment maintenance with preventive/corrective requests, teams, stages, and a calendar view.
@@ -80,6 +80,14 @@ features:
     title: Security & Access Control
     details: Manage roles, permissions, and customizable security policies for data protection.
     link: /master/architecture/plugins.md#security
+  - icon: 🏬
+    title: Multi-Company Support
+    details: Run multiple companies from a single installation with company scoping and a built-in company switcher.
+    link: /master/architecture/introduction.md#multi-company-support
+  - icon: 📷
+    title: Barcode Scanning
+    details: Speed up inventory operations with native barcode scanning support.
+    link: /master/architecture/plugins.md#barcode
 
 ---
 

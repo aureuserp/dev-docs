@@ -1,6 +1,6 @@
 # **Creating Records**
 
-When creating record in Aureus ERP using Filament, you may need to modify form data before it is saved to the database. Filament provides the `mutateFormDataBeforeCreate()` method to handle this modification.
+When creating record in AureusERP using Filament, you may need to modify form data before it is saved to the database. Filament provides the `mutateFormDataBeforeCreate()` method to handle this modification.
 
 This method allows you to:
 
@@ -16,7 +16,7 @@ Modify the form data by assigning the authenticated user's ID before saving:
 ```php
 protected function mutateFormDataBeforeCreate(array $data): array
 {
-    $data['creator_id'] = auth()->id();
+    $data['creator_id'] = Auth::id();
 
     return $data;
 }
@@ -26,15 +26,15 @@ In this case, `creator_id` is set to the currently authenticated user before the
 
 ## **Advanced Example: Assigning Additional Data**
 
-In some cases, you may need to assign multiple values, such as timestamps, company-related fields, or default statuses:
+In some cases, you may need to assign multiple values, such as company-related fields or default statuses:
 
 ```php
 protected function mutateFormDataBeforeCreate(array $data): array
 {
-    $user = auth()->user();
+    $user = Auth::user();
 
     $data['creator_id'] = $user->id;
-    $data['created_at'] = now();
+    $data['company_id'] = current_company_id();
 
     return $data;
 }
@@ -43,22 +43,22 @@ protected function mutateFormDataBeforeCreate(array $data): array
 This ensures that:
 
 - **The creator is assigned** (`creator_id`).
-- **The creation timestamp is set** (`created_at`).
+- **The current company is assigned** (`company_id`).
 
 ## **Mutating Data in Modal Actions**
 
-If you're using modal actions instead of standard create pages, refer to the **Filament Actions Documentation** for handling mutations inside modal-based actions.
-
-For example, when using modal-based form submissions:
+If you're using modal actions instead of standard create pages, refer to the **Filament Actions Documentation** for handling mutations inside modal-based actions. Actions now use the `mutateDataUsing()` method:
 
 ```php
 use Filament\Actions\CreateAction;
+use Illuminate\Support\Facades\Auth;
 
 CreateAction::make()
-    ->mutateFormDataUsing(fn (array $data) => [
-        ...$data,
-        'creator_id' => auth()->id(),
-    ]);
+    ->mutateDataUsing(function (array $data): array {
+        $data['creator_id'] = Auth::id();
+
+        return $data;
+    });
 ```
 
 ## **Example: Implementing CreatePost**
@@ -68,13 +68,12 @@ A `CreatePost` class can be implemented using Filament’s `CreateRecord`.
 ```php
 <?php
 
-namespace Webkul\Blog\Filament\Clusters\Posts\Resources\PostResource\Pages;
+namespace Webkul\Blog\Filament\Admin\Resources\PostResource\Pages;
 
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
-use Webkul\Blog\Models\Post;
-use Webkul\Blog\Filament\Clusters\Posts\Resources\PostResource;
+use Webkul\Blog\Filament\Admin\Resources\PostResource;
 
 class CreatePost extends CreateRecord
 {
@@ -95,16 +94,9 @@ class CreatePost extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $user = Auth::user();
-
-        $data['creator_id'] = $user->id;
-        $data['created_at'] = now();
+        $data['creator_id'] = Auth::id();
 
         return $data;
-    }
-
-    protected function afterCreate(): void
-    {
     }
 }
 ```
@@ -112,8 +104,7 @@ class CreatePost extends CreateRecord
 ## **Explanation**
 
 - **Handles Post Creation**: This class ensures proper post creation, following best practices.
-- **Data Mutation**: Assigns the `creator_id` and `company_id` before saving.
-- **Post-Creation Processing**: Calls `updateStockLevels()` to recalculate stock availability after post creation.
+- **Data Mutation**: Assigns the `creator_id` before saving.
 - **Redirection & Notifications**: Redirects to the post view and notifies the user on successful creation.
 
 For more details, check the **[Official Filament Documentation](https://filamentphp.com/docs/5.x/resources/creating-records)**. 🚀

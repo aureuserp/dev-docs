@@ -1,14 +1,26 @@
 # Upgrade Guide
 
-This guide will help you upgrade your **Aureus ERP** installation to the latest version safely and efficiently.
+This guide will help you upgrade your **AureusERP** installation to the latest version safely and efficiently.
 
 > **Important:** Always perform upgrades on a **staging or test environment** before updating your production instance.
+
+## Upgrading to v1.5.0
+
+AureusERP **v1.5.0** upgrades the underlying stack. Before upgrading, make sure your server meets the new requirements:
+
+- **PHP**: 8.3 or higher
+- **Laravel**: 13.x
+- **FilamentPHP**: 5.x
+
+::: warning
+If you have custom plugins or Filament customizations, review them against Filament 5 and Laravel 13 before upgrading, as these are major framework upgrades.
+:::
 
 ---
 
 ## Upgrade Methods
 
-You can upgrade Aureus ERP using one of the following methods:
+You can upgrade AureusERP using one of the following methods:
 
 * [Upgrade via GitHub (Recommended for Developers)](#_2-upgrade-via-github)
 * [Upgrade via Website Download (Recommended for Manual Installation)](#_3-upgrade-via-website-download)
@@ -28,7 +40,7 @@ mysqldump -u root -p aureus_db > backup_aureus_$(date +%F).sql
 
 ### Project Files Backup
 
-Copy your entire Aureus ERP directory as a backup:
+Copy your entire AureusERP directory as a backup:
 
 ```bash
 cp -r aureuserp aureuserp_backup_$(date +%F)
@@ -68,7 +80,7 @@ git stash pop
 
 ## 3. Upgrade via Website Download
 
-If you installed Aureus ERP manually (without Git), you can download the latest version from the official website.
+If you installed AureusERP manually (without Git), you can download the latest version from the official website.
 
 ### Step 1: Download Latest Package
 
@@ -78,7 +90,7 @@ Visit the official download page:
 ### Step 2: Extract and Replace Files
 
 1. Extract the downloaded ZIP package.
-2. Replace your existing Aureus ERP files, **except**:
+2. Replace your existing AureusERP files, **except**:
 
    * `.env`
    * `storage/`
@@ -103,7 +115,7 @@ If you’re using Filament, update it as well:
 composer update filament/filament --with-all-dependencies
 ```
 
-**Note:** Aureus ERP includes a post-autoload script that automatically runs `php artisan filament:upgrade` to handle Filament v4 upgrades and compatibility changes.
+**Note:** AureusERP includes a post-autoload script that automatically runs `php artisan filament:upgrade` to handle Filament upgrades and compatibility changes.
 
 ---
 
@@ -242,7 +254,7 @@ If you’re running the app under XAMPP, Valet, or Apache:
 
 ## Conclusion
 
-You’ve successfully upgraded your **Aureus ERP** installation to the latest version.
+You’ve successfully upgraded your **AureusERP** installation to the latest version.
 
 Stay up to date with new releases, patches, and community updates:
 

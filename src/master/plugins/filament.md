@@ -24,47 +24,53 @@ use Filament\Panel;
 
 public function register(Panel $panel): void
 {
+    if (! Package::isPluginInstalled($this->getId())) {
+        return;
+    }
+
     $panel
-        ->when($panel->getId() === 'customer', function (Panel $panel) {
+        ->when($panel->getId() == 'customer', function (Panel $panel) {
             $panel
                 ->discoverResources(
-                  	in: __DIR__.'/Filament/Customer/Resources',
-					for: 'Webkul\\Blog\\Filament\\Customer\\Resources'
-				)
+                    in: __DIR__.'/Filament/Customer/Resources',
+                    for: 'Webkul\\Blog\\Filament\\Customer\\Resources'
+                )
                 ->discoverPages(
-					in: __DIR__.'/Filament/Customer/Pages',
-					for: 'Webkul\\Blog\\Filament\\Customer\\Pages'
-				)
+                    in: __DIR__.'/Filament/Customer/Pages',
+                    for: 'Webkul\\Blog\\Filament\\Customer\\Pages'
+                )
                 ->discoverClusters(
-					in: __DIR__.'/Filament/Customer/Clusters',
-					for: 'Webkul\\Blog\\Filament\\Customer\\Clusters'
-				)
+                    in: __DIR__.'/Filament/Customer/Clusters',
+                    for: 'Webkul\\Blog\\Filament\\Customer\\Clusters'
+                )
                 ->discoverWidgets(
-					in: __DIR__.'/Filament/Customer/Widgets',
-					for: 'Webkul\\Blog\\Filament\\Customer\\Widgets'
-				);
+                    in: __DIR__.'/Filament/Customer/Widgets',
+                    for: 'Webkul\\Blog\\Filament\\Customer\\Widgets'
+                );
         })
-        ->when($panel->getId() === 'admin', function (Panel $panel) {
+        ->when($panel->getId() == 'admin', function (Panel $panel) {
             $panel
                 ->discoverResources(
-					in: __DIR__.'/Filament/Admin/Resources',
-					for: 'Webkul\\Blog\\Filament\\Admin\\Resources'
-				)
+                    in: __DIR__.'/Filament/Admin/Resources',
+                    for: 'Webkul\\Blog\\Filament\\Admin\\Resources'
+                )
                 ->discoverPages(
-					in: __DIR__.'/Filament/Admin/Pages',
-					for: 'Webkul\\Blog\\Filament\\Admin\\Pages'
-				)
+                    in: __DIR__.'/Filament/Admin/Pages',
+                    for: 'Webkul\\Blog\\Filament\\Admin\\Pages'
+                )
                 ->discoverClusters(
-					in: __DIR__.'/Filament/Admin/Clusters',
-					for: 'Webkul\\Blog\\Filament\\Admin\\Clusters'
-				)
+                    in: __DIR__.'/Filament/Admin/Clusters',
+                    for: 'Webkul\\Blog\\Filament\\Admin\\Clusters'
+                )
                 ->discoverWidgets(
-					in: __DIR__.'/Filament/Admin/Widgets',
-					for: 'Webkul\\Blog\\Filament\\Admin\\Widgets'
-				);
+                    in: __DIR__.'/Filament/Admin/Widgets',
+                    for: 'Webkul\\Blog\\Filament\\Admin\\Widgets'
+                );
         });
 }
 ```
+
+Here `Package` is the `Webkul\PluginManager\Package` class, whose static `isPluginInstalled()` method checks the plugin's installation state.
 
 ### **Explanation**
 
@@ -78,18 +84,20 @@ To properly register resources, clusters, pages, and widgets, the following dire
 
 ```
 +-- plugins
-|   +-- blogs
-|   |   +-- Filament
-|   |   |   +-- Admin
-|   |   |   |   +-- Resources   # Admin-specific Filament resources
-|   |   |   |   +-- Pages       # Admin-specific pages
-|   |   |   |   +-- Clusters    # Admin-specific clusters
-|   |   |   |   +-- Widgets     # Admin-specific widgets
-|   |   |   +-- Customer
-|   |   |   |   +-- Resources   # Customer-specific Filament resources
-|   |   |   |   +-- Pages       # Customer-specific pages
-|   |   |   |   +-- Clusters    # Customer-specific clusters
-|   |   |   |   +-- Widgets     # Customer-specific widgets
+|   +-- webkul
+|   |   +-- blogs
+|   |   |   +-- src
+|   |   |   |   +-- Filament
+|   |   |   |   |   +-- Admin
+|   |   |   |   |   |   +-- Resources   # Admin-specific Filament resources
+|   |   |   |   |   |   +-- Pages       # Admin-specific pages
+|   |   |   |   |   |   +-- Clusters    # Admin-specific clusters
+|   |   |   |   |   |   +-- Widgets     # Admin-specific widgets
+|   |   |   |   |   +-- Customer
+|   |   |   |   |   |   +-- Resources   # Customer-specific Filament resources
+|   |   |   |   |   |   +-- Pages       # Customer-specific pages
+|   |   |   |   |   |   +-- Clusters    # Customer-specific clusters
+|   |   |   |   |   |   +-- Widgets     # Customer-specific widgets
 ```
 
 ## **Usage Guidelines**
@@ -101,13 +109,14 @@ If you want to display resources, clusters, pages, or widgets in the **admin pan
 Example:
 
 ```
-plugins/blogs/Filament/Admin/Resources/PostResource.php
-plugins/blogs/Filament/Admin/Pages/ManagePosts.php
+plugins/webkul/blogs/src/Filament/Admin/Resources/PostResource.php
 ```
 
-These files will automatically be discovered and registered when the admin panel is initialized.
+These files are automatically discovered and registered when the admin panel is initialized.
 
----
+::: tip
+Plugins that only target the admin panel (for example the `maintenance` plugin) skip the `Admin`/`Customer` split and place their components directly in `src/Filament/Resources`, `src/Filament/Clusters`, and `src/Filament/Widgets`, discovering them from those paths inside the `admin` panel check.
+:::
 
 ### **2. Customer Panel (`Customer` directory)**
 
@@ -116,32 +125,44 @@ If you want to display Filament components (resources, clusters, pages, or widge
 Example:
 
 ```
-plugins/blogs/Filament/Customer/Resources/CommentResource.php
-plugins/blogs/Filament/Customer/Pages/Dashboard.php
+plugins/webkul/blogs/src/Filament/Customer/Resources/PostResource.php
 ```
 
-This ensures a clear separation between admin and customer functionalities.
+By following this structure, AureusERP ensures clear separation between admin and customer functionalities, making the plugin more maintainable and scalable.
 
+## **Navigation Groups**
+
+The admin panel defines all navigation groups centrally from the `Webkul\Support\Enums\NavigationGroup` enum, which provides the label and icon for each group (Dashboard, Sale, Purchase, Inventory, Website, Setting, and so on). Resources and clusters attach themselves to a group by returning an enum case from `getNavigationGroup()`:
+
+```php
+use Webkul\Support\Enums\NavigationGroup;
+
+public static function getNavigationLabel(): string
+{
+    return __('blogs::filament/admin/resources/post.navigation.title');
+}
+
+public static function getNavigationGroup(): string|\UnitEnum
+{
+    return NavigationGroup::Website;
+}
+```
+
+Use one of the existing enum cases so your plugin's navigation items appear under the correct top-level group. New groups are added as cases to the `NavigationGroup` enum in the `support` plugin.
 
 ## **Best Practices**
 
-* Keep **admin and customer logic isolated** for cleaner code maintenance.
-* Always ensure your **namespace** matches the directory structure (e.g., `Webkul\\Blog\\Filament\\Admin\\Resources`).
-* Regularly **clear and rebuild cache** after creating or modifying Filament components:
+* Keep admin and customer logic isolated for cleaner code maintenance.
+* Always ensure your namespace matches the directory structure (e.g., `Webkul\Blog\Filament\Admin\Resources`).
+* Clear and rebuild caches after creating or modifying Filament components:
 
 ```bash
 php artisan optimize:clear
-php artisan filament:cache
+php artisan filament:optimize
 ```
 
 * If new components don’t appear in the panel, verify that:
 
   * The plugin is installed (`Package::isPluginInstalled()`).
-  * The directory paths in `discoverResources` match your folder structure.
+  * The directory paths in `discoverResources()` match your folder structure.
   * The namespaces are correct and autoloaded via Composer.
-
-
-## **Conclusion**
-
-By following this directory structure and registration approach, **Aureus ERP** ensures that each plugin integrates seamlessly with FilamentPHP.
-This pattern provides a clean, scalable way to manage both **admin** and **customer** panel functionalities — ensuring better organization, modularity, and future maintainability.
