@@ -9,7 +9,7 @@
 - **Laravel**: 13.x
 - **FilamentPHP**: 5.x
 - **Composer**: Latest version (2.0+)
-- **Database**: MySQL 8.0+, PostgreSQL, or SQLite
+- **Database**: MySQL 8.0+ or PostgreSQL
 - **Browser**: A modern browser (Chrome, Firefox, Edge)
 
 ## PHP Extensions
@@ -19,7 +19,7 @@ Ensure the following extensions are installed and enabled. You can check using t
 - **php-intl**: Required for internationalization support.
 - **php-gd**: Required for image processing and manipulation.
 - **php-bcmath, php-curl, php-exif, php-gmp, php-soap, php-zip**: Required by the application and its dependencies (these are the extensions bundled in the official Docker image).
-- **php-mysql** (or **php-pgsql** / **php-sqlite3**): The PDO driver matching your database server.
+- **php-mysql** (or **php-pgsql**): The PDO driver matching your database server.
 - **OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON**: Essential extensions for Laravel and FilamentPHP.
 
 ## PHP Configuration
@@ -46,7 +46,6 @@ The application supports the following database servers:
 
 - **MySQL**: Version 8.0+ is recommended for optimal performance.
 - **PostgreSQL**: Supported as of v1.5.0.
-- **SQLite**: Alternative lightweight database option.
 
 ### Database Collation
 

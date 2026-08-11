@@ -35,7 +35,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-By default, the application uses SQLite (`DB_CONNECTION=sqlite`). To use MySQL instead, edit the `.env` file and configure the database settings as per your environment:
+By default, the application uses MySQL (`DB_CONNECTION=mysql`). Edit the `.env` file and configure the database settings as per your environment:
 
 ```bash
 DB_CONNECTION=mysql
