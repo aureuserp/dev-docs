@@ -9,7 +9,7 @@
 - **Laravel**: 13.x
 - **FilamentPHP**: 5.x
 - **Composer**: Latest version (2.0+)
-- **Database**: MySQL 8.0+ or PostgreSQL
+- **Database**: MySQL 8.0+, MariaDB 10.6+, or PostgreSQL 16+
 - **Browser**: A modern browser (Chrome, Firefox, Edge)
 
 ## PHP Extensions
@@ -19,7 +19,7 @@ Ensure the following extensions are installed and enabled. You can check using t
 - **php-intl**: Required for internationalization support.
 - **php-gd**: Required for image processing and manipulation.
 - **php-bcmath, php-curl, php-exif, php-gmp, php-soap, php-zip**: Required by the application and its dependencies (these are the extensions bundled in the official Docker image).
-- **php-mysql** (or **php-pgsql**): The PDO driver matching your database server.
+- **php-mysql** (or **php-pgsql**): The PDO driver matching your database server. MySQL and MariaDB both use **php-mysql**.
 - **OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON**: Essential extensions for Laravel and FilamentPHP.
 
 ## PHP Configuration
@@ -45,8 +45,13 @@ After modifying the PHP configuration, restart Apache or NGINX to apply changes.
 The application supports the following database servers:
 
 - **MySQL**: Version 8.0+ is recommended for optimal performance.
-- **PostgreSQL**: Supported as of v1.5.0.
+- **MariaDB**: Version 10.6 or higher.
+- **PostgreSQL**: Version 16 or higher, supported as of v1.5.0.
 
 ### Database Collation
 
-For MySQL, the recommended collation is **`utf8mb4_unicode_ci`**, ensuring proper Unicode and multilingual support.
+For MySQL and MariaDB, the recommended collation is **`utf8mb4_unicode_ci`**, ensuring proper Unicode and multilingual support.
+
+### Strict Mode
+
+The MySQL and MariaDB connections ship with `strict` set to `false` in **`config/database.php`**. This relaxes the server-side SQL modes so that queries generated across the ERP modules — grouped aggregates in particular — run consistently on every supported server version. Leave it disabled unless you have audited your own queries against strict mode.
