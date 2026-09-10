@@ -46,7 +46,18 @@ DB_USERNAME=your_database_user
 DB_PASSWORD=your_database_password
 ```
 
-Or, to use PostgreSQL (supported as of v1.5.0):
+Or, to use MariaDB 10.6+:
+
+```bash
+DB_CONNECTION=mariadb
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_user
+DB_PASSWORD=your_database_password
+```
+
+Or, to use PostgreSQL 16+ (supported as of v1.5.0):
 
 ```bash
 DB_CONNECTION=pgsql
