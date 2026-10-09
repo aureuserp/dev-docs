@@ -108,13 +108,18 @@ function readCurrent() {
 }
 
 function setCookie(value) {
-  const host = window.location.hostname
   const expires = value
     ? ''
     : '; expires=Thu, 01 Jan 1970 00:00:00 GMT'
-  document.cookie = `googtrans=${value}; path=/${expires}`
-  document.cookie = `googtrans=${value}; path=/; domain=${host}${expires}`
-  document.cookie = `googtrans=${value}; path=/; domain=.${host}${expires}`
+  const cookie = `googtrans=${value}; path=/${expires}`
+  document.cookie = cookie
+  // Google also writes this cookie on parent domains (.aureuserp.com).
+  // Overwrite every level, or a stale value wins on the next load.
+  const parts = window.location.hostname.split('.')
+  for (let i = 0; i < parts.length - 1; i++) {
+    document.cookie = `${cookie}; domain=.${parts.slice(i).join('.')}`
+  }
+  document.cookie = `${cookie}; domain=${window.location.hostname}`
 }
 
 function loadScript() {
