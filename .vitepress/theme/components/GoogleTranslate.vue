@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vitepress'
 
 const languages = [
   ['af', 'Afrikaans'],
@@ -88,6 +89,7 @@ const languages = [
   ['zu', 'Zulu']
 ]
 
+const router = useRouter()
 const isOpen = ref(false)
 const query = ref('')
 const current = ref('en')
@@ -101,19 +103,31 @@ const filtered = computed(() => {
 })
 
 function readCurrent() {
-  const match = document.cookie.match(/googtrans=\/[^/]+\/([^;]+)/)
+  const match = document.cookie.match(/googtrans=\/[^/]*\/([^;]+)/)
   current.value = match ? decodeURIComponent(match[1]) : 'en'
+}
+
+function setCookie(value) {
+  const host = window.location.hostname
+  const expires = value
+    ? ''
+    : '; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  document.cookie = `googtrans=${value}; path=/${expires}`
+  document.cookie = `googtrans=${value}; path=/; domain=${host}${expires}`
+  document.cookie = `googtrans=${value}; path=/; domain=.${host}${expires}`
 }
 
 function loadScript() {
   if (document.getElementById('google-translate-script')) return
+  // One hidden widget container for the whole page, outside Vue's DOM.
+  const holder = document.createElement('div')
+  holder.id = 'google_translate_element'
+  holder.style.display = 'none'
+  document.body.appendChild(holder)
+
   window.googleTranslateInit = () => {
     new window.google.translate.TranslateElement(
-      {
-        pageLanguage: 'en',
-        autoDisplay: false,
-        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
-      },
+      { pageLanguage: 'en', autoDisplay: false },
       'google_translate_element'
     )
   }
@@ -125,22 +139,26 @@ function loadScript() {
   document.head.appendChild(script)
 }
 
+// Cookie + reload is the only reliable way to switch between any two
+// languages (including back to English) once a page is translated.
 function selectLanguage(code) {
-  const combo = document.querySelector('select.goog-te-combo')
   isOpen.value = false
   query.value = ''
-  if (combo) {
-    combo.value = code
-    combo.dispatchEvent(new Event('change'))
-    current.value = code
-    return
-  }
-  // Widget not ready: set cookie and reload so Google applies it.
-  const value = code === 'en' ? '' : `/en/${code}`
-  const host = window.location.hostname
-  document.cookie = `googtrans=${value}; path=/`
-  document.cookie = `googtrans=${value}; path=/; domain=${host}`
+  if (code === current.value) return
+  setCookie(code === 'en' ? '' : `/en/${code}`)
   window.location.reload()
+}
+
+// Google rewrites text nodes, which breaks Vue DOM patching on SPA
+// navigation. While translated, use full page loads instead.
+function disableSpaWhenTranslated() {
+  if (current.value === 'en') return
+  router.onBeforeRouteChange = (to) => {
+    const url = new URL(to, window.location.origin)
+    if (url.pathname === window.location.pathname) return true
+    window.location.href = url.href
+    return false
+  }
 }
 
 function onClickOutside(event) {
@@ -151,6 +169,7 @@ function onClickOutside(event) {
 
 onMounted(() => {
   readCurrent()
+  disableSpaWhenTranslated()
   loadScript()
   document.addEventListener('click', onClickOutside)
 })
@@ -211,8 +230,6 @@ onBeforeUnmount(() => {
         <li v-if="!filtered.length" class="gt-empty">No match</li>
       </ul>
     </div>
-
-    <div id="google_translate_element" class="gt-hidden"></div>
   </div>
 </template>
 
@@ -298,9 +315,5 @@ onBeforeUnmount(() => {
   padding: 6px 10px;
   font-size: 14px;
   color: var(--vp-c-text-2);
-}
-
-.gt-hidden {
-  display: none;
 }
 </style>
