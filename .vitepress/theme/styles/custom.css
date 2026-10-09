@@ -19,3 +19,19 @@
 .VPHero .actions {
   justify-content: center !important;
 }
+
+/* Hide Google Translate top banner and tooltip artifacts */
+.skiptranslate iframe.goog-te-banner-frame,
+body > .skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-tooltip,
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
