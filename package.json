@@ -16,9 +16,11 @@
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
     "docs:preview": "npm run docs:build && vitepress preview",
+    "docs:api": "node .vitepress/scripts/gen-api-docs.mjs",
     "docs:format": "npx prettier --write ."
   },
   "devDependencies": {
+    "js-yaml": "^4.3.2",
     "typescript": "^5.8.2",
     "vitepress": "^1.6.3",
     "vue": "^3.5.13"

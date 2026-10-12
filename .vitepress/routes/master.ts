@@ -1,3 +1,5 @@
+import apiReference from './api-reference'
+
 const routes = [
   {
     text: 'Prologue',
@@ -216,13 +218,7 @@ const routes = [
       }
     ]
   },
-  {
-    text: 'AureusERP API',
-    collapsed: false,
-    items: [
-      { text: 'Introduction', link: '/master/api-reference/index' },
-    ]
-  }
+  apiReference
 ]
 
 export default routes

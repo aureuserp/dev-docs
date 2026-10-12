@@ -71,7 +71,7 @@ export default defineConfig({
         link: 'https://github.com/aureuserp/aureuserp'
       },
       { text: 'User Guide', link: 'https://docs.aureuserp.com/' },
-      { text: 'Contact Us', link: 'https://aureuserp.com/en/contacts/' },
+      { text: 'Contact Us', link: 'https://aureuserp.com/en/contacts/' }
     ],
 
     sidebar,
