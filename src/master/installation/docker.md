@@ -204,6 +204,6 @@ To stop the containers:
 
 ## Getting Support
 
-If you encounter any issues or have questions, please contact us at `support@aureuserp.com` or raise a ticket at AureusERP Support.
+If you encounter any issues or have questions, please contact us at `hello@aureuserp.com` or raise a ticket at AureusERP Support.
 
 Your AureusERP container is now up and running! 🚀
