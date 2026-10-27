@@ -274,6 +274,72 @@ const apiReference = {
       ]
     },
     {
+      "text": "Projects",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Projects",
+          "link": "/master/api-reference/endpoints/projects/projects"
+        },
+        {
+          "text": "Tasks",
+          "link": "/master/api-reference/endpoints/projects/tasks"
+        },
+        {
+          "text": "Project Stages",
+          "link": "/master/api-reference/endpoints/projects/project-stages"
+        },
+        {
+          "text": "Task Stages",
+          "link": "/master/api-reference/endpoints/projects/task-stages"
+        },
+        {
+          "text": "Milestones",
+          "link": "/master/api-reference/endpoints/projects/milestones"
+        },
+        {
+          "text": "Tags",
+          "link": "/master/api-reference/endpoints/projects/tags"
+        }
+      ]
+    },
+    {
+      "text": "Purchases",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Vendor Price Lists",
+          "link": "/master/api-reference/endpoints/purchases/vendor-price-lists"
+        },
+        {
+          "text": "Purchase Orders",
+          "link": "/master/api-reference/endpoints/purchases/purchase-orders"
+        },
+        {
+          "text": "Purchase Agreements",
+          "link": "/master/api-reference/endpoints/purchases/purchase-agreements"
+        }
+      ]
+    },
+    {
+      "text": "Point of Sale",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Registers",
+          "link": "/master/api-reference/endpoints/pos/registers"
+        },
+        {
+          "text": "Sessions",
+          "link": "/master/api-reference/endpoints/pos/sessions"
+        },
+        {
+          "text": "Orders",
+          "link": "/master/api-reference/endpoints/pos/orders"
+        }
+      ]
+    },
+    {
       "text": "Security & Authentication",
       "collapsed": true,
       "items": [

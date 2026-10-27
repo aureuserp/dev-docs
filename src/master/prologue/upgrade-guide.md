@@ -4,6 +4,35 @@ This guide will help you upgrade your **AureusERP** installation to the latest v
 
 > **Important:** Always perform upgrades on a **staging or test environment** before updating your production instance.
 
+## Upgrading to v1.7.0
+
+AureusERP **v1.7.0** ships the Point of Sale plugin and several security improvements. Before upgrading, review the following changes:
+
+- **API token expiry.** API tokens now expire and are revoked on password change. Re-issue any long-lived tokens and handle `401 Unauthorized` in your integrations.
+- **Company ID validation on API writes.** Write requests that omit or specify an incorrect `company_id` now return `403 Forbidden`. Update API clients to include the correct company context.
+- **SVG uploads blocked.** SVG files are rejected on the public disk and original filenames are no longer preserved. Update any custom code that uploads SVGs or relies on preserved filenames.
+- **`ASSET_URL` added to `.env`.** A new `ASSET_URL` key is read from `.env`. Add it after upgrading (can match `APP_URL` if you are not using a CDN).
+- **Point of Sale plugin.** Install from **Settings → Plugin Manager** if you wish to use it.
+
+::: warning
+If your integrations rely on non-expiring API tokens, re-issue them before putting upgraded instances into production.
+:::
+
+---
+
+## Upgrading to v1.6.0
+
+AureusERP **v1.6.0** introduces structural refactors. If you maintain custom plugins, review the following:
+
+- **User model.** The codebase now uses `Webkul\Security\Models\User` instead of `App\Models\User`. Update any direct imports or type-hints in custom plugins.
+- **Resource folder structure.** Filament resource namespaces and file paths have been standardised across all plugins. Run `php artisan optimize:clear` after pulling and verify any overridden core resource classes still resolve.
+- **Livewire `max_nesting_depth`.** Raised from 10 to 30 in `config/livewire.php`. Merge this value if you have published the config locally.
+- **SQLite removed from test setup.** The default test environment now requires MySQL or PostgreSQL. Update `.env.testing` or CI if you were using SQLite.
+- **Custom sequence migration.** New settings migrations ship with this release. Run `php artisan migrate` as usual.
+- **Spatie Translatable (Website plugin).** `spatie/laravel-translatable` is now a dependency. Verify `config/translatable.php` locale list if you have published that config.
+
+---
+
 ## Upgrading to v1.5.0
 
 AureusERP **v1.5.0** upgrades the underlying stack. Before upgrading, make sure your server meets the new requirements:
