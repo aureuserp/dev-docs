@@ -70,17 +70,33 @@ DB_PASSWORD=your_database_password
 
 ## 5. Run the Installation Command
 
-Execute the following command to install AureusERP:
-
 ```bash
 php artisan erp:install
 ```
 
-The command can also be run non-interactively by passing the admin credentials as options:
+The installer asks for:
+
+1. **Country**: the country your business is based in. The default currency is taken from it.
+2. **Admin name, email and password**: used to log in to the admin panel. The password must be at least 8 characters.
+
+### Non-interactive install
+
+To skip all prompts, pass the values as options:
 
 ```bash
 php artisan erp:install --admin-name="Administrator" --admin-email="admin@example.com" --admin-password="password"
 ```
+
+Add `--country="India"` or `--currency="INR"` to also set the country or currency. If you pass neither, the currency from `APP_CURRENCY` in `.env` (default `USD`) is used.
+
+| Option | Description | If not passed |
+|--------|-------------|---------------|
+| `--admin-name` | Admin user name. | Asked as a prompt. |
+| `--admin-email` | Admin user email. | Asked as a prompt. |
+| `--admin-password` | Admin password (minimum 8 characters). | Asked as a prompt. |
+| `--country` | Country name or two letter code. The currency is derived from it. | Asked as a prompt. |
+| `--currency` | Currency ISO code. Overrides the country. | Currency from `APP_CURRENCY` in `.env`. |
+| `--force` | Skip the reinstall confirmation. The database is wiped. | Confirmation is asked. |
 
 ## 6. What Happens During Installation?
 
@@ -98,18 +114,26 @@ php artisan erp:install --admin-name="Administrator" --admin-email="admin@exampl
 
 ### d. Seeders
 
-- Seeders are executed to populate initial data, including the default company.
+- Seeders are executed to populate initial data, including the default company. The country and currency from step 5 are then applied to that company.
 
 ### e. Admin User & Default Settings
 
 - The admin user is created, assigned the admin role, and linked to the default company, and the default settings (company, role, and currency) are synced.
+
+### f. Installation Marker
+
+- A `storage/installed` file is created to mark the installation as complete.
+
+::: tip APP_CURRENCY
+The base currency is stored in the settings. If it differs from `APP_CURRENCY` in your `.env`, the installer prints a warning. Set `APP_CURRENCY` to the installed currency so the fallback matches.
+:::
 
 ## 7. Admin Account Setup
 
 During the installation, you will be prompted to provide **Admin Login Credentials** (name, email, and password). These credentials are used to log in to the admin panel. The password must be at least 8 characters long.
 
 ::: warning Reinstallation
-If AureusERP is already installed, running `php artisan erp:install` again will ask for explicit confirmation and then **wipe the database** before reinstalling. This action cannot be undone.
+If AureusERP is already installed (the `storage/installed` file exists), running `php artisan erp:install` again asks you to type `REINSTALL` and then confirm a second time. It then runs `migrate:fresh` and **wipes the database** before reinstalling. This action cannot be undone. Passing `--force` skips these confirmations.
 :::
 
 ## 8. Filament Installation Notes
