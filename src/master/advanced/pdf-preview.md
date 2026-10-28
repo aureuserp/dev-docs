@@ -4,13 +4,14 @@ AureusERP provides a `PDFHandler` trait and a `PreviewAction` pattern used on in
 
 ## How It Works
 
-`Webkul\Support\Traits\PDFHandler` wraps [`barryvdh/laravel-dompdf`](https://github.com/barryvdh/laravel-dompdf) and exposes three methods:
+`Webkul\Support\Traits\PDFHandler` wraps [`barryvdh/laravel-dompdf`](https://github.com/barryvdh/laravel-dompdf) and exposes four methods:
 
 | Method | Returns | Description |
 |---|---|---|
 | `generatePDF(string $html)` | `Pdf` instance | Render HTML as A4 portrait PDF |
 | `savePDF(string $html, ?string $fileName)` | `string` path | Save PDF to `storage/app/public/pdfs/` and return the relative path |
 | `downloadPDF(string $html, ?string $fileName)` | `Response` | Generate and stream a download response |
+| `saveAndDownloadPDF(string $html, ?string $fileName)` | `array` | Save the PDF and generate a download response. Returns `['path' => ..., 'download' => ...]` |
 
 RTL support is handled automatically: if `SupportServiceProvider::isRtl()` returns true the HTML is pre-processed by `prepare_rtl_html()` before rendering.
 

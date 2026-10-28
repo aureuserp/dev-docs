@@ -260,7 +260,7 @@ Added in v1.7.0. The `Webkul\Invoice\Filament\Pages\Invoices` dashboard (`$route
 | `TopInvoicesWidget` | `Webkul\Invoice\Filament\Widgets` | Highest-value invoices |
 | `TopBillsWidget` | `Webkul\Invoice\Filament\Widgets` | Highest-value bills |
 
-All widgets implement `HasInvoiceDashboardFilters` to read the shared filter state.
+All widgets use `HasInvoiceDashboardFilters` to read the shared filter state.
 
 ## Purchase Dashboard
 
@@ -288,7 +288,7 @@ Added in v1.7.0. The `Webkul\Purchase\Filament\Admin\Pages\Purchases` dashboard 
 | `TopOrdersWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Highest-value purchase orders |
 | `TopPurchasedProductsWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Most-ordered products by spend |
 
-All widgets implement `HasPurchaseDashboardFilters` to read the shared filter state.
+All widgets use `HasPurchaseDashboardFilters` to read the shared filter state.
 
 ## More Information
 

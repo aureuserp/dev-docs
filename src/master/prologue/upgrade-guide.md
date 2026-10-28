@@ -14,7 +14,7 @@ AureusERP **v1.7.0** ships the Point of Sale plugin and several security improve
 - **SVG uploads blocked.** SVG files are rejected on the public disk and original filenames are no longer preserved. Update any custom code that uploads SVGs or relies on preserved filenames.
 - **`ASSET_URL`.** `config/app.php` reads an optional `ASSET_URL` from `.env` and falls back to `APP_URL`. Set it only if you serve assets from a CDN or another host.
 - **Mass-assignment hardening.** Mass assignment no longer accepts attributes that are not valid for the model. Review custom code that passes request data straight to `create()` or `fill()`.
-- **Plugin installation.** Plugin install runs its migrations, settings migrations, and seeders with `--force`, so they no longer prompt in production.
+- **Plugin installation.** Plugin install runs its migrations, settings migrations, and seeders with `--force`, so they no longer prompt in production. It also clears the settings cache.
 - **Filament upgrade.** Filament is updated to 5.10.2. Run `composer update` and `php artisan optimize:clear` after pulling.
 - **Point of Sale plugin.** Install from **Settings → Plugin Manager** if you wish to use it.
 
@@ -29,7 +29,7 @@ Tokens are revoked when a password changes. Re-issue tokens for any integration 
 AureusERP **v1.6.0** introduces structural refactors. If you maintain custom plugins, review the following:
 
 - **User model.** The codebase now uses `Webkul\Security\Models\User` instead of `App\Models\User`. Update any direct imports or type-hints in custom plugins.
-- **Resource folder structure.** Filament resource namespaces and file paths have been standardised across all plugins. Run `php artisan optimize:clear` after pulling and verify any overridden core resource classes still resolve.
+- **Resource folder structure.** Filament resource namespaces and file paths have been standardized across all plugins. Run `php artisan optimize:clear` after pulling and verify any overridden core resource classes still resolve.
 - **Livewire `max_nesting_depth`.** Raised from 10 to 30 in `config/livewire.php`. Merge this value if you have published the config locally.
 - **SQLite removed from test setup.** The default test environment now requires MySQL or PostgreSQL. Update `.env.testing` or CI if you were using SQLite.
 - **Custom sequences.** A new `sequences` table and per-plugin sequence seed migrations ship with this release. Run `php artisan migrate` as usual.

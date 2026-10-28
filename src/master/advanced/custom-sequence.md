@@ -69,7 +69,7 @@ $name = SequenceService::next(
         'prefix'       => 'SO/',
         'initial_from' => static::withoutGlobalScopes(), 
     ],
-    date: null,                
+    date: null,
 );
 ```
 

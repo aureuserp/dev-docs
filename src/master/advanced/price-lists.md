@@ -146,7 +146,7 @@ Each rule item exposes a condensed form (using Filament's `.compact()` table rep
 
 ## Adding Price List Support to a Custom Plugin
 
-To resolve prices from a price list in your own plugin, inject `PriceListResolver` and call `getProductPrice()` or `resolve()`. There is no interface to implement and no trait to apply, the resolver works with any `PriceList` and `Product` models.
+To resolve prices from a price list in your own plugin, inject `PriceListResolver` and call `getProductPrice()` or `resolve()`. There is no interface to implement and no trait to apply. The resolver works with any `PriceList` and `Product` models.
 
 To surface price list selection on your own order-type resource, add a `price_list_id` foreign key to your table, a `BelongsTo` relationship on your model, and a `Select` field wired to `PriceList::query()->active()` in your Filament form.
 
