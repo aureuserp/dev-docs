@@ -35,6 +35,7 @@ These plugins can be installed as needed to extend system functionality:
 | Maintenance  | Equipment maintenance management with preventive and corrective maintenance requests, teams, stages, and a calendar view |
 | Manufacturing | Production and shop-floor management with bills of materials, manufacturing orders, work orders, and work centers |
 | Payments     | Payment processing and tracking              |
+| Point of Sale | Retail and restaurant point-of-sale with registers, sessions, orders, floors, tables, and receipt printing |
 | Products     | Product catalog and management               |
 | Projects     | Project planning and management              |
 | Purchases    | Procurement and purchase order management    |
@@ -46,11 +47,13 @@ These plugins can be installed as needed to extend system functionality:
 
 ## Plugin Details
 
+Each section below describes a plugin's purpose, key features, dependencies, and install command.
+
 ## Accounts vs Accounting
 
 In AureusERP, **Accounts** and **Accounting** are intentionally separated to provide a **flexible, scalable, and extensible financial system**.
 
-### **Accounts (Base / Helper Plugin)**
+### Accounts (Base / Helper Plugin)
 
 * **Role**: Foundational financial layer
 * **Purpose**: Provides core accounting structures used by other financial modules
@@ -64,7 +67,7 @@ In AureusERP, **Accounts** and **Accounting** are intentionally separated to pro
 
 The **Accounts plugin does not handle business workflows directly**. Instead, it acts as a **shared financial backbone** that ensures consistency across all financial operations.
 
-### **Accounting (Main Functional Plugin)**
+### Accounting (Main Functional Plugin)
 
 * **Role**: Primary accounting engine
 * **Purpose**: Handles real-world accounting workflows and financial operations
@@ -199,6 +202,19 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Tracks installed plugins in the `plugins` database table.
   - Provides the `<plugin-name>:install` and `<plugin-name>:uninstall` Artisan commands.
   - Plugins screen in the admin panel to install and uninstall plugins from the UI.
+
+### Point of Sale
+
+- **Purpose**: Full-featured point-of-sale system for retail and restaurant environments.
+- **Key Features**:
+  - Register and session management with opening/closing cash control.
+  - Order creation, payment collection, and receipt printing.
+  - Refunds and invoice generation directly from the POS terminal.
+  - Floor plan and table management for restaurant mode.
+  - Dedicated POS terminal panel (separate Filament panel at `/pos`).
+- **Dependencies**: Requires the **Products**, **Inventories**, and **Invoices** plugins.
+- Install command: `php artisan point-of-sale:install`
+
 
 ### Products
 
