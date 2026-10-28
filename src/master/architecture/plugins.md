@@ -213,7 +213,7 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Floor plan and table management for restaurant mode.
   - Dedicated POS terminal panel (separate Filament panel at `/pos`).
   - REST API for terminal-to-server sync (`orders/sync`, session lifecycle, catalog loading).
-- **Dependencies**: Requires the **Products**, **Inventory**, and **Accounts** plugins.
+- **Dependencies**: Requires the **Products**, **Inventories**, and **Invoices** plugins.
 - Install command: `php artisan point-of-sale:install`
 
 

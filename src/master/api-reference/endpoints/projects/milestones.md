@@ -8,33 +8,36 @@ Part of the **Projects** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/milestones`
 
-Retrieve a paginated list of milestones.
+Retrieve a paginated list of milestones
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: project, creator | `project` |
-| `filter[is_completed]` | string | No | Filter by completion state. Pass `1` for completed, `0` for pending | `1` |
-| `sort` | string | No | Sort field. Available options: id, name, deadline, completed_at, created_at, updated_at | `-deadline` |
-| `page` | integer | No | Page number | `1` |
+| `filter[is_completed]` | string | No | Filter by completion state | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=0&sort=-deadline&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=1" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=0&sort=-deadline&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=1", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -47,10 +50,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=0&sort=-deadline&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=1', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -60,11 +64,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=0&sort=-deadline&page=1"
+url = "https://your-domain.com/admin/api/v1/projects/milestones?include=project&filter%5Bis_completed%5D=1"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -81,15 +86,26 @@ print(data)
 {
   "data": [
     {
-      "id": 1,
-      "name": "Beta Launch",
-      "deadline": "2026-04-01",
-      "is_completed": false,
-      "completed_at": null,
-      "project_id": 1,
-      "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-01-01T00:00:00.000000Z"
+      "id": 2,
+      "name": "Phase 1 Complete",
+      "deadline": "2026-07-24T10:26:41.000000Z",
+      "is_completed": true,
+      "completed_at": "2026-07-22T10:26:41.000000Z",
+      "project_id": 5,
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:41.000000Z"
+    },
+    {
+      "id": 2,
+      "name": "Phase 1 Complete",
+      "deadline": "2026-07-24T10:26:41.000000Z",
+      "is_completed": true,
+      "completed_at": "2026-07-22T10:26:41.000000Z",
+      "project_id": 5,
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:41.000000Z"
     }
   ],
   "links": {
@@ -102,9 +118,30 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
@@ -119,25 +156,28 @@ print(data)
 
 :::
 
+
 ---
 
 ## Create milestone
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/milestones`
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/milestones`
 
-Create a new milestone.
+Create a new milestone
 
 > 🔒 Requires a valid Bearer token.
+
+
 
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `name` | string | Yes | Milestone name. Must not be greater than 255 characters. |
-| `deadline` | string | No | Deadline date in YYYY-MM-DD format. |
-| `is_completed` | boolean | No | Whether the milestone is completed. Defaults to `false`. |
-| `project_id` | integer | Yes | Project ID this milestone belongs to. Must match an existing stored value. |
-| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `deadline` | string | No | Milestone deadline date-time. Must be a valid date. |
+| `is_completed` | boolean | No | Completion flag. |
+| `project_id` | integer | Yes | Project ID. Must match an existing stored value. |
+
 
 ::: code-group
 
@@ -146,7 +186,12 @@ curl -X POST "https://your-domain.com/admin/api/v1/projects/milestones" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"name": "Beta Launch", "deadline": "2026-04-01", "project_id": 1, "company_id": 1}'
+  -d '{
+  "name": "Phase 1 Signoff",
+  "deadline": "2026-03-20 12:00:00",
+  "is_completed": false,
+  "project_id": 1
+}'
 ```
 
 ```javascript [JavaScript]
@@ -158,11 +203,11 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/mile
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: "Beta Launch",
-    deadline: "2026-04-01",
-    project_id: 1,
-    company_id: 1,
-  }),
+  "name": "Phase 1 Signoff",
+  "deadline": "2026-03-20 12:00:00",
+  "is_completed": false,
+  "project_id": 1
+}),
 });
 
 const data = await response.json();
@@ -181,11 +226,11 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/proje
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'name' => 'Beta Launch',
-        'deadline' => '2026-04-01',
-        'project_id' => 1,
-        'company_id' => 1,
-    ],
+    'name' => 'Phase 1 Signoff',
+    'deadline' => '2026-03-20 12:00:00',
+    'is_completed' => false,
+    'project_id' => 1,
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -203,10 +248,10 @@ headers = {
 }
 
 payload = {
-    "name": "Beta Launch",
-    "deadline": "2026-04-01",
+    "name": "Phase 1 Signoff",
+    "deadline": "2026-03-20 12:00:00",
+    "is_completed": False,
     "project_id": 1,
-    "company_id": 1,
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -222,18 +267,30 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Beta Launch",
-    "deadline": "2026-04-01",
-    "is_completed": false,
-    "completed_at": null,
-    "project_id": 1,
-    "company_id": 1,
-    "created_at": "2026-10-27T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z"
-  }
+    "id": 2,
+    "name": "Phase 1 Complete",
+    "deadline": "2026-07-24T10:26:41.000000Z",
+    "is_completed": true,
+    "completed_at": "2026-07-22T10:26:41.000000Z",
+    "project_id": 5,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z"
+  },
+  "message": "Milestone created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -241,7 +298,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/milestones/{id}`
 
-Retrieve a specific milestone by ID.
+Retrieve a specific milestone by ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -250,6 +307,7 @@ Retrieve a specific milestone by ID.
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The milestone ID |
+
 
 **Query parameters**
 
@@ -257,105 +315,25 @@ Retrieve a specific milestone by ID.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: project, creator | `creator` |
 
-::: code-group
 
-```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/milestones/1?include=creator" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/1?include=creator", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-  },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/milestones/1?include=creator', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/projects/milestones/1?include=creator"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.get(url, headers=headers)
-
-data = response.json()
-print(data)
-```
-
-:::
-
----
-
-## Update milestone
-
-<Badge type="info" text="PATCH" /> `/admin/api/v1/projects/milestones/{id}`
-
-Update an existing milestone.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The milestone ID |
-
-**Body parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `name` | string | No | Milestone name. |
-| `deadline` | string | No | Deadline date in YYYY-MM-DD format. |
-| `is_completed` | boolean | No | Mark milestone as completed. Setting to `true` records `completed_at` automatically. |
-| `project_id` | integer | No | Project ID. |
-| `company_id` | integer | No | Company ID. |
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/projects/milestones/1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/milestones/{id}?include=creator" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -d '{"is_completed": true}'
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/{id}?include=creator", {
+  method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ is_completed: true }),
 });
 
 const data = await response.json();
@@ -367,13 +345,12 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/projects/milestones/1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/milestones/{id}?include=creator', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['is_completed' => true],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -382,7 +359,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/milestones/1"
+url = "https://your-domain.com/admin/api/v1/projects/milestones/{id}?include=creator"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -390,7 +367,7 @@ headers = {
     "Content-Type": "application/json",
 }
 
-response = requests.patch(url, headers=headers, json={"is_completed": True})
+response = requests.get(url, headers=headers)
 
 data = response.json()
 print(data)
@@ -403,26 +380,37 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Beta Launch",
-    "deadline": "2026-04-01",
+    "id": 2,
+    "name": "Phase 1 Complete",
+    "deadline": "2026-07-24T10:26:41.000000Z",
     "is_completed": true,
-    "completed_at": "2026-10-27T00:00:00.000000Z",
-    "project_id": 1,
-    "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z"
+    "completed_at": "2026-07-22T10:26:41.000000Z",
+    "project_id": 5,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z"
   }
 }
 ```
 
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
-## Delete milestone
+## Update milestone
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/milestones/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/projects/milestones/{id}`
 
-Delete a milestone.
+Update an existing milestone
 
 > 🔒 Requires a valid Bearer token.
 
@@ -432,22 +420,53 @@ Delete a milestone.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The milestone ID |
 
+
+
+**Body parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `name` | string | Sometimes | Milestone name. Must not be greater than 255 characters. |
+| `deadline` | string | No | Milestone deadline date-time. Must be a valid date. |
+| `is_completed` | boolean | No | Completion flag. |
+| `project_id` | integer | Sometimes | Project ID. Must match an existing stored value. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/milestones/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/projects/milestones/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "name": "Phase 1 Signoff",
+  "deadline": "2026-03-20 12:00:00",
+  "is_completed": false,
+  "project_id": 1
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/1", {
-  method: "DELETE",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
+  body: JSON.stringify({
+  "name": "Phase 1 Signoff",
+  "deadline": "2026-03-20 12:00:00",
+  "is_completed": false,
+  "project_id": 1
+}),
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -455,29 +474,173 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/mile
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/milestones/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/projects/milestones/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
+    'json' => [
+    'name' => 'Phase 1 Signoff',
+    'deadline' => '2026-03-20 12:00:00',
+    'is_completed' => false,
+    'project_id' => 1,
+  ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/milestones/1"
+url = "https://your-domain.com/admin/api/v1/projects/milestones/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
-response = requests.delete(url, headers=headers)
+payload = {
+    "name": "Phase 1 Signoff",
+    "deadline": "2026-03-20 12:00:00",
+    "is_completed": False,
+    "project_id": 1,
+}
+
+response = requests.put(url, headers=headers, json=payload)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "data": {
+    "id": 2,
+    "name": "Phase 1 Complete",
+    "deadline": "2026-07-24T10:26:41.000000Z",
+    "is_completed": true,
+    "completed_at": "2026-07-22T10:26:41.000000Z",
+    "project_id": 5,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z"
+  },
+  "message": "Milestone updated successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Delete milestone
+
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/milestones/{id}`
+
+Delete a milestone
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The milestone ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/milestones/{id}" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/milestones/{id}", {
+  method: "DELETE",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/milestones/{id}', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/projects/milestones/{id}"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Milestone deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

@@ -8,35 +8,39 @@ Part of the **Projects** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/projects`
 
-Retrieve a paginated list of projects with filtering and sorting.
+Retrieve a paginated list of projects with filtering and sorting
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: stage, partner, company, user, creator, tasks, taskStages, milestones, tags, favoriteUsers | `stage,tags` |
-| `filter[id]` | string | No | Comma-separated list of IDs to filter by | |
-| `filter[visibility]` | string | No | Filter by visibility. Available options: internal, public, private | `internal` |
+| `filter[id]` | string | No | Filter by project IDs |  |
+| `filter[visibility]` | string | No | Filter by visibility | `internal` |
 | `filter[trashed]` | string | No | Filter by trashed status. Available options: with, only | `with` |
-| `sort` | string | No | Sort field. Available options: id, name, sort, start_date, end_date, allocated_hours, created_at, updated_at | `-created_at` |
-| `page` | integer | No | Page number | `1` |
+| `sort` | string | No | Sort field | `-created_at` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&sort=-created_at&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&filter%5Btrashed%5D=with&sort=-created_at" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&sort=-created_at&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&filter%5Btrashed%5D=with&sort=-created_at", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -49,10 +53,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&sort=-created_at&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&filter%5Btrashed%5D=with&sort=-created_at', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -62,11 +67,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&sort=-created_at&page=1"
+url = "https://your-domain.com/admin/api/v1/projects/projects?include=stage%2Ctags&filter%5Bvisibility%5D=internal&filter%5Btrashed%5D=with&sort=-created_at"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -83,20 +89,51 @@ print(data)
 {
   "data": [
     {
-      "id": 1,
-      "name": "Website Redesign",
-      "status": "in_progress",
+      "id": 5,
+      "name": "Website Revamp",
+      "tasks_label": "Tasks",
+      "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
       "visibility": "internal",
-      "description": "Redesign the company website.",
-      "start_date": "2026-01-01",
-      "end_date": "2026-06-30",
-      "allocated_hours": 200,
-      "partner_id": 5,
-      "user_id": 1,
+      "color": "#577b18",
+      "sort": 1,
+      "start_date": "2026-07-01T00:00:00.000000Z",
+      "end_date": "2026-09-30T00:00:00.000000Z",
+      "allocated_hours": 120,
+      "allow_timesheets": true,
+      "allow_milestones": true,
+      "allow_task_dependencies": false,
+      "is_active": true,
       "stage_id": 2,
+      "partner_id": 64,
       "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-10-01T00:00:00.000000Z",
+      "user_id": 2,
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:41.000000Z",
+      "deleted_at": null
+    },
+    {
+      "id": 5,
+      "name": "Website Revamp",
+      "tasks_label": "Tasks",
+      "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
+      "visibility": "internal",
+      "color": "#577b18",
+      "sort": 1,
+      "start_date": "2026-07-01T00:00:00.000000Z",
+      "end_date": "2026-09-30T00:00:00.000000Z",
+      "allocated_hours": 120,
+      "allow_timesheets": true,
+      "allow_milestones": true,
+      "allow_task_dependencies": false,
+      "is_active": true,
+      "stage_id": 2,
+      "partner_id": 64,
+      "company_id": 1,
+      "user_id": 2,
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:41.000000Z",
       "deleted_at": null
     }
   ],
@@ -110,9 +147,30 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
@@ -127,31 +185,37 @@ print(data)
 
 :::
 
+
 ---
 
 ## Create project
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/projects`
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/projects`
 
-Create a new project.
+Create a new project
 
 > 🔒 Requires a valid Bearer token.
+
+
 
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `name` | string | Yes | Project name. Must not be greater than 255 characters. |
-| `visibility` | string | No | Visibility level. Available options: internal, public, private. Defaults to `internal`. |
 | `description` | string | No | Project description. |
-| `start_date` | string | No | Start date in YYYY-MM-DD format. |
-| `end_date` | string | No | End date in YYYY-MM-DD format. |
-| `allocated_hours` | number | No | Total allocated hours for the project. |
-| `partner_id` | integer | No | Customer (partner) ID. Must match an existing stored value. |
-| `user_id` | integer | No | Assigned user ID. Must match an existing stored value. |
-| `stage_id` | integer | No | Project stage ID. Must match an existing stored value. |
+| `visibility` | string | Yes | Project visibility. |
+| `stage_id` | integer | Yes | Project stage ID. Must match an existing stored value. |
+| `user_id` | integer | No | Project manager user ID. Must match an existing stored value. |
+| `partner_id` | integer | No | Customer ID. Must match an existing stored value. |
 | `company_id` | integer | No | Company ID. Must match an existing stored value. |
-| `tags` | integer[] | No | Array of tag IDs. Must match existing stored values. |
+| `start_date` | string | No | Planned start date. This field is required when end_date is present. Must be a valid date. Must be a date before or equal to end_date. |
+| `end_date` | string | No | Planned end date. This field is required when start_date is present. Must be a valid date. Must be a date after or equal to start_date. |
+| `allocated_hours` | number | No | Allocated effort in hours. Must be at least 0. |
+| `allow_timesheets` | boolean | No | Allow timesheet entries. |
+| `allow_milestones` | boolean | No | Allow milestone usage. |
+| `tags` | integer[] | No | Must match an existing stored value. |
+
 
 ::: code-group
 
@@ -161,17 +225,21 @@ curl -X POST "https://your-domain.com/admin/api/v1/projects/projects" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
-  "name": "Website Redesign",
+  "name": "Website Revamp",
+  "description": "Rebuild website pages and forms.",
   "visibility": "internal",
-  "description": "Redesign the company website.",
-  "start_date": "2026-01-01",
-  "end_date": "2026-06-30",
-  "allocated_hours": 200,
-  "partner_id": 5,
+  "stage_id": 1,
   "user_id": 1,
-  "stage_id": 2,
+  "partner_id": 1,
   "company_id": 1,
-  "tags": [1, 2]
+  "start_date": "2026-03-01",
+  "end_date": "2026-03-31",
+  "allocated_hours": 120,
+  "allow_timesheets": true,
+  "allow_milestones": true,
+  "tags": [
+    16
+  ]
 }'
 ```
 
@@ -184,18 +252,22 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/proj
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    name: "Website Redesign",
-    visibility: "internal",
-    description: "Redesign the company website.",
-    start_date: "2026-01-01",
-    end_date: "2026-06-30",
-    allocated_hours: 200,
-    partner_id: 5,
-    user_id: 1,
-    stage_id: 2,
-    company_id: 1,
-    tags: [1, 2],
-  }),
+  "name": "Website Revamp",
+  "description": "Rebuild website pages and forms.",
+  "visibility": "internal",
+  "stage_id": 1,
+  "user_id": 1,
+  "partner_id": 1,
+  "company_id": 1,
+  "start_date": "2026-03-01",
+  "end_date": "2026-03-31",
+  "allocated_hours": 120,
+  "allow_timesheets": true,
+  "allow_milestones": true,
+  "tags": [
+    16
+  ]
+}),
 });
 
 const data = await response.json();
@@ -214,18 +286,22 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/proje
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'name' => 'Website Redesign',
-        'visibility' => 'internal',
-        'description' => 'Redesign the company website.',
-        'start_date' => '2026-01-01',
-        'end_date' => '2026-06-30',
-        'allocated_hours' => 200,
-        'partner_id' => 5,
-        'user_id' => 1,
-        'stage_id' => 2,
-        'company_id' => 1,
-        'tags' => [1, 2],
+    'name' => 'Website Revamp',
+    'description' => 'Rebuild website pages and forms.',
+    'visibility' => 'internal',
+    'stage_id' => 1,
+    'user_id' => 1,
+    'partner_id' => 1,
+    'company_id' => 1,
+    'start_date' => '2026-03-01',
+    'end_date' => '2026-03-31',
+    'allocated_hours' => 120,
+    'allow_timesheets' => true,
+    'allow_milestones' => true,
+    'tags' => [
+      16,
     ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -243,17 +319,21 @@ headers = {
 }
 
 payload = {
-    "name": "Website Redesign",
+    "name": "Website Revamp",
+    "description": "Rebuild website pages and forms.",
     "visibility": "internal",
-    "description": "Redesign the company website.",
-    "start_date": "2026-01-01",
-    "end_date": "2026-06-30",
-    "allocated_hours": 200,
-    "partner_id": 5,
+    "stage_id": 1,
     "user_id": 1,
-    "stage_id": 2,
+    "partner_id": 1,
     "company_id": 1,
-    "tags": [1, 2],
+    "start_date": "2026-03-01",
+    "end_date": "2026-03-31",
+    "allocated_hours": 120,
+    "allow_timesheets": True,
+    "allow_milestones": True,
+    "tags": [
+        16,
+    ],
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -269,24 +349,43 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Website Redesign",
-    "status": "in_progress",
+    "id": 5,
+    "name": "Website Revamp",
+    "tasks_label": "Tasks",
+    "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
     "visibility": "internal",
-    "description": "Redesign the company website.",
-    "start_date": "2026-01-01",
-    "end_date": "2026-06-30",
-    "allocated_hours": 200,
-    "partner_id": 5,
-    "user_id": 1,
+    "color": "#577b18",
+    "sort": 1,
+    "start_date": "2026-07-01T00:00:00.000000Z",
+    "end_date": "2026-09-30T00:00:00.000000Z",
+    "allocated_hours": 120,
+    "allow_timesheets": true,
+    "allow_milestones": true,
+    "allow_task_dependencies": false,
+    "is_active": true,
     "stage_id": 2,
+    "partner_id": 64,
     "company_id": 1,
-    "created_at": "2026-10-27T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "user_id": 2,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Project created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -294,7 +393,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/projects/{id}`
 
-Retrieve a specific project by ID.
+Retrieve a specific project by ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -304,26 +403,31 @@ Retrieve a specific project by ID.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project ID |
 
+
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
-| `include` | string | No | Comma-separated list of relationships to include. Available options: stage, partner, company, user, creator, tasks, taskStages, milestones, tags, favoriteUsers | `stage,tasks` |
+| `include` | string | No | Comma-separated list of relationships to include. Available options: stage, partner, company, user, creator, tasks, taskStages, milestones, tags, favoriteUsers | `tasks,tags` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/projects/1?include=stage%2Ctasks" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/projects/{id}?include=tasks%2Ctags" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/1?include=stage%2Ctasks", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/{id}?include=tasks%2Ctags", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -336,10 +440,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/projects/1?include=stage%2Ctasks', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/projects/{id}?include=tasks%2Ctags', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -349,11 +454,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/projects/1?include=stage%2Ctasks"
+url = "https://your-domain.com/admin/api/v1/projects/projects/{id}?include=tasks%2Ctags"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -369,32 +475,50 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Website Redesign",
-    "status": "in_progress",
+    "id": 5,
+    "name": "Website Revamp",
+    "tasks_label": "Tasks",
+    "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
     "visibility": "internal",
-    "description": "Redesign the company website.",
-    "start_date": "2026-01-01",
-    "end_date": "2026-06-30",
-    "allocated_hours": 200,
-    "partner_id": 5,
-    "user_id": 1,
+    "color": "#577b18",
+    "sort": 1,
+    "start_date": "2026-07-01T00:00:00.000000Z",
+    "end_date": "2026-09-30T00:00:00.000000Z",
+    "allocated_hours": 120,
+    "allow_timesheets": true,
+    "allow_milestones": true,
+    "allow_task_dependencies": false,
+    "is_active": true,
     "stage_id": 2,
+    "partner_id": 64,
     "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-01T00:00:00.000000Z",
+    "user_id": 2,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z",
     "deleted_at": null
   }
 }
 ```
 
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update project
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/projects/projects/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/projects/projects/{id}`
 
-Update an existing project.
+Update an existing project
 
 > 🔒 Requires a valid Bearer token.
 
@@ -404,41 +528,80 @@ Update an existing project.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project ID |
 
+
+
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `name` | string | No | Project name. Must not be greater than 255 characters. |
-| `visibility` | string | No | Visibility level. Available options: internal, public, private. |
+| `name` | string | Sometimes | Project name. Must not be greater than 255 characters. |
 | `description` | string | No | Project description. |
-| `start_date` | string | No | Start date in YYYY-MM-DD format. |
-| `end_date` | string | No | End date in YYYY-MM-DD format. |
-| `allocated_hours` | number | No | Total allocated hours. |
-| `partner_id` | integer | No | Customer (partner) ID. |
-| `user_id` | integer | No | Assigned user ID. |
-| `stage_id` | integer | No | Project stage ID. |
-| `company_id` | integer | No | Company ID. |
-| `tags` | integer[] | No | Array of tag IDs. |
+| `visibility` | string | Sometimes | Project visibility. |
+| `stage_id` | integer | Sometimes | Project stage ID. Must match an existing stored value. |
+| `user_id` | integer | No | Project manager user ID. Must match an existing stored value. |
+| `partner_id` | integer | No | Customer ID. Must match an existing stored value. |
+| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `start_date` | string | No | Planned start date. This field is required when end_date is present. Must be a valid date. Must be a date before or equal to end_date. |
+| `end_date` | string | No | Planned end date. This field is required when start_date is present. Must be a valid date. Must be a date after or equal to start_date. |
+| `allocated_hours` | number | No | Allocated effort in hours. Must be at least 0. |
+| `allow_timesheets` | boolean | No | Allow timesheet entries. |
+| `allow_milestones` | boolean | No | Allow milestone usage. |
+| `tags` | integer[] | No | Must match an existing stored value. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/projects/projects/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/projects/projects/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"name": "Website Redesign v2", "end_date": "2026-09-30"}'
+  -d '{
+  "name": "Website Revamp",
+  "description": "Rebuild website pages and forms.",
+  "visibility": "internal",
+  "stage_id": 1,
+  "user_id": 1,
+  "partner_id": 1,
+  "company_id": 1,
+  "start_date": "2026-03-01",
+  "end_date": "2026-03-31",
+  "allocated_hours": 120,
+  "allow_timesheets": true,
+  "allow_milestones": true,
+  "tags": [
+    16
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ name: "Website Redesign v2", end_date: "2026-09-30" }),
+  body: JSON.stringify({
+  "name": "Website Revamp",
+  "description": "Rebuild website pages and forms.",
+  "visibility": "internal",
+  "stage_id": 1,
+  "user_id": 1,
+  "partner_id": 1,
+  "company_id": 1,
+  "start_date": "2026-03-01",
+  "end_date": "2026-03-31",
+  "allocated_hours": 120,
+  "allow_timesheets": true,
+  "allow_milestones": true,
+  "tags": [
+    16
+  ]
+}),
 });
 
 const data = await response.json();
@@ -450,13 +613,29 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/projects/projects/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/projects/projects/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['name' => 'Website Redesign v2', 'end_date' => '2026-09-30'],
+    'json' => [
+    'name' => 'Website Revamp',
+    'description' => 'Rebuild website pages and forms.',
+    'visibility' => 'internal',
+    'stage_id' => 1,
+    'user_id' => 1,
+    'partner_id' => 1,
+    'company_id' => 1,
+    'start_date' => '2026-03-01',
+    'end_date' => '2026-03-31',
+    'allocated_hours' => 120,
+    'allow_timesheets' => true,
+    'allow_milestones' => true,
+    'tags' => [
+      16,
+    ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -465,7 +644,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/projects/1"
+url = "https://your-domain.com/admin/api/v1/projects/projects/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -473,9 +652,25 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"name": "Website Redesign v2", "end_date": "2026-09-30"}
+payload = {
+    "name": "Website Revamp",
+    "description": "Rebuild website pages and forms.",
+    "visibility": "internal",
+    "stage_id": 1,
+    "user_id": 1,
+    "partner_id": 1,
+    "company_id": 1,
+    "start_date": "2026-03-01",
+    "end_date": "2026-03-31",
+    "allocated_hours": 120,
+    "allow_timesheets": True,
+    "allow_milestones": True,
+    "tags": [
+        16,
+    ],
+}
 
-response = requests.patch(url, headers=headers, json=payload)
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -488,32 +683,51 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Website Redesign v2",
-    "status": "in_progress",
+    "id": 5,
+    "name": "Website Revamp",
+    "tasks_label": "Tasks",
+    "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
     "visibility": "internal",
-    "description": "Redesign the company website.",
-    "start_date": "2026-01-01",
-    "end_date": "2026-09-30",
-    "allocated_hours": 200,
-    "partner_id": 5,
-    "user_id": 1,
+    "color": "#577b18",
+    "sort": 1,
+    "start_date": "2026-07-01T00:00:00.000000Z",
+    "end_date": "2026-09-30T00:00:00.000000Z",
+    "allocated_hours": 120,
+    "allow_timesheets": true,
+    "allow_milestones": true,
+    "allow_task_dependencies": false,
+    "is_active": true,
     "stage_id": 2,
+    "partner_id": 64,
     "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "user_id": 2,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Project updated successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Delete project
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/projects/{id}`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/projects/{id}`
 
-Soft-delete a project. The record is moved to trash and can be restored.
+Soft delete a project
 
 > 🔒 Requires a valid Bearer token.
 
@@ -523,86 +737,25 @@ Soft-delete a project. The record is moved to trash and can be restored.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/projects/1" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/projects/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/{id}", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
-  },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/projects/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/projects/projects/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.delete(url, headers=headers)
-```
-
-:::
-
-**Example response** <Badge type="info" text="204" />
-
-No content.
-
----
-
-## Restore project
-
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/projects/{id}/restore`
-
-Restore a soft-deleted project.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The project ID |
-
-::: code-group
-
-```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/projects/projects/1/restore" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/1/restore", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -615,10 +768,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/projects/1/restore', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/projects/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -628,11 +782,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/projects/1/restore"
+url = "https://your-domain.com/admin/api/v1/projects/projects/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Project deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Restore project
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/projects/{id}/restore`
+
+Restore a soft-deleted project
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The project ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/projects/projects/{id}/restore" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/{id}/restore", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/projects/{id}/restore', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/projects/projects/{id}/restore"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -648,32 +899,51 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "name": "Website Redesign",
-    "status": "in_progress",
+    "id": 5,
+    "name": "Website Revamp",
+    "tasks_label": "Tasks",
+    "description": "Assumenda rerum sequi ratione consequatur esse voluptatum.",
     "visibility": "internal",
-    "description": "Redesign the company website.",
-    "start_date": "2026-01-01",
-    "end_date": "2026-06-30",
-    "allocated_hours": 200,
-    "partner_id": 5,
-    "user_id": 1,
+    "color": "#577b18",
+    "sort": 1,
+    "start_date": "2026-07-01T00:00:00.000000Z",
+    "end_date": "2026-09-30T00:00:00.000000Z",
+    "allocated_hours": 120,
+    "allow_timesheets": true,
+    "allow_milestones": true,
+    "allow_task_dependencies": false,
+    "is_active": true,
     "stage_id": 2,
+    "partner_id": 64,
     "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "user_id": 2,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:41.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Project restored successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Force delete project
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/projects/{id}/force`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/projects/{id}/force`
 
-Permanently delete a project. This action cannot be undone.
+Permanently delete a project
 
 > 🔒 Requires a valid Bearer token.
 
@@ -683,22 +953,30 @@ Permanently delete a project. This action cannot be undone.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/projects/1/force" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/projects/{id}/force" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/1/force", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/projects/{id}/force", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -706,29 +984,53 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/proj
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/projects/1/force', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/projects/{id}/force', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/projects/1/force"
+url = "https://your-domain.com/admin/api/v1/projects/projects/{id}/force"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "message": "Project permanently deleted."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

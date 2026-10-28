@@ -8,37 +8,42 @@ Part of the **Purchases** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-agreements`
 
-Retrieve a paginated list of purchase agreements with filtering and sorting.
+Retrieve a paginated list of purchase agreements with filtering and sorting
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: currency, partner, user, company, creator, lines, lines.requisition, lines.product, lines.uom, lines.company, lines.creator | `partner,lines` |
-| `filter[id]` | string | No | Comma-separated list of IDs to filter by | |
+| `filter[id]` | string | No | Comma-separated list of IDs to filter by |  |
 | `filter[state]` | string | No | Filter by agreement state | `draft` |
 | `filter[type]` | string | No | Filter by agreement type | `blanket_order` |
-| `filter[partner_id]` | string | No | Filter by vendor IDs | |
+| `filter[partner_id]` | string | No | Filter by vendor IDs |  |
 | `filter[trashed]` | string | No | Filter by trashed status. Available options: with, only | `with` |
-| `sort` | string | No | Sort field | `-created_at` |
-| `page` | integer | No | Page number | `1` |
+| `sort` | string | Yes | Sort field | `-created_at` |
+| `page` | integer | Yes | Page number | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&sort=-created_at&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&filter%5Btype%5D=blanket_order&filter%5Btrashed%5D=with&sort=-created_at&page=1" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&sort=-created_at&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&filter%5Btype%5D=blanket_order&filter%5Btrashed%5D=with&sort=-created_at&page=1", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -51,10 +56,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&sort=-created_at&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&filter%5Btype%5D=blanket_order&filter%5Btrashed%5D=with&sort=-created_at&page=1', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -64,11 +70,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&sort=-created_at&page=1"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?include=partner%2Clines&filter%5Bstate%5D=draft&filter%5Btype%5D=blanket_order&filter%5Btrashed%5D=with&sort=-created_at&page=1"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -86,20 +93,44 @@ print(data)
   "data": [
     {
       "id": 1,
-      "name": "PA/2026/00001",
+      "name": "BO/1",
       "type": "blanket_order",
-      "state": "draft",
-      "starts_at": "2026-01-01T00:00:00.000000Z",
-      "ends_at": "2026-12-31T00:00:00.000000Z",
-      "partner_id": 3,
+      "state": "confirmed",
+      "reference": "BO-FF-2026-01",
+      "starts_at": "2026-10-13",
+      "ends_at": "2027-10-12",
+      "description": "<p></p>",
       "currency_id": 1,
+      "partner_id": 70,
+      "user_id": 1,
       "company_id": 1,
-      "user_id": 1
+      "creator_id": 1,
+      "created_at": "2026-10-13T08:58:02.000000Z",
+      "updated_at": "2026-10-13T08:59:28.000000Z",
+      "deleted_at": null
+    },
+    {
+      "id": 1,
+      "name": "BO/1",
+      "type": "blanket_order",
+      "state": "confirmed",
+      "reference": "BO-FF-2026-01",
+      "starts_at": "2026-10-13",
+      "ends_at": "2027-10-12",
+      "description": "<p></p>",
+      "currency_id": 1,
+      "partner_id": 70,
+      "user_id": 1,
+      "company_id": 1,
+      "creator_id": 1,
+      "created_at": "2026-10-13T08:58:02.000000Z",
+      "updated_at": "2026-10-13T08:59:28.000000Z",
+      "deleted_at": null
     }
   ],
   "links": {
-    "first": "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?page=1",
-    "last": "https://your-domain.com/admin/api/v1/purchases/purchase-agreements?page=1",
+    "first": "/?page=1",
+    "last": "/?page=1",
     "prev": null,
     "next": null
   },
@@ -107,35 +138,77 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Create purchase agreement
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-agreements`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-agreements`
 
-Create a new purchase agreement with lines.
+Create a new purchase agreement with lines
 
 > 🔒 Requires a valid Bearer token.
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partner_id` | integer | Yes | Vendor (partner) ID |
-| `type` | string | Yes | Agreement type: `blanket_order` or `purchase_template` |
-| `currency_id` | integer | No | Currency ID |
-| `company_id` | integer | No | Company ID |
-| `user_id` | integer | No | Responsible user ID |
-| `starts_at` | date | No | Agreement validity start date |
-| `ends_at` | date | No | Agreement validity end date |
-| `lines` | array | No | Array of agreement line objects |
+| `partner_id` | integer | Yes | Vendor partner ID. Must match an existing stored value. |
+| `type` | string | Yes | Agreement type: blanket_order or purchase_template. |
+| `currency_id` | integer | Yes | Currency ID. Must match an existing stored value. |
+| `company_id` | integer | Yes | Company ID. Must match an existing stored value. |
+| `user_id` | integer | No | Buyer user ID. Must match an existing stored value. |
+| `starts_at` | string | No | Agreement validity start date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to today. |
+| `ends_at` | string | No | Agreement validity end date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to starts_at. |
+| `reference` | string | No | Reference text. Must not be greater than 255 characters. |
+| `description` | string | No | Terms and conditions / notes. |
+| `lines` | object[] | Yes | Array of agreement lines with writable fields from the purchase agreement form. Must have at least 1 items. |
+| `lines[].id` | integer | No | Must match an existing stored value. |
+| `lines[].product_id` | integer | Yes | Must match an existing stored value. |
+| `lines[].qty` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].uom_id` | integer | No | Must match an existing stored value. |
+| `lines[].price_unit` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+
 
 ::: code-group
 
@@ -144,7 +217,25 @@ curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"partner_id": 3, "type": "blanket_order", "currency_id": 1, "starts_at": "2026-01-01", "ends_at": "2026-12-31"}'
+  -d '{
+  "partner_id": 12,
+  "type": "blanket_order",
+  "currency_id": 1,
+  "company_id": 1,
+  "user_id": 2,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-08-20",
+  "reference": "AG-2026-Q1",
+  "description": "Blanket agreement for monthly supply.",
+  "lines": [
+    {
+      "product_id": 101,
+      "qty": 100,
+      "uom_id": 1,
+      "price_unit": 70
+    }
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
@@ -156,12 +247,24 @@ const response = await fetch("https://your-domain.com/admin/api/v1/purchases/pur
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    partner_id: 3,
-    type: "blanket_order",
-    currency_id: 1,
-    starts_at: "2026-01-01",
-    ends_at: "2026-12-31",
-  }),
+  "partner_id": 12,
+  "type": "blanket_order",
+  "currency_id": 1,
+  "company_id": 1,
+  "user_id": 2,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-08-20",
+  "reference": "AG-2026-Q1",
+  "description": "Blanket agreement for monthly supply.",
+  "lines": [
+    {
+      "product_id": 101,
+      "qty": 100,
+      "uom_id": 1,
+      "price_unit": 70
+    }
+  ]
+}),
 });
 
 const data = await response.json();
@@ -180,12 +283,24 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purch
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'partner_id' => 3,
-        'type' => 'blanket_order',
-        'currency_id' => 1,
-        'starts_at' => '2026-01-01',
-        'ends_at' => '2026-12-31',
+    'partner_id' => 12,
+    'type' => 'blanket_order',
+    'currency_id' => 1,
+    'company_id' => 1,
+    'user_id' => 2,
+    'starts_at' => '2026-02-20',
+    'ends_at' => '2026-08-20',
+    'reference' => 'AG-2026-Q1',
+    'description' => 'Blanket agreement for monthly supply.',
+    'lines' => [
+      [
+        'product_id' => 101,
+        'qty' => 100,
+        'uom_id' => 1,
+        'price_unit' => 70,
+      ],
     ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -203,11 +318,23 @@ headers = {
 }
 
 payload = {
-    "partner_id": 3,
+    "partner_id": 12,
     "type": "blanket_order",
     "currency_id": 1,
-    "starts_at": "2026-01-01",
-    "ends_at": "2026-12-31",
+    "company_id": 1,
+    "user_id": 2,
+    "starts_at": "2026-02-20",
+    "ends_at": "2026-08-20",
+    "reference": "AG-2026-Q1",
+    "description": "Blanket agreement for monthly supply.",
+    "lines": [
+        {
+            "product_id": 101,
+            "qty": 100,
+            "uom_id": 1,
+            "price_unit": 70,
+        },
+    ],
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -224,18 +351,36 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "PA/2026/00001",
+    "name": "BO/1",
     "type": "blanket_order",
-    "state": "draft",
-    "starts_at": "2026-01-01T00:00:00.000000Z",
-    "ends_at": "2026-12-31T00:00:00.000000Z",
-    "partner_id": 3,
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
     "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
     "company_id": 1,
-    "user_id": 1
-  }
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
+  },
+  "message": "Purchase agreement created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -243,7 +388,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-agreements/{id}`
 
-Retrieve a specific purchase agreement by its ID.
+Retrieve a specific purchase agreement by its ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -251,7 +396,8 @@ Retrieve a specific purchase agreement by its ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the purchase agreement |
+| `id` | integer | Yes | The purchase agreement ID |
+
 
 **Query parameters**
 
@@ -259,20 +405,24 @@ Retrieve a specific purchase agreement by its ID.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: currency, partner, user, company, creator, lines, lines.requisition, lines.product, lines.uom, lines.company, lines.creator | `partner,lines` |
 
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1?include=partner,lines" \
+curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}?include=partner%2Clines" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1?include=partner,lines", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}?include=partner%2Clines", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -285,10 +435,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1?include=partner,lines', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}?include=partner%2Clines', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -298,11 +449,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1?include=partner,lines"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}?include=partner%2Clines"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -313,13 +465,49 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "BO/1",
+    "type": "blanket_order",
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update purchase agreement
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/purchases/purchase-agreements/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/purchases/purchase-agreements/{id}`
 
-Update an existing purchase agreement and synchronise its lines.
+Update an existing purchase agreement and sync lines
 
 > 🔒 Requires a valid Bearer token.
 
@@ -327,37 +515,88 @@ Update an existing purchase agreement and synchronise its lines.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the purchase agreement |
+| `id` | integer | Yes | The purchase agreement ID |
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partner_id` | integer | No | Vendor (partner) ID |
-| `currency_id` | integer | No | Currency ID |
-| `starts_at` | date | No | Agreement validity start date |
-| `ends_at` | date | No | Agreement validity end date |
-| `lines` | array | No | Full replacement set of agreement lines |
+| `partner_id` | integer | Sometimes | Vendor partner ID. Must match an existing stored value. |
+| `type` | string | Sometimes | Agreement type: blanket_order or purchase_template. |
+| `currency_id` | integer | Sometimes | Currency ID. Must match an existing stored value. |
+| `company_id` | integer | Sometimes | Company ID. Must match an existing stored value. |
+| `user_id` | integer | No | Buyer user ID. Must match an existing stored value. |
+| `starts_at` | string | No | Agreement validity start date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to today. |
+| `ends_at` | string | No | Agreement validity end date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to starts_at. |
+| `reference` | string | No | Reference text. Must not be greater than 255 characters. |
+| `description` | string | No | Terms and conditions / notes. |
+| `lines` | object[] | Sometimes | Array of agreement lines with writable fields from the purchase agreement form. Must have at least 1 items. |
+| `lines[].id` | integer | No | Must match an existing stored value. |
+| `lines[].product_id` | integer | Yes | Must match an existing stored value. |
+| `lines[].qty` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].uom_id` | integer | No | Must match an existing stored value. |
+| `lines[].price_unit` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"ends_at": "2027-06-30"}'
+  -d '{
+  "partner_id": 12,
+  "type": "blanket_order",
+  "currency_id": 1,
+  "company_id": 1,
+  "user_id": 2,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-08-20",
+  "reference": "AG-2026-Q1",
+  "description": "Blanket agreement for monthly supply.",
+  "lines": [
+    {
+      "product_id": 101,
+      "qty": 100,
+      "uom_id": 1,
+      "price_unit": 70
+    }
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ ends_at: "2027-06-30" }),
+  body: JSON.stringify({
+  "partner_id": 12,
+  "type": "blanket_order",
+  "currency_id": 1,
+  "company_id": 1,
+  "user_id": 2,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-08-20",
+  "reference": "AG-2026-Q1",
+  "description": "Blanket agreement for monthly supply.",
+  "lines": [
+    {
+      "product_id": 101,
+      "qty": 100,
+      "uom_id": 1,
+      "price_unit": 70
+    }
+  ]
+}),
 });
 
 const data = await response.json();
@@ -369,13 +608,31 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['ends_at' => '2027-06-30'],
+    'json' => [
+    'partner_id' => 12,
+    'type' => 'blanket_order',
+    'currency_id' => 1,
+    'company_id' => 1,
+    'user_id' => 2,
+    'starts_at' => '2026-02-20',
+    'ends_at' => '2026-08-20',
+    'reference' => 'AG-2026-Q1',
+    'description' => 'Blanket agreement for monthly supply.',
+    'lines' => [
+      [
+        'product_id' => 101,
+        'qty' => 100,
+        'uom_id' => 1,
+        'price_unit' => 70,
+      ],
+    ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -384,7 +641,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -392,9 +649,27 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"ends_at": "2027-06-30"}
+payload = {
+    "partner_id": 12,
+    "type": "blanket_order",
+    "currency_id": 1,
+    "company_id": 1,
+    "user_id": 2,
+    "starts_at": "2026-02-20",
+    "ends_at": "2026-08-20",
+    "reference": "AG-2026-Q1",
+    "description": "Blanket agreement for monthly supply.",
+    "lines": [
+        {
+            "product_id": 101,
+            "qty": 100,
+            "uom_id": 1,
+            "price_unit": 70,
+        },
+    ],
+}
 
-response = requests.patch(url, headers=headers, json=payload)
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -402,79 +677,50 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## Delete purchase agreement
-
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/purchases/purchase-agreements/{id}`
-
-Soft delete a purchase agreement. The record is moved to the trash and can be restored.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the purchase agreement |
-
-::: code-group
-
-```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1", {
-  method: "DELETE",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "BO/1",
+    "type": "blanket_order",
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
   },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Purchase agreement updated successfully."
 }
+```
 
-response = requests.delete(url, headers=headers)
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
-
-No content.
 
 ---
 
-## Confirm purchase agreement
+## Delete purchase agreement
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/confirm`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/purchases/purchase-agreements/{id}`
 
-Confirm a draft purchase agreement, making it active.
+Soft delete a purchase agreement
 
 > 🔒 Requires a valid Bearer token.
 
@@ -482,28 +728,27 @@ Confirm a draft purchase agreement, making it active.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase agreement |
+| `id` | integer | Yes | The purchase agreement ID |
 
-**Error responses**
 
-| HTTP status | Meaning |
-|-------------|---------|
-| 422 | Agreement is not in draft state |
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/confirm" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/confirm", {
-  method: "POST",
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}", {
+  method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -516,10 +761,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/confirm', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -529,11 +775,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/confirm"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Purchase agreement deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Restore purchase agreement
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/restore`
+
+Restore a soft-deleted purchase agreement
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The purchase agreement ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/restore" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/restore", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/restore', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/restore"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -550,244 +893,44 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "PA/2026/00001",
+    "name": "BO/1",
     "type": "blanket_order",
     "state": "confirmed",
-    "starts_at": "2026-01-01T00:00:00.000000Z",
-    "ends_at": "2026-12-31T00:00:00.000000Z"
-  }
-}
-```
-
----
-
-## Close purchase agreement
-
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/close`
-
-Close a confirmed purchase agreement, preventing further use.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase agreement |
-
-**Error responses**
-
-| HTTP status | Meaning |
-|-------------|---------|
-| 422 | Agreement is not in confirmed state |
-
-::: code-group
-
-```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/close" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/close", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
   },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/close', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/close"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Purchase agreement restored successfully."
 }
+```
 
-response = requests.post(url, headers=headers)
+::: details Error response — 401
 
-data = response.json()
-print(data)
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
----
-
-## Cancel purchase agreement
-
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/cancel`
-
-Cancel a draft or confirmed purchase agreement.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase agreement |
-
-**Error responses**
-
-| HTTP status | Meaning |
-|-------------|---------|
-| 422 | Agreement is already closed or cancelled |
-
-::: code-group
-
-```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/cancel" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/cancel", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-  },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/cancel', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/cancel"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.post(url, headers=headers)
-
-data = response.json()
-print(data)
-```
-
-:::
-
----
-
-## Restore purchase agreement
-
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/restore`
-
-Restore a soft-deleted purchase agreement.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the soft-deleted purchase agreement |
-
-::: code-group
-
-```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/restore" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/restore", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-  },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/restore', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/restore"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.post(url, headers=headers)
-
-data = response.json()
-print(data)
-```
-
-:::
 
 ---
 
 ## Force delete purchase agreement
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/purchases/purchase-agreements/{id}/force`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/purchases/purchase-agreements/{id}/force`
 
-Permanently delete a soft-deleted purchase agreement. This action cannot be undone.
+Permanently delete a purchase agreement
 
 > 🔒 Requires a valid Bearer token.
 
@@ -795,88 +938,27 @@ Permanently delete a soft-deleted purchase agreement. This action cannot be undo
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the soft-deleted purchase agreement |
+| `id` | integer | Yes | The purchase agreement ID |
+
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/force" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/force" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/force", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/force", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
-  },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/force', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/force"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.delete(url, headers=headers)
-```
-
-:::
-
-**Example response** <Badge type="info" text="204" />
-
-No content.
-
----
-
-## List agreement lines
-
-<Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-agreements/{id}/lines`
-
-Retrieve lines belonging to a purchase agreement.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseAgreement` | integer | Yes | The ID of the purchase agreement |
-
-::: code-group
-
-```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/lines" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/lines", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -889,10 +971,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/lines', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/force', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -902,17 +985,381 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/1/lines"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/force"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
-response = requests.get(url, headers=headers)
+response = requests.delete(url, headers=headers)
 
 data = response.json()
 print(data)
 ```
 
 :::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Purchase agreement permanently deleted."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Confirm purchase agreement
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/confirm`
+
+Confirm a draft purchase agreement
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The purchase agreement ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/confirm" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/confirm", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/confirm', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/confirm"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.post(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "BO/1",
+    "type": "blanket_order",
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
+  },
+  "message": "Purchase agreement confirmed successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Close purchase agreement
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/close`
+
+Close a confirmed purchase agreement
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The purchase agreement ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/close" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/close", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/close', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/close"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.post(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "BO/1",
+    "type": "blanket_order",
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
+  },
+  "message": "Purchase agreement closed successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Cancel purchase agreement
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-agreements/{id}/cancel`
+
+Cancel a draft or confirmed purchase agreement
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The purchase agreement ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/cancel" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/cancel", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/cancel', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-agreements/{id}/cancel"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.post(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "BO/1",
+    "type": "blanket_order",
+    "state": "confirmed",
+    "reference": "BO-FF-2026-01",
+    "starts_at": "2026-10-13",
+    "ends_at": "2027-10-12",
+    "description": "<p></p>",
+    "currency_id": 1,
+    "partner_id": 70,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:58:02.000000Z",
+    "updated_at": "2026-10-13T08:59:28.000000Z",
+    "deleted_at": null
+  },
+  "message": "Purchase agreement canceled successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

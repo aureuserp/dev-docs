@@ -1,4 +1,4 @@
-# PDF Preview and Export
+# Overview
 
 AureusERP provides a `PDFHandler` trait and a `PreviewAction` pattern used on invoice, bill, credit-note, and quotation resource pages. This page shows how to add an in-modal PDF preview with a print/download button to any Filament resource.
 
@@ -29,8 +29,7 @@ protected function getHeaderActions(): array
 {
     return [
         PreviewAction::make()
-            ->setTemplate('accounts::filament.resources.invoice.actions.preview'),
-        // other actions...
+            ->setTemplate('accounts::invoice/actions/preview.index'),
     ];
 }
 ```
@@ -39,10 +38,9 @@ protected function getHeaderActions(): array
 
 ## Adding PDF Preview to a Custom Resource
 
-### Step 1 — Create the Blade template
+### Step 1: Create the Blade template
 
 ```blade
-{{-- resources/views/my-plugin/pdf/document.blade.php --}}
 <html>
 <body>
   <h1>{{ $record->name }}</h1>
@@ -58,7 +56,7 @@ protected function getHeaderActions(): array
 </html>
 ```
 
-### Step 2 — Create the action
+### Step 2: Create the action
 
 ```php
 namespace Webkul\MyPlugin\Filament\Resources\OrderResource\Actions;
@@ -108,7 +106,7 @@ class PreviewAction extends Action
 }
 ```
 
-### Step 3 — Register in the Edit/View page
+### Step 3: Register in the Edit/View page
 
 ```php
 use Webkul\MyPlugin\Filament\Resources\OrderResource\Actions\PreviewAction;
@@ -135,7 +133,7 @@ class OrderPdfController extends Controller
     public function download(Order $order)
     {
         return $this->downloadPDF(
-            view('my-plugin::pdf.document', compact('order'))->render(),
+            view('my-plugin::pdf.document', ['record' => $order])->render(),
             'order-'.$order->id
         );
     }

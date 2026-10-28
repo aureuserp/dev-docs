@@ -1,6 +1,6 @@
-# Custom Sequences
+# Overview
 
-The **Custom Sequence** feature in AureusERP provides a flexible, database-backed document numbering system. Sequences generate formatted document identifiers — such as `SO/2025/00042` for a sales order or `INV/2025/00001` for an invoice — with configurable prefixes, suffixes, padding, counters, and automatic periodic resets.
+The **Custom Sequence** feature in AureusERP provides a flexible, database-backed document numbering system. Sequences generate formatted document identifiers, such as `SO/00042` for a sales order or `PO/00001` for a purchase order, with configurable prefixes, suffixes, padding, counters, and automatic periodic resets.
 
 ## Key Benefits
 
@@ -8,16 +8,16 @@ The **Custom Sequence** feature in AureusERP provides a flexible, database-backe
 - Per-company and per-record-type numbering, all managed from a single place
 - Automatic counter reset by year or month
 - Concurrent-safe counter increments using database row-level locking
-- Customisable through the admin panel without code changes
+- Customizable through the admin panel without code changes
 
 ## How Sequences Work
 
-Every sequence is stored as a row in the `sequences` table, represented by the `Webkul\Support\Models\Sequence` model. When a document needs a number, the `SequenceService` looks up the matching sequence row, locks it for update, increments the counter, and returns the formatted string — all inside a single database transaction to prevent race conditions.
+Every sequence is stored as a row in the `sequences` table, represented by the `Webkul\Support\Models\Sequence` model. When a document needs a number, the `SequenceService` looks up the matching sequence row, locks it for update, increments the counter, and returns the formatted string, all inside a single database transaction to prevent race conditions.
 
 A sequence can be:
 
-- **Global** — identified by a `code` string (e.g. `sales.order`), optionally scoped to a company.
-- **Scoped** — tied to a specific model instance (e.g. one sequence row per `OperationType` record), using a polymorphic `scope_type` / `scope_id` pair plus an optional `variant` string.
+- **Global**: identified by a `code` string (e.g. `sales.order`), optionally scoped to a company.
+- **Scoped**: tied to a specific model instance (e.g. one sequence row per `OperationType` record), using a polymorphic `scope_type` / `scope_id` pair plus an optional `variant` string.
 
 ## The `Sequence` Model
 
@@ -48,7 +48,7 @@ The `prefix` and `suffix` fields support the following date-interpolation tokens
 | `%(month)` | Two-digit month, e.g. `07` |
 | `%(day)` | Two-digit day, e.g. `04` |
 
-For example, a prefix of `SO/%(year)/` produces `SO/2025/` for documents created in 2025.
+For example, a prefix of `TKT/%(year)/` produces `TKT/2025/` for documents created in 2025.
 
 ## The `SequenceService`
 
@@ -62,11 +62,11 @@ Use `SequenceService::next()` to consume the next number from a globally-coded s
 use Webkul\Support\Services\SequenceService;
 
 $name = SequenceService::next(
-    code: 'sales.order',       // unique code for this sequence type
+    code: 'sales.order',
     companyId: $this->company_id,
     defaults: [
         'name'         => 'Sales Order',
-        'prefix'       => 'SO/%(year)/',
+        'prefix'       => 'SO/',
         'initial_from' => static::withoutGlobalScopes(), 
     ],
     date: null,                
@@ -83,8 +83,8 @@ Use `SequenceService::nextFor()` when each instance of a model needs its own cou
 use Webkul\Support\Services\SequenceService;
 
 $name = SequenceService::nextFor(
-    scope: $this->operationType,     // the model instance that owns this sequence
-    variant: '',                     // optional string to distinguish multiple sequences per scope
+    scope: $this->operationType,
+    variant: '',
     companyId: $this->company_id,
     defaults: $this->operationType->sequenceDefaults(),
 );
@@ -92,12 +92,12 @@ $name = SequenceService::nextFor(
 
 ### Pre-creating a Sequence Without Consuming a Number
 
-Use `ensure()` or `ensureFor()` when you want to guarantee a sequence row exists — for example, in a seeder or a model observer — without yet incrementing the counter:
+Use `ensure()` or `ensureFor()` when you want to guarantee a sequence row exists, for example, in a seeder or a model observer, without yet incrementing the counter:
 
 ```php
 SequenceService::ensure('purchases.order', $companyId, [
     'name'   => 'Purchase Order',
-    'prefix' => 'PO/%(year)/',
+    'prefix' => 'PO/',
 ]);
 
 SequenceService::ensureFor($operationType, '', $companyId, $defaults);
@@ -120,24 +120,24 @@ SequenceService::purgeScoped(OperationType::class, [1, 2, 3]);
 
 The recommended pattern is to trigger sequence creation whenever the relevant parent record is created. For a global sequence, call `SequenceService::ensure()` inside your model's `creating` observer or a `boot()` hook. For a scoped sequence, call `SequenceService::ensureFor()` on the scope model after it is saved.
 
-Here is an abbreviated example for a hypothetical `Invoice` model:
+Here is an abbreviated example for a hypothetical `Ticket` model:
 
 ```php
 namespace Webkul\MyPlugin\Models;
 
 use Webkul\Support\Services\SequenceService;
 
-class Invoice extends Model
+class Ticket extends Model
 {
     protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function (self $invoice): void {
-            if (blank($invoice->name)) {
-                $invoice->name = SequenceService::next('my-plugin.invoice', $invoice->company_id, [
-                    'name'   => 'Invoice',
-                    'prefix' => 'INV/%(year)/',
+        static::creating(function (self $ticket): void {
+            if (blank($ticket->name)) {
+                $ticket->name = SequenceService::next('my-plugin.ticket', $ticket->company_id, [
+                    'name'   => 'Ticket',
+                    'prefix' => 'TKT/%(year)/',
                 ]);
             }
         });
@@ -151,17 +151,17 @@ Sequences can be viewed and edited from **Settings → Sequences** in the admin 
 
 **General**
 
-- **Name** — optional human-readable label.
-- **Code** — the unique string identifier (read-only after creation).
-- **Company** — optional company scope (read-only after creation).
+- **Name**: optional human-readable label.
+- **Code**: the unique string identifier (read-only after creation).
+- **Company**: optional company scope (read-only after creation).
 
 **Format**
 
-- **Prefix / Suffix** — text surrounding the padded number. Supports date tokens.
-- **Padding** — minimum digit width for the counter portion (1–12, default 5).
-- **Next Number** — the value that will be used on the next consumption. Can only be increased, never decreased.
-- **Step** — how much the counter advances on each use.
-- **Reset Frequency** — `never`, `yearly`, or `monthly`.
+- **Prefix / Suffix**: text surrounding the padded number. Supports date tokens.
+- **Padding**: minimum digit width for the counter portion (1–12, default 5).
+- **Next Number**: the value that will be used on the next consumption. Can only be increased, never decreased.
+- **Step**: how much the counter advances on each use.
+- **Reset Frequency**: `never`, `yearly`, or `monthly`.
 
 A **Next Preview** badge on the list page shows what the next generated number will look like without consuming the counter.
 

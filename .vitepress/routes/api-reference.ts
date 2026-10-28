@@ -248,32 +248,6 @@ const apiReference = {
       ]
     },
     {
-      "text": "Sales",
-      "collapsed": true,
-      "items": [
-        {
-          "text": "Orders",
-          "link": "/master/api-reference/endpoints/sales/orders"
-        },
-        {
-          "text": "Order Lines",
-          "link": "/master/api-reference/endpoints/sales/order-lines"
-        },
-        {
-          "text": "Order Deliveries",
-          "link": "/master/api-reference/endpoints/sales/order-deliveries"
-        },
-        {
-          "text": "Order Invoices",
-          "link": "/master/api-reference/endpoints/sales/order-invoices"
-        },
-        {
-          "text": "Tags",
-          "link": "/master/api-reference/endpoints/sales/tags"
-        }
-      ]
-    },
-    {
       "text": "Projects",
       "collapsed": true,
       "items": [
@@ -316,26 +290,50 @@ const apiReference = {
           "link": "/master/api-reference/endpoints/purchases/purchase-orders"
         },
         {
+          "text": "Purchase Order Lines",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-lines"
+        },
+        {
+          "text": "Purchase Order Receipts",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-receipts"
+        },
+        {
+          "text": "Purchase Order Bills",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-bills"
+        },
+        {
           "text": "Purchase Agreements",
           "link": "/master/api-reference/endpoints/purchases/purchase-agreements"
+        },
+        {
+          "text": "Purchase Agreement Lines",
+          "link": "/master/api-reference/endpoints/purchases/purchase-agreement-lines"
         }
       ]
     },
     {
-      "text": "Point of Sale",
+      "text": "Sales",
       "collapsed": true,
       "items": [
         {
-          "text": "Registers",
-          "link": "/master/api-reference/endpoints/pos/registers"
-        },
-        {
-          "text": "Sessions",
-          "link": "/master/api-reference/endpoints/pos/sessions"
-        },
-        {
           "text": "Orders",
-          "link": "/master/api-reference/endpoints/pos/orders"
+          "link": "/master/api-reference/endpoints/sales/orders"
+        },
+        {
+          "text": "Order Lines",
+          "link": "/master/api-reference/endpoints/sales/order-lines"
+        },
+        {
+          "text": "Order Deliveries",
+          "link": "/master/api-reference/endpoints/sales/order-deliveries"
+        },
+        {
+          "text": "Order Invoices",
+          "link": "/master/api-reference/endpoints/sales/order-invoices"
+        },
+        {
+          "text": "Tags",
+          "link": "/master/api-reference/endpoints/sales/tags"
         }
       ]
     },

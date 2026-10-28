@@ -1,6 +1,6 @@
-# Price Lists
+# Overview
 
-**Price Lists** in AureusERP let you define alternative pricing strategies for products — fixed prices, percentage discounts, cost-based markups, and formula-based rules — that override a product's default sales price. A sales order can reference one price list, and the system automatically resolves the correct unit price for every order line.
+**Price Lists** in AureusERP let you define alternative pricing strategies for products (fixed prices, percentage discounts, cost-based markups, and formula-based rules) that override a product's default sales price. A sales order can reference one price list, and the system automatically resolves the correct unit price for every order line.
 
 ## Key Concepts
 
@@ -45,7 +45,7 @@ The `items()` relationship returns the associated `PriceRuleItem` rows.
 | `fixed_price` | float | Absolute price (for `fixed` type) |
 | `percent_price` | float | Discount percentage (for `percentage` type) |
 | `price_discount` | float | Discount % off base (for `formula` type) |
-| `price_surcharge` | float | Fixed amount added after discount (for `formula` type) |
+| `price_surcharge` | float | Fixed amount added after rounding (for `formula` type) |
 | `price_round` | float | Round to nearest multiple (for `formula` type) |
 | `price_markup` | float | Markup % when base is cost/standard price (for `formula` type) |
 | `price_min_margin` | float | Minimum margin floor (for `formula` type) |
@@ -53,15 +53,15 @@ The `items()` relationship returns the associated `PriceRuleItem` rows.
 
 ### Enums
 
-**`PriceRuleType`** — the pricing method:
+**`PriceRuleType`**: the pricing method:
 
 | Value | Description |
 | --- | --- |
 | `fixed` | Use `fixed_price` directly, ignoring the base |
 | `percentage` | Apply a percentage discount off the base price |
-| `formula` | Apply a discount, surcharge, rounding, and optional margin guardrails to the base |
+| `formula` | Apply a discount, rounding, surcharge, and optional margin guardrails to the base |
 
-**`PriceRuleBase`** — the starting price to calculate from:
+**`PriceRuleBase`**: the starting price to calculate from:
 
 | Value | Description |
 | --- | --- |
@@ -69,7 +69,7 @@ The `items()` relationship returns the associated `PriceRuleItem` rows.
 | `standard_price` | Product's cost price |
 | `price_rules` | Price resolved from another price list (`base_price_list_id`) |
 
-**`PriceRuleApplyTo`** — the rule's scope, ordered by precedence (most-specific wins):
+**`PriceRuleApplyTo`**: the rule's scope, ordered by precedence (most-specific wins):
 
 | Value | Precedence | Description |
 | --- | --- | --- |
@@ -90,13 +90,13 @@ use Webkul\Product\Models\Product;
 $resolver = app(PriceListResolver::class);
 
 $price = $resolver->getProductPrice(
-    priceList: $priceList,   // PriceList|null — pass null to get the product's default price
+    priceList: $priceList,
     product: $product,
-    quantity: 5.0,           // used for min_quantity rule matching
-    uom: null,               // UOM|null — convert if ordering in a different unit
-    currency: null,          // Currency|null — defaults to the price list's currency
-    date: null,              // DateTimeInterface|null — defaults to now()
-    company: null,           // Company|null — defaults to current_company()
+    quantity: 5.0,
+    uom: null,
+    currency: null,
+    date: null,
+    company: null,
 );
 ```
 
@@ -106,16 +106,15 @@ To retrieve the matched rule without computing the price:
 
 ```php
 $rule = $resolver->getProductPriceRule($priceList, $product, $quantity, $uom, $date);
-// Returns PriceRuleItem|null
 ```
 
 ### Resolution Algorithm
 
 1. If `$priceList` is `null`, the product's `price` (sales price) is returned after UOM and currency conversion.
-2. Candidate rules for the price list are fetched — filtered by effective date and matching product / category / global scope — then sorted by precedence (variant > product > category > global), then by `min_quantity` descending, then by ID descending.
+2. Candidate rules for the price list are fetched, filtered by effective date and matching product / category / global scope, then sorted by precedence (variant > product > category > global), then by `min_quantity` descending, then by ID descending.
 3. The first rule for which `isApplicableFor($product, $quantity, $categoryIds)` returns `true` is used.
 4. If no rule matches, the product's `list_price` is used.
-5. For `formula` rules, discounts, surcharges, rounding, and margin guardrails are applied in sequence.
+5. For `formula` rules, the discount, rounding, surcharge, and then the margin guardrails are applied in that order.
 6. For rules with `base = price_rules`, the base price is resolved recursively from `base_price_list_id` (up to a depth of 5; cycles are detected and short-circuited back to `list_price`).
 7. Currency conversion is applied at every chaining step using the date-effective exchange rate.
 
@@ -126,7 +125,6 @@ The `Webkul\Sale\Models\Order` model has a `price_list_id` foreign key and a `pr
 When order lines are added or priced via the API, `PriceListResolver::getProductPrice()` is called with the order's price list to resolve the unit price:
 
 ```php
-// Inside the sales order API controller
 $price = app(PriceListResolver::class)->getProductPrice(
     $order->priceList,
     $product,
@@ -139,7 +137,7 @@ The Filament order form also reads the price list selection and passes it throug
 
 ## Managing Price Lists in the Admin Panel
 
-Price lists are managed under **Products → Price Lists** in the admin panel. Each price list form shows:
+Price lists are managed under **Sales → Products → Price Lists** in the admin panel. Each price list form shows:
 
 - **Name** and **Currency** at the top level.
 - An inline **Items** repeater for adding and editing price rule items.
@@ -148,7 +146,7 @@ Each rule item exposes a condensed form (using Filament's `.compact()` table rep
 
 ## Adding Price List Support to a Custom Plugin
 
-To resolve prices from a price list in your own plugin, inject `PriceListResolver` and call `getProductPrice()` or `resolve()`. There is no interface to implement and no trait to apply — the resolver works with any `PriceList` and `Product` models.
+To resolve prices from a price list in your own plugin, inject `PriceListResolver` and call `getProductPrice()` or `resolve()`. There is no interface to implement and no trait to apply, the resolver works with any `PriceList` and `Product` models.
 
 To surface price list selection on your own order-type resource, add a `price_list_id` foreign key to your table, a `BelongsTo` relationship on your model, and a `Select` field wired to `PriceList::query()->active()` in your Filament form.
 

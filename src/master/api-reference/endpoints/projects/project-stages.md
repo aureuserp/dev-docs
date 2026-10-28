@@ -8,9 +8,10 @@ Part of the **Projects** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/project-stages`
 
-Retrieve a paginated list of project stages.
+Retrieve a paginated list of project stages
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
@@ -18,23 +19,25 @@ Retrieve a paginated list of project stages.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: creator, company, projects | `projects` |
 | `filter[trashed]` | string | No | Filter by trashed status. Available options: with, only | `with` |
-| `sort` | string | No | Sort field. Available options: id, name, sort, created_at, updated_at | `sort` |
-| `page` | integer | No | Page number | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&sort=sort&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&filter%5Btrashed%5D=with" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&sort=sort&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&filter%5Btrashed%5D=with", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -47,10 +50,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&sort=sort&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&filter%5Btrashed%5D=with', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -60,11 +64,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&sort=sort&page=1"
+url = "https://your-domain.com/admin/api/v1/projects/project-stages?include=projects&filter%5Btrashed%5D=with"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -82,22 +87,26 @@ print(data)
   "data": [
     {
       "id": 1,
-      "name": "Backlog",
-      "description": "Ideas and incoming requests",
+      "name": "To Do",
+      "is_active": true,
+      "is_collapsed": false,
       "sort": 1,
-      "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-01-01T00:00:00.000000Z",
+      "company_id": null,
+      "creator_id": 1,
+      "created_at": "2025-04-07T13:13:48.000000Z",
+      "updated_at": "2025-04-07T13:13:48.000000Z",
       "deleted_at": null
     },
     {
-      "id": 2,
-      "name": "In Progress",
-      "description": "Actively being worked on",
-      "sort": 2,
-      "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-01-01T00:00:00.000000Z",
+      "id": 1,
+      "name": "To Do",
+      "is_active": true,
+      "is_collapsed": false,
+      "sort": 1,
+      "company_id": null,
+      "creator_id": 1,
+      "created_at": "2025-04-07T13:13:48.000000Z",
+      "updated_at": "2025-04-07T13:13:48.000000Z",
       "deleted_at": null
     }
   ],
@@ -111,6 +120,27 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
     "to": 2,
     "total": 2
@@ -128,24 +158,25 @@ print(data)
 
 :::
 
+
 ---
 
 ## Create project stage
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/project-stages`
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/project-stages`
 
-Create a new project stage.
+Create a new project stage
 
 > 🔒 Requires a valid Bearer token.
+
+
 
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `name` | string | Yes | Stage name. Must not be greater than 255 characters. |
-| `description` | string | No | Stage description. |
-| `sort` | integer | No | Sort order (lower numbers appear first). |
-| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `name` | string | Yes | Project stage name. Must not be greater than 255 characters. |
+
 
 ::: code-group
 
@@ -154,7 +185,9 @@ curl -X POST "https://your-domain.com/admin/api/v1/projects/project-stages" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"name": "Review", "description": "Awaiting review", "sort": 3, "company_id": 1}'
+  -d '{
+  "name": "In Progress"
+}'
 ```
 
 ```javascript [JavaScript]
@@ -165,7 +198,9 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/proj
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ name: "Review", description: "Awaiting review", sort: 3, company_id: 1 }),
+  body: JSON.stringify({
+  "name": "In Progress"
+}),
 });
 
 const data = await response.json();
@@ -183,7 +218,9 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/proje
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['name' => 'Review', 'description' => 'Awaiting review', 'sort' => 3, 'company_id' => 1],
+    'json' => [
+    'name' => 'In Progress',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -200,7 +237,9 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"name": "Review", "description": "Awaiting review", "sort": 3, "company_id": 1}
+payload = {
+    "name": "In Progress",
+}
 
 response = requests.post(url, headers=headers, json=payload)
 
@@ -215,17 +254,31 @@ print(data)
 ```json
 {
   "data": {
-    "id": 3,
-    "name": "Review",
-    "description": "Awaiting review",
-    "sort": 3,
-    "company_id": 1,
-    "created_at": "2026-10-27T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "id": 1,
+    "name": "To Do",
+    "is_active": true,
+    "is_collapsed": false,
+    "sort": 1,
+    "company_id": null,
+    "creator_id": 1,
+    "created_at": "2025-04-07T13:13:48.000000Z",
+    "updated_at": "2025-04-07T13:13:48.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Project stage created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -233,7 +286,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/project-stages/{id}`
 
-Retrieve a specific project stage by ID.
+Retrieve a specific project stage by ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -243,26 +296,31 @@ Retrieve a specific project stage by ID.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project stage ID |
 
+
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: creator, company, projects | `projects` |
 
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/project-stages/1?include=projects" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/project-stages/{id}?include=projects" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/1?include=projects", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/{id}?include=projects", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -275,10 +333,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/project-stages/1?include=projects', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/project-stages/{id}?include=projects', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -288,11 +347,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/project-stages/1?include=projects"
+url = "https://your-domain.com/admin/api/v1/projects/project-stages/{id}?include=projects"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -303,13 +363,43 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "To Do",
+    "is_active": true,
+    "is_collapsed": false,
+    "sort": 1,
+    "company_id": null,
+    "creator_id": 1,
+    "created_at": "2025-04-07T13:13:48.000000Z",
+    "updated_at": "2025-04-07T13:13:48.000000Z",
+    "deleted_at": null
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update project stage
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/projects/project-stages/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/projects/project-stages/{id}`
 
-Update an existing project stage.
+Update an existing project stage
 
 > 🔒 Requires a valid Bearer token.
 
@@ -319,34 +409,40 @@ Update an existing project stage.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project stage ID |
 
+
+
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `name` | string | No | Stage name. |
-| `description` | string | No | Stage description. |
-| `sort` | integer | No | Sort order. |
-| `company_id` | integer | No | Company ID. |
+| `name` | string | Sometimes | Project stage name. Must not be greater than 255 characters. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/projects/project-stages/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/projects/project-stages/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"name": "Backlog", "sort": 1}'
+  -d '{
+  "name": "In Progress"
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ name: "Backlog", sort: 1 }),
+  body: JSON.stringify({
+  "name": "In Progress"
+}),
 });
 
 const data = await response.json();
@@ -358,13 +454,15 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/projects/project-stages/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/projects/project-stages/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['name' => 'Backlog', 'sort' => 1],
+    'json' => [
+    'name' => 'In Progress',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -373,7 +471,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/project-stages/1"
+url = "https://your-domain.com/admin/api/v1/projects/project-stages/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -381,7 +479,11 @@ headers = {
     "Content-Type": "application/json",
 }
 
-response = requests.patch(url, headers=headers, json={"name": "Backlog", "sort": 1})
+payload = {
+    "name": "In Progress",
+}
+
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -389,79 +491,44 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## Delete project stage
-
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/project-stages/{id}`
-
-Soft-delete a project stage.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The project stage ID |
-
-::: code-group
-
-```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/project-stages/1" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/1", {
-  method: "DELETE",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "To Do",
+    "is_active": true,
+    "is_collapsed": false,
+    "sort": 1,
+    "company_id": null,
+    "creator_id": 1,
+    "created_at": "2025-04-07T13:13:48.000000Z",
+    "updated_at": "2025-04-07T13:13:48.000000Z",
+    "deleted_at": null
   },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/project-stages/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/projects/project-stages/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Project stage updated successfully."
 }
+```
 
-response = requests.delete(url, headers=headers)
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
-
-No content.
 
 ---
 
-## Restore project stage
+## Delete project stage
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/project-stages/{id}/restore`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/project-stages/{id}`
 
-Restore a soft-deleted project stage.
+Soft delete a project stage
 
 > 🔒 Requires a valid Bearer token.
 
@@ -471,20 +538,25 @@ Restore a soft-deleted project stage.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project stage ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/projects/project-stages/1/restore" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/project-stages/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/1/restore", {
-  method: "POST",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/{id}", {
+  method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -497,10 +569,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/project-stages/1/restore', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/project-stages/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -510,11 +583,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/project-stages/1/restore"
+url = "https://your-domain.com/admin/api/v1/projects/project-stages/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Project stage deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Restore project stage
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/project-stages/{id}/restore`
+
+Restore a soft-deleted project stage
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The project stage ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/projects/project-stages/{id}/restore" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/{id}/restore", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/project-stages/{id}/restore', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/projects/project-stages/{id}/restore"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -531,24 +701,38 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "Backlog",
-    "description": "Ideas and incoming requests",
+    "name": "To Do",
+    "is_active": true,
+    "is_collapsed": false,
     "sort": 1,
-    "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "company_id": null,
+    "creator_id": 1,
+    "created_at": "2025-04-07T13:13:48.000000Z",
+    "updated_at": "2025-04-07T13:13:48.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Project stage restored successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Force delete project stage
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/project-stages/{id}/force`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/project-stages/{id}/force`
 
-Permanently delete a project stage. This action cannot be undone.
+Permanently delete a project stage
 
 > 🔒 Requires a valid Bearer token.
 
@@ -558,22 +742,30 @@ Permanently delete a project stage. This action cannot be undone.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The project stage ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/project-stages/1/force" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/project-stages/{id}/force" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/1/force", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/project-stages/{id}/force", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -581,29 +773,53 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/proj
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/project-stages/1/force', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/project-stages/{id}/force', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/project-stages/1/force"
+url = "https://your-domain.com/admin/api/v1/projects/project-stages/{id}/force"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "message": "Project stage permanently deleted."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

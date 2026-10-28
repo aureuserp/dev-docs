@@ -8,9 +8,10 @@ Part of the **Projects** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/tags`
 
-Retrieve a paginated list of project tags.
+Retrieve a paginated list of tags
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
@@ -18,23 +19,25 @@ Retrieve a paginated list of project tags.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: creator | `creator` |
 | `filter[trashed]` | string | No | Filter by trashed status. Available options: with, only | `with` |
-| `sort` | string | No | Sort field. Available options: id, name, color, created_at, updated_at | `name` |
-| `page` | integer | No | Page number | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/tags?sort=name&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/tags?include=creator&filter%5Btrashed%5D=with" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags?sort=name&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags?include=creator&filter%5Btrashed%5D=with", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -47,10 +50,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tags?sort=name&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tags?include=creator&filter%5Btrashed%5D=with', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -60,11 +64,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tags?sort=name&page=1"
+url = "https://your-domain.com/admin/api/v1/projects/tags?include=creator&filter%5Btrashed%5D=with"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -82,20 +87,20 @@ print(data)
   "data": [
     {
       "id": 1,
-      "name": "frontend",
-      "color": "#4A90E2",
-      "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-01-01T00:00:00.000000Z",
+      "name": "Urgent Work",
+      "color": "#ff8f17",
+      "creator_id": null,
+      "created_at": "2025-04-11T11:01:07.000000Z",
+      "updated_at": "2025-04-11T11:01:07.000000Z",
       "deleted_at": null
     },
     {
-      "id": 2,
-      "name": "backend",
-      "color": "#7ED321",
-      "company_id": 1,
-      "created_at": "2026-01-01T00:00:00.000000Z",
-      "updated_at": "2026-01-01T00:00:00.000000Z",
+      "id": 1,
+      "name": "Urgent Work",
+      "color": "#ff8f17",
+      "creator_id": null,
+      "created_at": "2025-04-11T11:01:07.000000Z",
+      "updated_at": "2025-04-11T11:01:07.000000Z",
       "deleted_at": null
     }
   ],
@@ -109,6 +114,27 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
     "to": 2,
     "total": 2
@@ -126,23 +152,26 @@ print(data)
 
 :::
 
+
 ---
 
 ## Create tag
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/tags`
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/tags`
 
-Create a new project tag.
+Create a new tag
 
 > 🔒 Requires a valid Bearer token.
+
+
 
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `name` | string | Yes | Tag name. Must not be greater than 255 characters. |
-| `color` | string | No | Hex color code (e.g. `#4A90E2`). |
-| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `color` | string | No | Hex color. Must match the regex /^#(?:[0-9a-fA-F]{3}){1,2}$/. |
+
 
 ::: code-group
 
@@ -151,7 +180,10 @@ curl -X POST "https://your-domain.com/admin/api/v1/projects/tags" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"name": "frontend", "color": "#4A90E2", "company_id": 1}'
+  -d '{
+  "name": "Urgent",
+  "color": "#ff0000"
+}'
 ```
 
 ```javascript [JavaScript]
@@ -162,7 +194,10 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ name: "frontend", color: "#4A90E2", company_id: 1 }),
+  body: JSON.stringify({
+  "name": "Urgent",
+  "color": "#ff0000"
+}),
 });
 
 const data = await response.json();
@@ -180,7 +215,10 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/proje
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['name' => 'frontend', 'color' => '#4A90E2', 'company_id' => 1],
+    'json' => [
+    'name' => 'Urgent',
+    'color' => '#ff0000',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -197,7 +235,10 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"name": "frontend", "color": "#4A90E2", "company_id": 1}
+payload = {
+    "name": "Urgent",
+    "color": "#ff0000",
+}
 
 response = requests.post(url, headers=headers, json=payload)
 
@@ -213,15 +254,27 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "frontend",
-    "color": "#4A90E2",
-    "company_id": 1,
-    "created_at": "2026-10-27T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "name": "Urgent Work",
+    "color": "#ff8f17",
+    "creator_id": null,
+    "created_at": "2025-04-11T11:01:07.000000Z",
+    "updated_at": "2025-04-11T11:01:07.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Tag created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -229,7 +282,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/tags/{id}`
 
-Retrieve a specific tag by ID.
+Retrieve a specific tag by ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -239,26 +292,31 @@ Retrieve a specific tag by ID.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The tag ID |
 
+
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: creator | `creator` |
 
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/tags/1?include=creator" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/tags/{id}?include=creator" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/1?include=creator", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/{id}?include=creator", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -271,10 +329,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tags/1?include=creator', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tags/{id}?include=creator', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -284,11 +343,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tags/1?include=creator"
+url = "https://your-domain.com/admin/api/v1/projects/tags/{id}?include=creator"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -299,13 +359,40 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Urgent Work",
+    "color": "#ff8f17",
+    "creator_id": null,
+    "created_at": "2025-04-11T11:01:07.000000Z",
+    "updated_at": "2025-04-11T11:01:07.000000Z",
+    "deleted_at": null
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update tag
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/projects/tags/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/projects/tags/{id}`
 
-Update an existing tag.
+Update an existing tag
 
 > 🔒 Requires a valid Bearer token.
 
@@ -315,33 +402,43 @@ Update an existing tag.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The tag ID |
 
+
+
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `name` | string | No | Tag name. |
-| `color` | string | No | Hex color code. |
-| `company_id` | integer | No | Company ID. |
+| `name` | string | Sometimes | Tag name. Must not be greater than 255 characters. |
+| `color` | string | No | Hex color. Must match the regex /^#(?:[0-9a-fA-F]{3}){1,2}$/. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/projects/tags/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/projects/tags/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"color": "#E74C3C"}'
+  -d '{
+  "name": "Urgent",
+  "color": "#ff0000"
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ color: "#E74C3C" }),
+  body: JSON.stringify({
+  "name": "Urgent",
+  "color": "#ff0000"
+}),
 });
 
 const data = await response.json();
@@ -353,13 +450,16 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/projects/tags/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/projects/tags/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['color' => '#E74C3C'],
+    'json' => [
+    'name' => 'Urgent',
+    'color' => '#ff0000',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -368,7 +468,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tags/1"
+url = "https://your-domain.com/admin/api/v1/projects/tags/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -376,7 +476,12 @@ headers = {
     "Content-Type": "application/json",
 }
 
-response = requests.patch(url, headers=headers, json={"color": "#E74C3C"})
+payload = {
+    "name": "Urgent",
+    "color": "#ff0000",
+}
+
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -384,79 +489,41 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## Delete tag
-
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/tags/{id}`
-
-Soft-delete a tag.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The tag ID |
-
-::: code-group
-
-```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tags/1" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/1", {
-  method: "DELETE",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "Urgent Work",
+    "color": "#ff8f17",
+    "creator_id": null,
+    "created_at": "2025-04-11T11:01:07.000000Z",
+    "updated_at": "2025-04-11T11:01:07.000000Z",
+    "deleted_at": null
   },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tags/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/projects/tags/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Tag updated successfully."
 }
+```
 
-response = requests.delete(url, headers=headers)
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
-
-No content.
 
 ---
 
-## Restore tag
+## Delete tag
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/tags/{id}/restore`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/tags/{id}`
 
-Restore a soft-deleted tag.
+Soft delete a tag
 
 > 🔒 Requires a valid Bearer token.
 
@@ -466,20 +533,25 @@ Restore a soft-deleted tag.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The tag ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/projects/tags/1/restore" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tags/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/1/restore", {
-  method: "POST",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/{id}", {
+  method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -492,10 +564,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/tags/1/restore', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tags/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -505,11 +578,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tags/1/restore"
+url = "https://your-domain.com/admin/api/v1/projects/tags/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Tag deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Restore tag
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/tags/{id}/restore`
+
+Restore a soft-deleted tag
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The tag ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/projects/tags/{id}/restore" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/{id}/restore", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/tags/{id}/restore', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/projects/tags/{id}/restore"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -526,23 +696,35 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "frontend",
-    "color": "#4A90E2",
-    "company_id": 1,
-    "created_at": "2026-01-01T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "name": "Urgent Work",
+    "color": "#ff8f17",
+    "creator_id": null,
+    "created_at": "2025-04-11T11:01:07.000000Z",
+    "updated_at": "2025-04-11T11:01:07.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Tag restored successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Force delete tag
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/tags/{id}/force`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/tags/{id}/force`
 
-Permanently delete a tag. This action cannot be undone.
+Permanently delete a tag
 
 > 🔒 Requires a valid Bearer token.
 
@@ -552,22 +734,30 @@ Permanently delete a tag. This action cannot be undone.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The tag ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tags/1/force" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tags/{id}/force" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/1/force", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags/{id}/force", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -575,29 +765,53 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/tags
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tags/1/force', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tags/{id}/force', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tags/1/force"
+url = "https://your-domain.com/admin/api/v1/projects/tags/{id}/force"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "message": "Tag permanently deleted."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

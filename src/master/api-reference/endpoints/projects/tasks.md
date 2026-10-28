@@ -8,35 +8,39 @@ Part of the **Projects** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/tasks`
 
-Retrieve a paginated list of tasks with filtering and sorting.
+Retrieve a paginated list of tasks with filtering and sorting
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: stage, project, milestone, partner, parent, company, creator, subTasks, users, tags | `project,users` |
-| `filter[id]` | string | No | Comma-separated list of IDs to filter by | |
-| `filter[state]` | string | No | Filter by task state. Available options: in_progress, done, cancelled | `in_progress` |
+| `filter[id]` | string | No | Filter by task IDs |  |
+| `filter[state]` | string | No | Filter by task state | `in_progress` |
 | `filter[trashed]` | string | No | Filter by trashed status. Available options: with, only | `with` |
-| `sort` | string | No | Sort field. Available options: id, title, state, priority, sort, deadline, allocated_hours, total_hours_spent, created_at, updated_at | `-created_at` |
-| `page` | integer | No | Page number | `1` |
+| `sort` | string | No | Sort field | `-created_at` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&sort=-created_at&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&filter%5Btrashed%5D=with&sort=-created_at" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&sort=-created_at&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&filter%5Btrashed%5D=with&sort=-created_at", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -49,10 +53,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&sort=-created_at&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&filter%5Btrashed%5D=with&sort=-created_at', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -62,11 +67,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&sort=-created_at&page=1"
+url = "https://your-domain.com/admin/api/v1/projects/tasks?include=project%2Cusers&filter%5Bstate%5D=in_progress&filter%5Btrashed%5D=with&sort=-created_at"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -83,20 +89,63 @@ print(data)
 {
   "data": [
     {
-      "id": 1,
-      "title": "Design homepage mockup",
-      "state": "in_progress",
-      "priority": 1,
-      "deadline": "2026-03-15",
-      "allocated_hours": 8,
-      "total_hours_spent": 2.5,
-      "project_id": 1,
-      "stage_id": 1,
-      "milestone_id": null,
-      "partner_id": null,
+      "id": 14,
+      "title": "Design new homepage mockups",
+      "description": null,
+      "color": null,
+      "priority": false,
+      "state": "done",
+      "sort": 1,
+      "is_active": true,
+      "is_recurring": false,
+      "deadline": "2026-08-17T10:26:41.000000Z",
+      "working_hours_open": 0,
+      "working_hours_close": 0,
+      "allocated_hours": 16,
+      "remaining_hours": 0,
+      "effective_hours": 16,
+      "total_hours_spent": 16,
+      "subtask_effective_hours": 0,
+      "overtime": 0,
+      "progress": 100,
+      "stage_id": 11,
+      "project_id": 5,
+      "partner_id": 64,
+      "parent_id": null,
       "company_id": 1,
-      "created_at": "2026-01-15T00:00:00.000000Z",
-      "updated_at": "2026-01-20T00:00:00.000000Z",
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:42.000000Z",
+      "deleted_at": null
+    },
+    {
+      "id": 14,
+      "title": "Design new homepage mockups",
+      "description": null,
+      "color": null,
+      "priority": false,
+      "state": "done",
+      "sort": 1,
+      "is_active": true,
+      "is_recurring": false,
+      "deadline": "2026-08-17T10:26:41.000000Z",
+      "working_hours_open": 0,
+      "working_hours_close": 0,
+      "allocated_hours": 16,
+      "remaining_hours": 0,
+      "effective_hours": 16,
+      "total_hours_spent": 16,
+      "subtask_effective_hours": 0,
+      "overtime": 0,
+      "progress": 100,
+      "stage_id": 11,
+      "project_id": 5,
+      "partner_id": 64,
+      "parent_id": null,
+      "company_id": 1,
+      "creator_id": 1,
+      "created_at": "2026-08-03T10:26:41.000000Z",
+      "updated_at": "2026-08-03T10:26:42.000000Z",
       "deleted_at": null
     }
   ],
@@ -110,9 +159,30 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
@@ -127,34 +197,37 @@ print(data)
 
 :::
 
+
 ---
 
 ## Create task
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/tasks`
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/tasks`
 
-Create a new task.
+Create a new task
 
 > 🔒 Requires a valid Bearer token.
+
+
 
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `title` | string | Yes | Task title. Must not be greater than 255 characters. |
-| `state` | string | No | Task state. Available options: in_progress, done, cancelled. Defaults to `in_progress`. |
-| `priority` | integer | No | Priority level. 0 = normal, 1 = high. |
-| `deadline` | string | No | Deadline date in YYYY-MM-DD format. |
-| `allocated_hours` | number | No | Estimated hours for this task. |
 | `description` | string | No | Task description. |
+| `state` | string | Yes | Task state. |
+| `stage_id` | integer | Yes | Task stage ID. Must match an existing stored value. |
 | `project_id` | integer | No | Project ID. Must match an existing stored value. |
-| `stage_id` | integer | No | Task stage ID. Must match an existing stored value. |
 | `milestone_id` | integer | No | Milestone ID. Must match an existing stored value. |
-| `partner_id` | integer | No | Customer (partner) ID. Must match an existing stored value. |
-| `parent_id` | integer | No | Parent task ID (for sub-tasks). Must match an existing stored value. |
-| `company_id` | integer | No | Company ID. Must match an existing stored value. |
-| `users` | integer[] | No | Array of assigned user IDs. |
-| `tags` | integer[] | No | Array of tag IDs. |
+| `partner_id` | integer | No | Customer ID. Must match an existing stored value. |
+| `parent_id` | integer | No | Parent task ID for sub-task. Must match an existing stored value. |
+| `deadline` | string | No | Task deadline date-time. Must be a valid date. |
+| `allocated_hours` | number | No | Allocated effort in hours. Must be at least 0. |
+| `priority` | boolean | No | Priority flag. |
+| `users` | integer[] | No | Must match an existing stored value. |
+| `tags` | integer[] | No | Must match an existing stored value. |
+
 
 ::: code-group
 
@@ -164,15 +237,23 @@ curl -X POST "https://your-domain.com/admin/api/v1/projects/tasks" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -d '{
-  "title": "Design homepage mockup",
+  "title": "Prepare homepage wireframe",
+  "description": "Create initial wireframe and review notes.",
   "state": "in_progress",
-  "priority": 1,
-  "deadline": "2026-03-15",
-  "allocated_hours": 8,
-  "project_id": 1,
   "stage_id": 1,
-  "company_id": 1,
-  "users": [1, 2]
+  "project_id": 1,
+  "milestone_id": 1,
+  "partner_id": 1,
+  "parent_id": 10,
+  "deadline": "2026-03-10 18:00:00",
+  "allocated_hours": 12,
+  "priority": true,
+  "users": [
+    16
+  ],
+  "tags": [
+    16
+  ]
 }'
 ```
 
@@ -185,16 +266,24 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/task
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: "Design homepage mockup",
-    state: "in_progress",
-    priority: 1,
-    deadline: "2026-03-15",
-    allocated_hours: 8,
-    project_id: 1,
-    stage_id: 1,
-    company_id: 1,
-    users: [1, 2],
-  }),
+  "title": "Prepare homepage wireframe",
+  "description": "Create initial wireframe and review notes.",
+  "state": "in_progress",
+  "stage_id": 1,
+  "project_id": 1,
+  "milestone_id": 1,
+  "partner_id": 1,
+  "parent_id": 10,
+  "deadline": "2026-03-10 18:00:00",
+  "allocated_hours": 12,
+  "priority": true,
+  "users": [
+    16
+  ],
+  "tags": [
+    16
+  ]
+}),
 });
 
 const data = await response.json();
@@ -213,16 +302,24 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/proje
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'title' => 'Design homepage mockup',
-        'state' => 'in_progress',
-        'priority' => 1,
-        'deadline' => '2026-03-15',
-        'allocated_hours' => 8,
-        'project_id' => 1,
-        'stage_id' => 1,
-        'company_id' => 1,
-        'users' => [1, 2],
+    'title' => 'Prepare homepage wireframe',
+    'description' => 'Create initial wireframe and review notes.',
+    'state' => 'in_progress',
+    'stage_id' => 1,
+    'project_id' => 1,
+    'milestone_id' => 1,
+    'partner_id' => 1,
+    'parent_id' => 10,
+    'deadline' => '2026-03-10 18:00:00',
+    'allocated_hours' => 12,
+    'priority' => true,
+    'users' => [
+      16,
     ],
+    'tags' => [
+      16,
+    ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -240,15 +337,23 @@ headers = {
 }
 
 payload = {
-    "title": "Design homepage mockup",
+    "title": "Prepare homepage wireframe",
+    "description": "Create initial wireframe and review notes.",
     "state": "in_progress",
-    "priority": 1,
-    "deadline": "2026-03-15",
-    "allocated_hours": 8,
-    "project_id": 1,
     "stage_id": 1,
-    "company_id": 1,
-    "users": [1, 2],
+    "project_id": 1,
+    "milestone_id": 1,
+    "partner_id": 1,
+    "parent_id": 10,
+    "deadline": "2026-03-10 18:00:00",
+    "allocated_hours": 12,
+    "priority": True,
+    "users": [
+        16,
+    ],
+    "tags": [
+        16,
+    ],
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -264,24 +369,49 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "title": "Design homepage mockup",
-    "state": "in_progress",
-    "priority": 1,
-    "deadline": "2026-03-15",
-    "allocated_hours": 8,
-    "total_hours_spent": 0,
-    "project_id": 1,
-    "stage_id": 1,
-    "milestone_id": null,
-    "partner_id": null,
+    "id": 14,
+    "title": "Design new homepage mockups",
+    "description": null,
+    "color": null,
+    "priority": false,
+    "state": "done",
+    "sort": 1,
+    "is_active": true,
+    "is_recurring": false,
+    "deadline": "2026-08-17T10:26:41.000000Z",
+    "working_hours_open": 0,
+    "working_hours_close": 0,
+    "allocated_hours": 16,
+    "remaining_hours": 0,
+    "effective_hours": 16,
+    "total_hours_spent": 16,
+    "subtask_effective_hours": 0,
+    "overtime": 0,
+    "progress": 100,
+    "stage_id": 11,
+    "project_id": 5,
+    "partner_id": 64,
+    "parent_id": null,
     "company_id": 1,
-    "created_at": "2026-10-27T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:42.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Task created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -289,7 +419,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/projects/tasks/{id}`
 
-Retrieve a specific task by ID.
+Retrieve a specific task by ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -299,26 +429,31 @@ Retrieve a specific task by ID.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The task ID |
 
+
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
-| `include` | string | No | Comma-separated list of relationships to include. Available options: stage, project, milestone, partner, parent, company, creator, subTasks, users, tags | `project,users` |
+| `include` | string | No | Comma-separated list of relationships to include. Available options: stage, project, milestone, partner, parent, company, creator, subTasks, users, tags | `stage,tags` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/projects/tasks/1?include=project%2Cusers" \
+curl -X GET "https://your-domain.com/admin/api/v1/projects/tasks/{id}?include=stage%2Ctags" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/1?include=project%2Cusers", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/{id}?include=stage%2Ctags", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -331,10 +466,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tasks/1?include=project%2Cusers', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/projects/tasks/{id}?include=stage%2Ctags', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -344,11 +480,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tasks/1?include=project%2Cusers"
+url = "https://your-domain.com/admin/api/v1/projects/tasks/{id}?include=stage%2Ctags"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -359,13 +496,61 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 14,
+    "title": "Design new homepage mockups",
+    "description": null,
+    "color": null,
+    "priority": false,
+    "state": "done",
+    "sort": 1,
+    "is_active": true,
+    "is_recurring": false,
+    "deadline": "2026-08-17T10:26:41.000000Z",
+    "working_hours_open": 0,
+    "working_hours_close": 0,
+    "allocated_hours": 16,
+    "remaining_hours": 0,
+    "effective_hours": 16,
+    "total_hours_spent": 16,
+    "subtask_effective_hours": 0,
+    "overtime": 0,
+    "progress": 100,
+    "stage_id": 11,
+    "project_id": 5,
+    "partner_id": 64,
+    "parent_id": null,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:42.000000Z",
+    "deleted_at": null
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update task
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/projects/tasks/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/projects/tasks/{id}`
 
-Update an existing task.
+Update an existing task
 
 > 🔒 Requires a valid Bearer token.
 
@@ -375,40 +560,84 @@ Update an existing task.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The task ID |
 
+
+
 **Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `title` | string | No | Task title. |
-| `state` | string | No | Task state. Available options: in_progress, done, cancelled. |
-| `priority` | integer | No | Priority. 0 = normal, 1 = high. |
-| `deadline` | string | No | Deadline date in YYYY-MM-DD format. |
-| `allocated_hours` | number | No | Estimated hours. |
-| `project_id` | integer | No | Project ID. |
-| `stage_id` | integer | No | Task stage ID. |
-| `milestone_id` | integer | No | Milestone ID. |
-| `users` | integer[] | No | Array of assigned user IDs (replaces existing). |
-| `tags` | integer[] | No | Array of tag IDs (replaces existing). |
+| `title` | string | Sometimes | Task title. Must not be greater than 255 characters. |
+| `description` | string | No | Task description. |
+| `state` | string | Sometimes | Task state. |
+| `stage_id` | integer | Sometimes | Task stage ID. Must match an existing stored value. |
+| `project_id` | integer | No | Project ID. Must match an existing stored value. |
+| `milestone_id` | integer | No | Milestone ID. Must match an existing stored value. |
+| `partner_id` | integer | No | Customer ID. Must match an existing stored value. |
+| `parent_id` | integer | No | Parent task ID for sub-task. Must match an existing stored value. |
+| `deadline` | string | No | Task deadline date-time. Must be a valid date. |
+| `allocated_hours` | number | No | Allocated effort in hours. Must be at least 0. |
+| `priority` | boolean | No | Priority flag. |
+| `users` | integer[] | No | Must match an existing stored value. |
+| `tags` | integer[] | No | Must match an existing stored value. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/projects/tasks/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/projects/tasks/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"state": "done"}'
+  -d '{
+  "title": "Prepare homepage wireframe",
+  "description": "Create initial wireframe and review notes.",
+  "state": "in_progress",
+  "stage_id": 1,
+  "project_id": 1,
+  "milestone_id": 1,
+  "partner_id": 1,
+  "parent_id": 10,
+  "deadline": "2026-03-10 18:00:00",
+  "allocated_hours": 12,
+  "priority": true,
+  "users": [
+    16
+  ],
+  "tags": [
+    16
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ state: "done" }),
+  body: JSON.stringify({
+  "title": "Prepare homepage wireframe",
+  "description": "Create initial wireframe and review notes.",
+  "state": "in_progress",
+  "stage_id": 1,
+  "project_id": 1,
+  "milestone_id": 1,
+  "partner_id": 1,
+  "parent_id": 10,
+  "deadline": "2026-03-10 18:00:00",
+  "allocated_hours": 12,
+  "priority": true,
+  "users": [
+    16
+  ],
+  "tags": [
+    16
+  ]
+}),
 });
 
 const data = await response.json();
@@ -420,13 +649,31 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/projects/tasks/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/projects/tasks/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['state' => 'done'],
+    'json' => [
+    'title' => 'Prepare homepage wireframe',
+    'description' => 'Create initial wireframe and review notes.',
+    'state' => 'in_progress',
+    'stage_id' => 1,
+    'project_id' => 1,
+    'milestone_id' => 1,
+    'partner_id' => 1,
+    'parent_id' => 10,
+    'deadline' => '2026-03-10 18:00:00',
+    'allocated_hours' => 12,
+    'priority' => true,
+    'users' => [
+      16,
+    ],
+    'tags' => [
+      16,
+    ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -435,7 +682,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tasks/1"
+url = "https://your-domain.com/admin/api/v1/projects/tasks/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -443,7 +690,27 @@ headers = {
     "Content-Type": "application/json",
 }
 
-response = requests.patch(url, headers=headers, json={"state": "done"})
+payload = {
+    "title": "Prepare homepage wireframe",
+    "description": "Create initial wireframe and review notes.",
+    "state": "in_progress",
+    "stage_id": 1,
+    "project_id": 1,
+    "milestone_id": 1,
+    "partner_id": 1,
+    "parent_id": 10,
+    "deadline": "2026-03-10 18:00:00",
+    "allocated_hours": 12,
+    "priority": True,
+    "users": [
+        16,
+    ],
+    "tags": [
+        16,
+    ],
+}
+
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -451,79 +718,62 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## Delete task
-
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/tasks/{id}`
-
-Soft-delete a task. The record is moved to trash and can be restored.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | integer | Yes | The task ID |
-
-::: code-group
-
-```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tasks/1" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/1", {
-  method: "DELETE",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 14,
+    "title": "Design new homepage mockups",
+    "description": null,
+    "color": null,
+    "priority": false,
+    "state": "done",
+    "sort": 1,
+    "is_active": true,
+    "is_recurring": false,
+    "deadline": "2026-08-17T10:26:41.000000Z",
+    "working_hours_open": 0,
+    "working_hours_close": 0,
+    "allocated_hours": 16,
+    "remaining_hours": 0,
+    "effective_hours": 16,
+    "total_hours_spent": 16,
+    "subtask_effective_hours": 0,
+    "overtime": 0,
+    "progress": 100,
+    "stage_id": 11,
+    "project_id": 5,
+    "partner_id": 64,
+    "parent_id": null,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:42.000000Z",
+    "deleted_at": null
   },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tasks/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/projects/tasks/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Task updated successfully."
 }
+```
 
-response = requests.delete(url, headers=headers)
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
-
-No content.
 
 ---
 
-## Restore task
+## Delete task
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/projects/tasks/{id}/restore`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/tasks/{id}`
 
-Restore a soft-deleted task.
+Soft delete a task
 
 > 🔒 Requires a valid Bearer token.
 
@@ -533,20 +783,25 @@ Restore a soft-deleted task.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The task ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/projects/tasks/1/restore" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tasks/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/1/restore", {
-  method: "POST",
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/{id}", {
+  method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -559,10 +814,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/tasks/1/restore', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tasks/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -572,11 +828,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tasks/1/restore"
+url = "https://your-domain.com/admin/api/v1/projects/tasks/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Task deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Restore task
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/projects/tasks/{id}/restore`
+
+Restore a soft-deleted task
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The task ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/projects/tasks/{id}/restore" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/{id}/restore", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/projects/tasks/{id}/restore', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/projects/tasks/{id}/restore"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -592,32 +945,57 @@ print(data)
 ```json
 {
   "data": {
-    "id": 1,
-    "title": "Design homepage mockup",
-    "state": "in_progress",
-    "priority": 1,
-    "deadline": "2026-03-15",
-    "allocated_hours": 8,
-    "total_hours_spent": 2.5,
-    "project_id": 1,
-    "stage_id": 1,
-    "milestone_id": null,
-    "partner_id": null,
+    "id": 14,
+    "title": "Design new homepage mockups",
+    "description": null,
+    "color": null,
+    "priority": false,
+    "state": "done",
+    "sort": 1,
+    "is_active": true,
+    "is_recurring": false,
+    "deadline": "2026-08-17T10:26:41.000000Z",
+    "working_hours_open": 0,
+    "working_hours_close": 0,
+    "allocated_hours": 16,
+    "remaining_hours": 0,
+    "effective_hours": 16,
+    "total_hours_spent": 16,
+    "subtask_effective_hours": 0,
+    "overtime": 0,
+    "progress": 100,
+    "stage_id": 11,
+    "project_id": 5,
+    "partner_id": 64,
+    "parent_id": null,
     "company_id": 1,
-    "created_at": "2026-01-15T00:00:00.000000Z",
-    "updated_at": "2026-10-27T00:00:00.000000Z",
+    "creator_id": 1,
+    "created_at": "2026-08-03T10:26:41.000000Z",
+    "updated_at": "2026-08-03T10:26:42.000000Z",
     "deleted_at": null
-  }
+  },
+  "message": "Task restored successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Force delete task
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/projects/tasks/{id}/force`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/projects/tasks/{id}/force`
 
-Permanently delete a task. This action cannot be undone.
+Permanently delete a task
 
 > 🔒 Requires a valid Bearer token.
 
@@ -627,22 +1005,30 @@ Permanently delete a task. This action cannot be undone.
 |-----------|------|----------|-------------|
 | `id` | integer | Yes | The task ID |
 
+
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tasks/1/force" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/projects/tasks/{id}/force" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/1/force", {
+const response = await fetch("https://your-domain.com/admin/api/v1/projects/tasks/{id}/force", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -650,29 +1036,53 @@ const response = await fetch("https://your-domain.com/admin/api/v1/projects/task
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tasks/1/force', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/projects/tasks/{id}/force', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/projects/tasks/1/force"
+url = "https://your-domain.com/admin/api/v1/projects/tasks/{id}/force"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "message": "Task permanently deleted."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

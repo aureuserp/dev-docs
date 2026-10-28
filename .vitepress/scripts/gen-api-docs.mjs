@@ -25,6 +25,8 @@ const GROUP_MAP = {
   'Inventory API Management': { slug: 'inventory', title: 'Inventory' },
   'Sales API Management': { slug: 'sales', title: 'Sales' },
   'Account API Management': { slug: 'accounts', title: 'Accounts' },
+  'Project API Management': { slug: 'projects', title: 'Projects' },
+  'Purchase API Management': { slug: 'purchases', title: 'Purchases' },
 }
 
 const slugify = (s) =>
@@ -194,7 +196,7 @@ function pickResponses(responses) {
   return { ok, err }
 }
 
-function renderEndpoint(ep) {
+function renderEndpoint(ep, createRequired) {
   const m = ep.metadata || {}
   const method = (ep.httpMethods && ep.httpMethods[0]) || 'GET'
   const url = fullUrl(ep)
@@ -209,7 +211,20 @@ function renderEndpoint(ep) {
 
   out.push(renderParamTable('Path parameters', paramRows(ep.urlParameters), false))
   out.push(renderParamTable('Query parameters', paramRows(ep.queryParameters), true))
-  out.push(renderParamTable('Body parameters', paramRows(ep.bodyParameters), false))
+  const bodyRows = paramRows(ep.bodyParameters)
+  let hasSometimes = false
+  if (createRequired && (ep.httpMethods || []).some((x) => x === 'PUT' || x === 'PATCH')) {
+    for (const r of bodyRows) {
+      if (r.required === 'No' && createRequired.has(r.name)) {
+        r.required = 'Sometimes'
+        hasSometimes = true
+      }
+    }
+  }
+  out.push(renderParamTable('Body parameters', bodyRows, false))
+  if (hasSometimes) {
+    out.push('`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.\n')
+  }
 
   out.push('::: code-group\n')
   out.push('```bash [cURL]\n' + curlSnippet(method, url, headers, body) + '\n```\n')
@@ -283,7 +298,13 @@ function main() {
           'own installation and the token placeholder with a real Bearer token ' +
           '(see [Authentication](/master/api-reference/authentication)).\n'
       )
-      for (const ep of sub.endpoints) md.push(renderEndpoint(ep))
+      const createEp = sub.endpoints.find(
+        (e) => (e.httpMethods || []).includes('POST') && !/restore|force/.test(e.uri) && e.bodyParameters
+      )
+      const createRequired = createEp
+        ? new Set(paramRows(createEp.bodyParameters).filter((r) => r.required === 'Yes').map((r) => r.name))
+        : null
+      for (const ep of sub.endpoints) md.push(renderEndpoint(ep, createRequired))
 
       const rel = path.join(gSlug, `${sub.slug}.md`)
       fs.writeFileSync(path.join(ENDPOINTS_DIR, rel), md.join('\n'))

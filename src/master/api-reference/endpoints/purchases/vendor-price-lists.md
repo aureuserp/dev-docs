@@ -8,39 +8,44 @@ Part of the **Purchases** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/vendor-price-lists`
 
-Retrieve a paginated list of vendor price lists with filtering and sorting.
+Retrieve a paginated list of vendor price lists with filtering and sorting
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: partner, product, currency, company, creator | `partner,product` |
-| `filter[id]` | string | No | Comma-separated list of IDs to filter by | |
-| `filter[partner_id]` | string | No | Filter by vendor IDs | |
-| `filter[product_id]` | string | No | Filter by product IDs | |
-| `filter[currency_id]` | string | No | Filter by currency IDs | |
-| `filter[company_id]` | string | No | Filter by company IDs | |
+| `filter[id]` | string | No | Comma-separated list of IDs to filter by |  |
+| `filter[partner_id]` | string | No | Filter by vendor IDs |  |
+| `filter[product_id]` | string | No | Filter by product IDs |  |
+| `filter[currency_id]` | string | No | Filter by currency IDs |  |
+| `filter[company_id]` | string | No | Filter by company IDs |  |
 | `filter[product_name]` | string | No | Partial match on vendor product name | `Bolt` |
 | `filter[product_code]` | string | No | Partial match on vendor product code | `M8` |
-| `sort` | string | No | Sort field | `-created_at` |
-| `page` | integer | No | Page number | `1` |
+| `sort` | string | Yes | Sort field | `-created_at` |
+| `page` | integer | Yes | Page number | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&sort=-created_at&page=1" \
+curl -X GET "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&filter%5Bproduct_name%5D=Bolt&filter%5Bproduct_code%5D=M8&sort=-created_at&page=1" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&sort=-created_at&page=1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&filter%5Bproduct_name%5D=Bolt&filter%5Bproduct_code%5D=M8&sort=-created_at&page=1", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -53,10 +58,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&sort=-created_at&page=1', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&filter%5Bproduct_name%5D=Bolt&filter%5Bproduct_code%5D=M8&sort=-created_at&page=1', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -66,11 +72,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&sort=-created_at&page=1"
+url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?include=partner%2Cproduct&filter%5Bproduct_name%5D=Bolt&filter%5Bproduct_code%5D=M8&sort=-created_at&page=1"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -88,23 +95,46 @@ print(data)
   "data": [
     {
       "id": 1,
-      "price": "45.00",
-      "min_qty": "10.00",
-      "delay": 5,
-      "product_name": "Bolt M8 (Vendor Name)",
-      "product_code": "VEND-M8",
-      "starts_at": "2026-01-01T00:00:00.000000Z",
-      "ends_at": "2026-12-31T00:00:00.000000Z",
-      "partner_id": 3,
-      "product_id": 12,
-      "product_variant_id": 14,
+      "sort": 1,
+      "delay": 1,
+      "product_name": null,
+      "product_code": null,
+      "starts_at": null,
+      "ends_at": null,
+      "min_qty": 1,
+      "price": 3500,
+      "discount": 0,
+      "product_id": 53,
+      "partner_id": 70,
       "currency_id": 1,
-      "company_id": 1
+      "company_id": 1,
+      "creator_id": 1,
+      "created_at": "2026-10-13T08:32:30+00:00",
+      "updated_at": "2026-10-13T08:32:30+00:00"
+    },
+    {
+      "id": 1,
+      "sort": 1,
+      "delay": 1,
+      "product_name": null,
+      "product_code": null,
+      "starts_at": null,
+      "ends_at": null,
+      "min_qty": 1,
+      "price": 3500,
+      "discount": 0,
+      "product_id": 53,
+      "partner_id": 70,
+      "currency_id": 1,
+      "company_id": 1,
+      "creator_id": 1,
+      "created_at": "2026-10-13T08:32:30+00:00",
+      "updated_at": "2026-10-13T08:32:30+00:00"
     }
   ],
   "links": {
-    "first": "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?page=1",
-    "last": "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists?page=1",
+    "first": "/?page=1",
+    "last": "/?page=1",
     "prev": null,
     "next": null
   },
@@ -112,39 +142,74 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Create vendor price list
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/vendor-price-lists`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/vendor-price-lists`
 
-Create a new vendor price list entry.
+Create a new vendor price list
 
 > 🔒 Requires a valid Bearer token.
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partner_id` | integer | Yes | Vendor (partner) ID |
-| `product_id` | integer | Yes | Product ID |
-| `product_variant_id` | integer | No | Specific product variant ID |
-| `currency_id` | integer | Yes | Currency ID |
-| `company_id` | integer | No | Company ID |
-| `price` | numeric | Yes | Unit price for this vendor |
-| `min_qty` | numeric | No | Minimum order quantity |
-| `delay` | integer | No | Lead time in days |
-| `product_name` | string | No | Vendor-specific product name |
-| `product_code` | string | No | Vendor-specific product code |
-| `starts_at` | date | No | Price validity start date |
-| `ends_at` | date | No | Price validity end date |
+| `partner_id` | integer | Yes | Vendor partner ID. Must match an existing stored value. |
+| `product_id` | integer | Yes | Product ID (non-configurable product/variant). Must match an existing stored value. |
+| `currency_id` | integer | Yes | Currency ID. Must match an existing stored value. |
+| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `product_name` | string | No | Vendor-side product name. Must not be greater than 255 characters. |
+| `product_code` | string | No | Vendor-side product code. Must not be greater than 255 characters. |
+| `delay` | integer | No | Delivery lead time in days. Must be at least 0. Must not be greater than 99999999. |
+| `min_qty` | number | No | Minimum quantity for this vendor price. Must be at least 0. Must not be greater than 99999999999. |
+| `price` | number | No | Unit price for the vendor. Must be at least 0. Must not be greater than 99999999999. |
+| `discount` | number | No | Discount percentage/value as configured by module usage. Must be at least 0. Must not be greater than 99999999999. |
+| `starts_at` | string | No | Validity start date (YYYY-MM-DD). Must be a valid date. |
+| `ends_at` | string | No | Validity end date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to starts_at. |
+
 
 ::: code-group
 
@@ -153,7 +218,20 @@ curl -X POST "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists"
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"partner_id": 3, "product_id": 12, "currency_id": 1, "price": 45.00, "min_qty": 10, "delay": 5}'
+  -d '{
+  "partner_id": 12,
+  "product_id": 101,
+  "currency_id": 1,
+  "company_id": 1,
+  "product_name": "ACME Bolt M8",
+  "product_code": "ACM-M8-001",
+  "delay": 5,
+  "min_qty": 10,
+  "price": 125.5,
+  "discount": 5,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-12-31"
+}'
 ```
 
 ```javascript [JavaScript]
@@ -165,13 +243,19 @@ const response = await fetch("https://your-domain.com/admin/api/v1/purchases/ven
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    partner_id: 3,
-    product_id: 12,
-    currency_id: 1,
-    price: 45.00,
-    min_qty: 10,
-    delay: 5,
-  }),
+  "partner_id": 12,
+  "product_id": 101,
+  "currency_id": 1,
+  "company_id": 1,
+  "product_name": "ACME Bolt M8",
+  "product_code": "ACM-M8-001",
+  "delay": 5,
+  "min_qty": 10,
+  "price": 125.5,
+  "discount": 5,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-12-31"
+}),
 });
 
 const data = await response.json();
@@ -190,13 +274,19 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purch
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'partner_id' => 3,
-        'product_id' => 12,
-        'currency_id' => 1,
-        'price' => 45.00,
-        'min_qty' => 10,
-        'delay' => 5,
-    ],
+    'partner_id' => 12,
+    'product_id' => 101,
+    'currency_id' => 1,
+    'company_id' => 1,
+    'product_name' => 'ACME Bolt M8',
+    'product_code' => 'ACM-M8-001',
+    'delay' => 5,
+    'min_qty' => 10,
+    'price' => 125.5,
+    'discount' => 5,
+    'starts_at' => '2026-02-20',
+    'ends_at' => '2026-12-31',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -214,12 +304,18 @@ headers = {
 }
 
 payload = {
-    "partner_id": 3,
-    "product_id": 12,
+    "partner_id": 12,
+    "product_id": 101,
     "currency_id": 1,
-    "price": 45.00,
-    "min_qty": 10,
+    "company_id": 1,
+    "product_name": "ACME Bolt M8",
+    "product_code": "ACM-M8-001",
     "delay": 5,
+    "min_qty": 10,
+    "price": 125.5,
+    "discount": 5,
+    "starts_at": "2026-02-20",
+    "ends_at": "2026-12-31",
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -236,21 +332,37 @@ print(data)
 {
   "data": {
     "id": 1,
-    "price": "45.00",
-    "min_qty": "10.00",
-    "delay": 5,
+    "sort": 1,
+    "delay": 1,
     "product_name": null,
     "product_code": null,
     "starts_at": null,
     "ends_at": null,
-    "partner_id": 3,
-    "product_id": 12,
-    "product_variant_id": null,
+    "min_qty": 1,
+    "price": 3500,
+    "discount": 0,
+    "product_id": 53,
+    "partner_id": 70,
     "currency_id": 1,
-    "company_id": 1
-  }
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:32:30+00:00",
+    "updated_at": "2026-10-13T08:32:30+00:00"
+  },
+  "message": "Vendor price list created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -258,7 +370,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/vendor-price-lists/{id}`
 
-Retrieve a specific vendor price list entry by its ID.
+Retrieve a specific vendor price list by its ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -266,7 +378,8 @@ Retrieve a specific vendor price list entry by its ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `vendorPriceList` | integer | Yes | The ID of the vendor price list entry |
+| `id` | integer | Yes | The vendor price list ID |
+
 
 **Query parameters**
 
@@ -274,20 +387,24 @@ Retrieve a specific vendor price list entry by its ID.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: partner, product, currency, company, creator | `partner,product` |
 
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1?include=partner,product" \
+curl -X GET "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}?include=partner%2Cproduct" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1?include=partner,product", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}?include=partner%2Cproduct", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -300,10 +417,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1?include=partner,product', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}?include=partner%2Cproduct', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -313,11 +431,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1?include=partner,product"
+url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}?include=partner%2Cproduct"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -328,13 +447,50 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "sort": 1,
+    "delay": 1,
+    "product_name": null,
+    "product_code": null,
+    "starts_at": null,
+    "ends_at": null,
+    "min_qty": 1,
+    "price": 3500,
+    "discount": 0,
+    "product_id": 53,
+    "partner_id": 70,
+    "currency_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:32:30+00:00",
+    "updated_at": "2026-10-13T08:32:30+00:00"
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update vendor price list
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/purchases/vendor-price-lists/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/purchases/vendor-price-lists/{id}`
 
-Update an existing vendor price list entry.
+Update an existing vendor price list
 
 > 🔒 Requires a valid Bearer token.
 
@@ -342,39 +498,75 @@ Update an existing vendor price list entry.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `vendorPriceList` | integer | Yes | The ID of the vendor price list entry |
+| `id` | integer | Yes | The vendor price list ID |
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `price` | numeric | No | Updated unit price |
-| `min_qty` | numeric | No | Updated minimum order quantity |
-| `delay` | integer | No | Updated lead time in days |
-| `product_name` | string | No | Updated vendor-specific product name |
-| `product_code` | string | No | Updated vendor-specific product code |
-| `starts_at` | date | No | Updated price validity start date |
-| `ends_at` | date | No | Updated price validity end date |
+| `partner_id` | integer | Sometimes | Vendor partner ID. Must match an existing stored value. |
+| `product_id` | integer | Sometimes | Product ID (non-configurable product/variant). Must match an existing stored value. |
+| `currency_id` | integer | Sometimes | Currency ID. Must match an existing stored value. |
+| `company_id` | integer | No | Company ID. Must match an existing stored value. |
+| `product_name` | string | No | Vendor-side product name. Must not be greater than 255 characters. |
+| `product_code` | string | No | Vendor-side product code. Must not be greater than 255 characters. |
+| `delay` | integer | No | Delivery lead time in days. Must be at least 0. Must not be greater than 99999999. |
+| `min_qty` | number | No | Minimum quantity for this vendor price. Must be at least 0. Must not be greater than 99999999999. |
+| `price` | number | No | Unit price for the vendor. Must be at least 0. Must not be greater than 99999999999. |
+| `discount` | number | No | Discount percentage/value as configured by module usage. Must be at least 0. Must not be greater than 99999999999. |
+| `starts_at` | string | No | Validity start date (YYYY-MM-DD). Must be a valid date. |
+| `ends_at` | string | No | Validity end date (YYYY-MM-DD). Must be a valid date. Must be a date after or equal to starts_at. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"price": 42.50, "delay": 3}'
+  -d '{
+  "partner_id": 12,
+  "product_id": 101,
+  "currency_id": 1,
+  "company_id": 1,
+  "product_name": "ACME Bolt M8",
+  "product_code": "ACM-M8-001",
+  "delay": 5,
+  "min_qty": 10,
+  "price": 125.5,
+  "discount": 5,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-12-31"
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ price: 42.50, delay: 3 }),
+  body: JSON.stringify({
+  "partner_id": 12,
+  "product_id": 101,
+  "currency_id": 1,
+  "company_id": 1,
+  "product_name": "ACME Bolt M8",
+  "product_code": "ACM-M8-001",
+  "delay": 5,
+  "min_qty": 10,
+  "price": 125.5,
+  "discount": 5,
+  "starts_at": "2026-02-20",
+  "ends_at": "2026-12-31"
+}),
 });
 
 const data = await response.json();
@@ -386,13 +578,26 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['price' => 42.50, 'delay' => 3],
+    'json' => [
+    'partner_id' => 12,
+    'product_id' => 101,
+    'currency_id' => 1,
+    'company_id' => 1,
+    'product_name' => 'ACME Bolt M8',
+    'product_code' => 'ACM-M8-001',
+    'delay' => 5,
+    'min_qty' => 10,
+    'price' => 125.5,
+    'discount' => 5,
+    'starts_at' => '2026-02-20',
+    'ends_at' => '2026-12-31',
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -401,7 +606,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1"
+url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -409,9 +614,22 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"price": 42.50, "delay": 3}
+payload = {
+    "partner_id": 12,
+    "product_id": 101,
+    "currency_id": 1,
+    "company_id": 1,
+    "product_name": "ACME Bolt M8",
+    "product_code": "ACM-M8-001",
+    "delay": 5,
+    "min_qty": 10,
+    "price": 125.5,
+    "discount": 5,
+    "starts_at": "2026-02-20",
+    "ends_at": "2026-12-31",
+}
 
-response = requests.patch(url, headers=headers, json=payload)
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -419,13 +637,51 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "sort": 1,
+    "delay": 1,
+    "product_name": null,
+    "product_code": null,
+    "starts_at": null,
+    "ends_at": null,
+    "min_qty": 1,
+    "price": 3500,
+    "discount": 0,
+    "product_id": 53,
+    "partner_id": 70,
+    "currency_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "created_at": "2026-10-13T08:32:30+00:00",
+    "updated_at": "2026-10-13T08:32:30+00:00"
+  },
+  "message": "Vendor price list updated successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Delete vendor price list
 
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/purchases/vendor-price-lists/{id}`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/purchases/vendor-price-lists/{id}`
 
-Permanently delete a vendor price list entry.
+Delete a vendor price list
 
 > 🔒 Requires a valid Bearer token.
 
@@ -433,24 +689,32 @@ Permanently delete a vendor price list entry.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `vendorPriceList` | integer | Yes | The ID of the vendor price list entry |
+| `id` | integer | Yes | The vendor price list ID |
+
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}", {
   method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
+
+const data = await response.json();
+console.log(data);
 ```
 
 ```php [PHP]
@@ -458,29 +722,53 @@ const response = await fetch("https://your-domain.com/admin/api/v1/purchases/ven
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
+
+$data = json_decode($response->getBody(), true);
 ```
 
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/1"
+url = "https://your-domain.com/admin/api/v1/purchases/vendor-price-lists/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
+**Example response** <Badge type="info" text="200" />
 
-No content.
+```json
+{
+  "message": "Vendor price list deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---

@@ -8,28 +8,32 @@ Part of the **Purchases** API. Base URL `https://your-domain.com/admin/api/v1` �
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-orders`
 
-Retrieve a paginated list of purchase orders with filtering and sorting.
+Retrieve a paginated list of purchase orders with filtering and sorting
 
 > 🔒 Requires a valid Bearer token.
+
 
 **Query parameters**
 
 | Parameter | Type | Required | Description | Example |
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: partner, currency, fiscalPosition, paymentTerm, incoterm, user, company, creator, operationType, requisition, lines, lines.uom, lines.product, lines.productPackaging, lines.partner, lines.currency, lines.company, lines.creator, lines.finalLocation, lines.taxes | `partner,lines` |
-| `filter[id]` | string | No | Comma-separated list of IDs to filter by | |
+| `filter[id]` | string | No | Comma-separated list of IDs to filter by |  |
 | `filter[state]` | string | No | Filter by order state | `draft` |
-| `filter[partner_id]` | string | No | Filter by vendor IDs | |
-| `filter[currency_id]` | string | No | Filter by currency IDs | |
-| `sort` | string | No | Sort field | `-created_at` |
-| `page` | integer | No | Page number | `1` |
+| `filter[partner_id]` | string | No | Filter by vendor IDs |  |
+| `filter[currency_id]` | string | No | Filter by currency IDs |  |
+| `sort` | string | Yes | Sort field | `-created_at` |
+| `page` | integer | Yes | Page number | `1` |
+
+
 
 ::: code-group
 
 ```bash [cURL]
 curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders?include=partner%2Clines&filter%5Bstate%5D=draft&sort=-created_at&page=1" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
@@ -38,6 +42,7 @@ const response = await fetch("https://your-domain.com/admin/api/v1/purchases/pur
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -54,6 +59,7 @@ $response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purcha
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -68,6 +74,7 @@ url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders?include=pa
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -85,21 +92,88 @@ print(data)
   "data": [
     {
       "id": 1,
-      "name": "PO/2026/00001",
-      "state": "draft",
-      "ordered_at": "2026-10-01T00:00:00.000000Z",
-      "planned_at": "2026-10-15T00:00:00.000000Z",
-      "untaxed_amount": 450.00,
-      "total_amount": 495.00,
+      "name": "PO/1",
+      "description": null,
+      "priority": "0",
+      "origin": "REQ-2026-001",
+      "partner_reference": null,
+      "state": "sent",
+      "invoice_status": "no",
+      "receipt_status": "no",
+      "untaxed_amount": 77000,
+      "tax_amount": 11550,
+      "total_amount": 88550,
+      "total_cc_amount": 88550,
       "currency_rate": 1,
-      "partner_id": 3,
+      "mail_reminder_confirmed": false,
+      "mail_reception_confirmed": false,
+      "mail_reception_declined": false,
+      "invoice_count": 0,
+      "ordered_at": "2026-07-31T13:32:03.000000Z",
+      "approved_at": null,
+      "planned_at": null,
+      "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+      "incoterm_location": null,
+      "effective_date": null,
+      "report_grids": false,
+      "requisition_id": null,
+      "purchases_group_id": null,
+      "partner_id": 68,
+      "currency_id": 1,
+      "fiscal_position_id": null,
+      "payment_term_id": null,
+      "incoterm_id": null,
+      "user_id": 1,
       "company_id": 1,
-      "user_id": 1
+      "creator_id": 1,
+      "operation_type_id": 1,
+      "created_at": "2026-07-31T13:32:03.000000Z",
+      "updated_at": "2026-10-26T14:04:39.000000Z"
+    },
+    {
+      "id": 1,
+      "name": "PO/1",
+      "description": null,
+      "priority": "0",
+      "origin": "REQ-2026-001",
+      "partner_reference": null,
+      "state": "sent",
+      "invoice_status": "no",
+      "receipt_status": "no",
+      "untaxed_amount": 77000,
+      "tax_amount": 11550,
+      "total_amount": 88550,
+      "total_cc_amount": 88550,
+      "currency_rate": 1,
+      "mail_reminder_confirmed": false,
+      "mail_reception_confirmed": false,
+      "mail_reception_declined": false,
+      "invoice_count": 0,
+      "ordered_at": "2026-07-31T13:32:03.000000Z",
+      "approved_at": null,
+      "planned_at": null,
+      "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+      "incoterm_location": null,
+      "effective_date": null,
+      "report_grids": false,
+      "requisition_id": null,
+      "purchases_group_id": null,
+      "partner_id": 68,
+      "currency_id": 1,
+      "fiscal_position_id": null,
+      "payment_term_id": null,
+      "incoterm_id": null,
+      "user_id": 1,
+      "company_id": 1,
+      "creator_id": 1,
+      "operation_type_id": 1,
+      "created_at": "2026-07-31T13:32:03.000000Z",
+      "updated_at": "2026-10-26T14:04:39.000000Z"
     }
   ],
   "links": {
-    "first": "https://your-domain.com/admin/api/v1/purchases/purchase-orders?page=1",
-    "last": "https://your-domain.com/admin/api/v1/purchases/purchase-orders?page=1",
+    "first": "/?page=1",
+    "last": "/?page=1",
     "prev": null,
     "next": null
   },
@@ -107,34 +181,87 @@ print(data)
     "current_page": 1,
     "from": 1,
     "last_page": 1,
+    "links": [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "page": null,
+        "active": false
+      },
+      {
+        "url": "/?page=1",
+        "label": "1",
+        "page": 1,
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "page": null,
+        "active": false
+      }
+    ],
+    "path": "/",
     "per_page": 10,
-    "to": 1,
-    "total": 1
+    "to": 2,
+    "total": 2
   }
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Create purchase order
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders`
 
-Create a new purchase order (request for quotation) with order lines.
+Create a new purchase order with lines
 
 > 🔒 Requires a valid Bearer token.
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partner_id` | integer | Yes | Vendor (partner) ID |
-| `currency_id` | integer | No | Currency ID |
-| `company_id` | integer | No | Company ID |
-| `user_id` | integer | No | Responsible user ID |
-| `ordered_at` | date | No | Order date |
-| `planned_at` | date | No | Expected receipt date |
-| `lines` | array | No | Array of order line objects |
+| `partner_id` | integer | Yes | Vendor partner ID. Must match an existing stored value. |
+| `currency_id` | integer | Yes | Currency ID. Must match an existing stored value. |
+| `ordered_at` | string | Yes | Order deadline datetime. Must be a valid date. |
+| `company_id` | integer | Yes | Company ID. Must match an existing stored value. |
+| `partner_reference` | string | No | Vendor reference. Must not be greater than 255 characters. |
+| `requisition_id` | integer | No | Purchase agreement ID. Must match an existing stored value. |
+| `planned_at` | string | No | Must be a valid date. |
+| `user_id` | integer | No | Buyer user ID. Must match an existing stored value. |
+| `payment_term_id` | integer | No | Payment term ID. Must match an existing stored value. |
+| `incoterm_id` | integer | No | Incoterm ID. Must match an existing stored value. |
+| `description` | string | No | Terms and conditions / internal description. |
+| `origin` | string | No | Must not be greater than 255 characters. |
+| `lines` | object[] | Yes | Array of purchase order lines with writable fields from the order form. Must have at least 1 items. |
+| `lines[].id` | integer | No | Must match an existing stored value. |
+| `lines[].product_id` | integer | Yes | Must match an existing stored value. |
+| `lines[].planned_at` | string | Yes | Must be a valid date. |
+| `lines[].product_qty` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].uom_id` | integer | No | Must match an existing stored value. |
+| `lines[].product_packaging_qty` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].product_packaging_id` | integer | No | Must match an existing stored value. |
+| `lines[].price_unit` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].taxes` | integer[] | No | Must match an existing stored value. |
+| `lines[].discount` | number | No | Must be at least 0. Must not be greater than 100. |
+| `lines[].qty_received` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].qty_received_manual` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+
 
 ::: code-group
 
@@ -143,7 +270,38 @@ curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"partner_id": 3, "currency_id": 1, "lines": [{"product_id": 12, "qty": 10, "price_unit": 45.00}]}'
+  -d '{
+  "partner_id": 12,
+  "currency_id": 1,
+  "ordered_at": "2026-02-20 10:00:00",
+  "company_id": 1,
+  "partner_reference": "VEN-REF-009",
+  "requisition_id": 5,
+  "planned_at": "2026-10-28T07:26:03",
+  "user_id": 2,
+  "payment_term_id": 4,
+  "incoterm_id": 3,
+  "description": "Please ship in one lot.",
+  "origin": "b",
+  "lines": [
+    {
+      "product_id": 101,
+      "planned_at": "2026-02-28 12:00:00",
+      "product_qty": 20,
+      "uom_id": 1,
+      "product_packaging_id": null,
+      "product_packaging_qty": 22,
+      "price_unit": 80,
+      "discount": 5,
+      "qty_received": 7,
+      "qty_received_manual": 16,
+      "taxes": [
+        1,
+        2
+      ]
+    }
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
@@ -155,10 +313,37 @@ const response = await fetch("https://your-domain.com/admin/api/v1/purchases/pur
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    partner_id: 3,
-    currency_id: 1,
-    lines: [{ product_id: 12, qty: 10, price_unit: 45.00 }],
-  }),
+  "partner_id": 12,
+  "currency_id": 1,
+  "ordered_at": "2026-02-20 10:00:00",
+  "company_id": 1,
+  "partner_reference": "VEN-REF-009",
+  "requisition_id": 5,
+  "planned_at": "2026-10-28T07:26:03",
+  "user_id": 2,
+  "payment_term_id": 4,
+  "incoterm_id": 3,
+  "description": "Please ship in one lot.",
+  "origin": "b",
+  "lines": [
+    {
+      "product_id": 101,
+      "planned_at": "2026-02-28 12:00:00",
+      "product_qty": 20,
+      "uom_id": 1,
+      "product_packaging_id": null,
+      "product_packaging_qty": 22,
+      "price_unit": 80,
+      "discount": 5,
+      "qty_received": 7,
+      "qty_received_manual": 16,
+      "taxes": [
+        1,
+        2
+      ]
+    }
+  ]
+}),
 });
 
 const data = await response.json();
@@ -177,10 +362,37 @@ $response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purch
         'Content-Type' => 'application/json',
     ],
     'json' => [
-        'partner_id' => 3,
-        'currency_id' => 1,
-        'lines' => [['product_id' => 12, 'qty' => 10, 'price_unit' => 45.00]],
+    'partner_id' => 12,
+    'currency_id' => 1,
+    'ordered_at' => '2026-02-20 10:00:00',
+    'company_id' => 1,
+    'partner_reference' => 'VEN-REF-009',
+    'requisition_id' => 5,
+    'planned_at' => '2026-10-28T07:26:03',
+    'user_id' => 2,
+    'payment_term_id' => 4,
+    'incoterm_id' => 3,
+    'description' => 'Please ship in one lot.',
+    'origin' => 'b',
+    'lines' => [
+      [
+        'product_id' => 101,
+        'planned_at' => '2026-02-28 12:00:00',
+        'product_qty' => 20,
+        'uom_id' => 1,
+        'product_packaging_id' => null,
+        'product_packaging_qty' => 22,
+        'price_unit' => 80,
+        'discount' => 5,
+        'qty_received' => 7,
+        'qty_received_manual' => 16,
+        'taxes' => [
+          1,
+          2,
+        ],
+      ],
     ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -198,9 +410,36 @@ headers = {
 }
 
 payload = {
-    "partner_id": 3,
+    "partner_id": 12,
     "currency_id": 1,
-    "lines": [{"product_id": 12, "qty": 10, "price_unit": 45.00}],
+    "ordered_at": "2026-02-20 10:00:00",
+    "company_id": 1,
+    "partner_reference": "VEN-REF-009",
+    "requisition_id": 5,
+    "planned_at": "2026-10-28T07:26:03",
+    "user_id": 2,
+    "payment_term_id": 4,
+    "incoterm_id": 3,
+    "description": "Please ship in one lot.",
+    "origin": "b",
+    "lines": [
+        {
+            "product_id": 101,
+            "planned_at": "2026-02-28 12:00:00",
+            "product_qty": 20,
+            "uom_id": 1,
+            "product_packaging_id": None,
+            "product_packaging_qty": 22,
+            "price_unit": 80,
+            "discount": 5,
+            "qty_received": 7,
+            "qty_received_manual": 16,
+            "taxes": [
+                1,
+                2,
+            ],
+        },
+    ],
 }
 
 response = requests.post(url, headers=headers, json=payload)
@@ -217,19 +456,58 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "PO/2026/00001",
-    "state": "draft",
-    "ordered_at": "2026-10-27T00:00:00.000000Z",
-    "planned_at": null,
-    "untaxed_amount": 450.00,
-    "total_amount": 495.00,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
     "currency_rate": 1,
-    "partner_id": 3,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
     "company_id": 1,
-    "user_id": 1
-  }
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  },
+  "message": "Purchase order created successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
@@ -237,7 +515,7 @@ print(data)
 
 <Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-orders/{id}`
 
-Retrieve a specific purchase order by its ID.
+Retrieve a specific purchase order by its ID
 
 > 🔒 Requires a valid Bearer token.
 
@@ -245,7 +523,8 @@ Retrieve a specific purchase order by its ID.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
+
 
 **Query parameters**
 
@@ -253,20 +532,24 @@ Retrieve a specific purchase order by its ID.
 |-----------|------|----------|-------------|---------|
 | `include` | string | No | Comma-separated list of relationships to include. Available options: partner, currency, fiscalPosition, paymentTerm, incoterm, user, company, creator, operationType, requisition, lines, lines.uom, lines.product, lines.productPackaging, lines.partner, lines.currency, lines.company, lines.creator, lines.finalLocation, lines.taxes | `partner,lines` |
 
+
+
 ::: code-group
 
 ```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1?include=partner,lines" \
+curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}?include=partner%2Clines" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1?include=partner,lines", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}?include=partner%2Clines", {
   method: "GET",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -279,10 +562,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1?include=partner,lines', [
+$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}?include=partner%2Clines', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -292,11 +576,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1?include=partner,lines"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}?include=partner%2Clines"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.get(url, headers=headers)
@@ -307,13 +592,71 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  }
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
 ## Update purchase order
 
-<Badge type="info" text="PATCH" /> `/admin/api/v1/purchases/purchase-orders/{id}`
+<Badge type="tip" text="PUT" /> `/admin/api/v1/purchases/purchase-orders/{id}`
 
-Update an existing purchase order and synchronise its lines.
+Update an existing purchase order and sync lines
 
 > 🔒 Requires a valid Bearer token.
 
@@ -321,36 +664,124 @@ Update an existing purchase order and synchronise its lines.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
 
-**Request body**
+
+
+**Body parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `partner_id` | integer | No | Vendor (partner) ID |
-| `currency_id` | integer | No | Currency ID |
-| `planned_at` | date | No | Expected receipt date |
-| `lines` | array | No | Full replacement set of order lines |
+| `partner_id` | integer | Sometimes | Vendor partner ID. Must match an existing stored value. |
+| `currency_id` | integer | Sometimes | Currency ID. Must match an existing stored value. |
+| `ordered_at` | string | Sometimes | Order deadline datetime. Must be a valid date. |
+| `company_id` | integer | Sometimes | Company ID. Must match an existing stored value. |
+| `partner_reference` | string | No | Vendor reference. Must not be greater than 255 characters. |
+| `requisition_id` | integer | No | Purchase agreement ID. Must match an existing stored value. |
+| `planned_at` | string | No | Must be a valid date. |
+| `user_id` | integer | No | Buyer user ID. Must match an existing stored value. |
+| `payment_term_id` | integer | No | Payment term ID. Must match an existing stored value. |
+| `incoterm_id` | integer | No | Incoterm ID. Must match an existing stored value. |
+| `description` | string | No | Terms and conditions / internal description. |
+| `origin` | string | No | Must not be greater than 255 characters. |
+| `lines` | object[] | Sometimes | Array of purchase order lines with writable fields from the order form. Must have at least 1 items. |
+| `lines[].id` | integer | No | Must match an existing stored value. |
+| `lines[].product_id` | integer | Yes | Must match an existing stored value. |
+| `lines[].planned_at` | string | Yes | Must be a valid date. |
+| `lines[].product_qty` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].uom_id` | integer | No | Must match an existing stored value. |
+| `lines[].product_packaging_qty` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].product_packaging_id` | integer | No | Must match an existing stored value. |
+| `lines[].price_unit` | number | Yes | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].taxes` | integer[] | No | Must match an existing stored value. |
+| `lines[].discount` | number | No | Must be at least 0. Must not be greater than 100. |
+| `lines[].qty_received` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+| `lines[].qty_received_manual` | number | No | Must be at least 0. Must not be greater than 99999999999. |
+
+
+`Sometimes` means the field is required on create. On update it is optional, but it cannot be empty when sent.
 
 ::: code-group
 
 ```bash [cURL]
-curl -X PATCH "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1" \
+curl -X PUT "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
-  -d '{"planned_at": "2026-11-01"}'
+  -d '{
+  "partner_id": 12,
+  "currency_id": 1,
+  "ordered_at": "2026-02-20 10:00:00",
+  "company_id": 1,
+  "partner_reference": "VEN-REF-009",
+  "requisition_id": 5,
+  "planned_at": "2026-10-28T07:26:03",
+  "user_id": 2,
+  "payment_term_id": 4,
+  "incoterm_id": 3,
+  "description": "Please ship in one lot.",
+  "origin": "b",
+  "lines": [
+    {
+      "product_id": 101,
+      "planned_at": "2026-02-28 12:00:00",
+      "product_qty": 20,
+      "uom_id": 1,
+      "product_packaging_id": null,
+      "product_packaging_qty": 22,
+      "price_unit": 80,
+      "discount": 5,
+      "qty_received": 7,
+      "qty_received_manual": 16,
+      "taxes": [
+        1,
+        2
+      ]
+    }
+  ]
+}'
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1", {
-  method: "PATCH",
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}", {
+  method: "PUT",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
     "Content-Type": "application/json",
   },
-  body: JSON.stringify({ planned_at: "2026-11-01" }),
+  body: JSON.stringify({
+  "partner_id": 12,
+  "currency_id": 1,
+  "ordered_at": "2026-02-20 10:00:00",
+  "company_id": 1,
+  "partner_reference": "VEN-REF-009",
+  "requisition_id": 5,
+  "planned_at": "2026-10-28T07:26:03",
+  "user_id": 2,
+  "payment_term_id": 4,
+  "incoterm_id": 3,
+  "description": "Please ship in one lot.",
+  "origin": "b",
+  "lines": [
+    {
+      "product_id": 101,
+      "planned_at": "2026-02-28 12:00:00",
+      "product_qty": 20,
+      "uom_id": 1,
+      "product_packaging_id": null,
+      "product_packaging_qty": 22,
+      "price_unit": 80,
+      "discount": 5,
+      "qty_received": 7,
+      "qty_received_manual": 16,
+      "taxes": [
+        1,
+        2
+      ]
+    }
+  ]
+}),
 });
 
 const data = await response.json();
@@ -362,13 +793,44 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1', [
+$response = $client->request('PUT', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
     ],
-    'json' => ['planned_at' => '2026-11-01'],
+    'json' => [
+    'partner_id' => 12,
+    'currency_id' => 1,
+    'ordered_at' => '2026-02-20 10:00:00',
+    'company_id' => 1,
+    'partner_reference' => 'VEN-REF-009',
+    'requisition_id' => 5,
+    'planned_at' => '2026-10-28T07:26:03',
+    'user_id' => 2,
+    'payment_term_id' => 4,
+    'incoterm_id' => 3,
+    'description' => 'Please ship in one lot.',
+    'origin' => 'b',
+    'lines' => [
+      [
+        'product_id' => 101,
+        'planned_at' => '2026-02-28 12:00:00',
+        'product_qty' => 20,
+        'uom_id' => 1,
+        'product_packaging_id' => null,
+        'product_packaging_qty' => 22,
+        'price_unit' => 80,
+        'discount' => 5,
+        'qty_received' => 7,
+        'qty_received_manual' => 16,
+        'taxes' => [
+          1,
+          2,
+        ],
+      ],
+    ],
+  ],
 ]);
 
 $data = json_decode($response->getBody(), true);
@@ -377,7 +839,7 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
@@ -385,9 +847,40 @@ headers = {
     "Content-Type": "application/json",
 }
 
-payload = {"planned_at": "2026-11-01"}
+payload = {
+    "partner_id": 12,
+    "currency_id": 1,
+    "ordered_at": "2026-02-20 10:00:00",
+    "company_id": 1,
+    "partner_reference": "VEN-REF-009",
+    "requisition_id": 5,
+    "planned_at": "2026-10-28T07:26:03",
+    "user_id": 2,
+    "payment_term_id": 4,
+    "incoterm_id": 3,
+    "description": "Please ship in one lot.",
+    "origin": "b",
+    "lines": [
+        {
+            "product_id": 101,
+            "planned_at": "2026-02-28 12:00:00",
+            "product_qty": 20,
+            "uom_id": 1,
+            "product_packaging_id": None,
+            "product_packaging_qty": 22,
+            "price_unit": 80,
+            "discount": 5,
+            "qty_received": 7,
+            "qty_received_manual": 16,
+            "taxes": [
+                1,
+                2,
+            ],
+        },
+    ],
+}
 
-response = requests.patch(url, headers=headers, json=payload)
+response = requests.put(url, headers=headers, json=payload)
 
 data = response.json()
 print(data)
@@ -395,79 +888,72 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## Delete purchase order
-
-<Badge type="danger" text="DELETE" /> `/admin/api/v1/purchases/purchase-orders/{id}`
-
-Delete a purchase order.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
-
-::: code-group
-
-```bash [cURL]
-curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1", {
-  method: "DELETE",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
   },
-});
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Purchase order updated successfully."
 }
+```
 
-response = requests.delete(url, headers=headers)
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
-**Example response** <Badge type="info" text="204" />
-
-No content.
 
 ---
 
-## Confirm purchase order
+## Delete purchase order
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/confirm`
+<Badge type="tip" text="DELETE" /> `/admin/api/v1/purchases/purchase-orders/{id}`
 
-Confirm a request for quotation, converting it into a purchase order.
+Delete a purchase order
 
 > 🔒 Requires a valid Bearer token.
 
@@ -475,28 +961,27 @@ Confirm a request for quotation, converting it into a purchase order.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
 
-**Error responses**
 
-| HTTP status | Meaning |
-|-------------|---------|
-| 422 | Order is already confirmed or cannot be confirmed in its current state |
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm" \
+curl -X DELETE "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm", {
-  method: "POST",
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}", {
+  method: "DELETE",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -509,10 +994,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm', [
+$response = $client->request('DELETE', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -522,11 +1008,108 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+response = requests.delete(url, headers=headers)
+
+data = response.json()
+print(data)
+```
+
+:::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "message": "Purchase order deleted successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
+---
+
+## Confirm purchase order
+
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/confirm`
+
+Confirm a request for quotation into a purchase order
+
+> 🔒 Requires a valid Bearer token.
+
+**Path parameters**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | integer | Yes | The purchase order ID |
+
+
+
+
+::: code-group
+
+```bash [cURL]
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm" \
+  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
+```
+
+```javascript [JavaScript]
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+```php [PHP]
+<?php
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm', [
+    'headers' => [
+        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$data = json_decode($response->getBody(), true);
+```
+
+```python [Python]
+import requests
+
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm"
+
+headers = {
+    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -543,22 +1126,66 @@ print(data)
 {
   "data": {
     "id": 1,
-    "name": "PO/2026/00001",
-    "state": "purchase",
-    "ordered_at": "2026-10-27T00:00:00.000000Z",
-    "untaxed_amount": 450.00,
-    "total_amount": 495.00
-  }
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  },
+  "message": "Purchase order confirmed successfully."
 }
 ```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Cancel purchase order
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/cancel`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/cancel`
 
-Cancel a purchase order.
+Cancel a purchase order
 
 > 🔒 Requires a valid Bearer token.
 
@@ -566,28 +1193,27 @@ Cancel a purchase order.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
 
-**Error responses**
 
-| HTTP status | Meaning |
-|-------------|---------|
-| 422 | Order cannot be cancelled in its current state |
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/cancel" \
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/cancel" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/cancel", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/cancel", {
   method: "POST",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -600,10 +1226,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/cancel', [
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/cancel', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -613,11 +1240,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/cancel"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/cancel"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -627,14 +1255,73 @@ print(data)
 ```
 
 :::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  },
+  "message": "Purchase order canceled successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Set purchase order to draft
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/draft`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/draft`
 
-Revert a cancelled purchase order back to draft state.
+Move a canceled purchase order back to draft
 
 > 🔒 Requires a valid Bearer token.
 
@@ -642,22 +1329,27 @@ Revert a cancelled purchase order back to draft state.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
+
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/draft" \
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/draft" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/draft", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/draft", {
   method: "POST",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -670,10 +1362,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/draft', [
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/draft', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -683,11 +1376,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/draft"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/draft"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -697,14 +1391,73 @@ print(data)
 ```
 
 :::
+
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  },
+  "message": "Purchase order set to draft successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
 
 ---
 
 ## Toggle purchase order lock
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock`
 
-Toggle the lock state of a purchase order between `purchase` and `done`.
+Toggle lock state between purchase and done
 
 > 🔒 Requires a valid Bearer token.
 
@@ -712,22 +1465,27 @@ Toggle the lock state of a purchase order between `purchase` and `done`.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
+
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/toggle-lock" \
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/toggle-lock", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock", {
   method: "POST",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -740,10 +1498,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/toggle-lock', [
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -753,11 +1512,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/toggle-lock"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/toggle-lock"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -768,13 +1528,72 @@ print(data)
 
 :::
 
+**Example response** <Badge type="info" text="200" />
+
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
+  },
+  "message": "Purchase order lock state updated successfully."
+}
+```
+
+::: details Error response — 401
+
+```json
+{
+  "message": "Unauthenticated."
+}
+```
+
+:::
+
+
 ---
 
-## Confirm receipt date
+## Confirm purchase order receipt date
 
-<Badge type="warning" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date`
+<Badge type="tip" text="POST" /> `/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date`
 
-Mark a purchase order's receipt date reminder as confirmed, dismissing the overdue alert.
+Mark purchase order receipt reminder as confirmed
 
 > 🔒 Requires a valid Bearer token.
 
@@ -782,22 +1601,27 @@ Mark a purchase order's receipt date reminder as confirmed, dismissing the overd
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `id` | integer | Yes | The ID of the purchase order |
+| `id` | integer | Yes | The purchase order ID |
+
+
+
 
 ::: code-group
 
 ```bash [cURL]
-curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm-receipt-date" \
+curl -X POST "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date" \
   -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json"
 ```
 
 ```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm-receipt-date", {
+const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date", {
   method: "POST",
   headers: {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -810,10 +1634,11 @@ console.log(data);
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm-receipt-date', [
+$response = $client->request('POST', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date', [
     'headers' => [
         'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
         'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ],
 ]);
 
@@ -823,11 +1648,12 @@ $data = json_decode($response->getBody(), true);
 ```python [Python]
 import requests
 
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/confirm-receipt-date"
+url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/{id}/confirm-receipt-date"
 
 headers = {
     "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
     "Accept": "application/json",
+    "Content-Type": "application/json",
 }
 
 response = requests.post(url, headers=headers)
@@ -838,212 +1664,63 @@ print(data)
 
 :::
 
----
+**Example response** <Badge type="info" text="200" />
 
-## List order lines
-
-<Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-orders/{id}/lines`
-
-Retrieve lines belonging to a purchase order.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
-
-::: code-group
-
-```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/lines" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/lines", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+```json
+{
+  "data": {
+    "id": 1,
+    "name": "PO/1",
+    "description": null,
+    "priority": "0",
+    "origin": "REQ-2026-001",
+    "partner_reference": null,
+    "state": "sent",
+    "invoice_status": "no",
+    "receipt_status": "no",
+    "untaxed_amount": 77000,
+    "tax_amount": 11550,
+    "total_amount": 88550,
+    "total_cc_amount": 88550,
+    "currency_rate": 1,
+    "mail_reminder_confirmed": false,
+    "mail_reception_confirmed": false,
+    "mail_reception_declined": false,
+    "invoice_count": 0,
+    "ordered_at": "2026-07-31T13:32:03.000000Z",
+    "approved_at": null,
+    "planned_at": null,
+    "calendar_start_at": "2026-07-31T13:32:03.000000Z",
+    "incoterm_location": null,
+    "effective_date": null,
+    "report_grids": false,
+    "requisition_id": null,
+    "purchases_group_id": null,
+    "partner_id": 68,
+    "currency_id": 1,
+    "fiscal_position_id": null,
+    "payment_term_id": null,
+    "incoterm_id": null,
+    "user_id": 1,
+    "company_id": 1,
+    "creator_id": 1,
+    "operation_type_id": 1,
+    "created_at": "2026-07-31T13:32:03.000000Z",
+    "updated_at": "2026-10-26T14:04:39.000000Z"
   },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/lines', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/lines"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
+  "message": "Purchase order receipt date confirmed successfully."
 }
+```
 
-response = requests.get(url, headers=headers)
+::: details Error response — 401
 
-data = response.json()
-print(data)
+```json
+{
+  "message": "Unauthenticated."
+}
 ```
 
 :::
 
----
-
-## List order receipts
-
-<Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-orders/{id}/receipts`
-
-Retrieve inventory receipts generated for a purchase order.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
-
-::: code-group
-
-```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/receipts" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/receipts", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-  },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/receipts', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/receipts"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.get(url, headers=headers)
-
-data = response.json()
-print(data)
-```
-
-:::
 
 ---
-
-## List order bills
-
-<Badge type="tip" text="GET" /> `/admin/api/v1/purchases/purchase-orders/{id}/bills`
-
-Retrieve accounting bills generated for a purchase order.
-
-> 🔒 Requires a valid Bearer token.
-
-**Path parameters**
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `purchaseOrder` | integer | Yes | The ID of the purchase order |
-
-::: code-group
-
-```bash [cURL]
-curl -X GET "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/bills" \
-  -H "Authorization: Bearer {YOUR_AUTH_TOKEN}" \
-  -H "Accept: application/json"
-```
-
-```javascript [JavaScript]
-const response = await fetch("https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/bills", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-  },
-});
-
-const data = await response.json();
-console.log(data);
-```
-
-```php [PHP]
-<?php
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('GET', 'https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/bills', [
-    'headers' => [
-        'Authorization' => 'Bearer {YOUR_AUTH_TOKEN}',
-        'Accept' => 'application/json',
-    ],
-]);
-
-$data = json_decode($response->getBody(), true);
-```
-
-```python [Python]
-import requests
-
-url = "https://your-domain.com/admin/api/v1/purchases/purchase-orders/1/bills"
-
-headers = {
-    "Authorization": "Bearer {YOUR_AUTH_TOKEN}",
-    "Accept": "application/json",
-}
-
-response = requests.get(url, headers=headers)
-
-data = response.json()
-print(data)
-```
-
-:::

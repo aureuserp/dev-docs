@@ -1,20 +1,16 @@
-# Compact Admin Theme
+# Overview
 
 The **compact admin theme** is a CSS density layer built into AureusERP that reduces padding, spacing, and element heights across the admin panel. It ships as a default part of the admin and customer panel stylesheets, giving the interface a tighter, data-dense look suitable for productivity-focused workflows.
 
 ## How It Works
 
-The compact theme is defined in `resources/css/filament/shared/compact.css` and is automatically imported by both the admin and customer panel theme files:
+The compact theme is defined in `resources/css/filament/shared/compact.css` and is automatically imported by both `resources/css/filament/admin/theme.css` and `resources/css/filament/customer/theme.css` with this line:
 
 ```css
-/* resources/css/filament/admin/theme.css */
-@import '../shared/compact.css';
-
-/* resources/css/filament/customer/theme.css */
 @import '../shared/compact.css';
 ```
 
-Because it is imported at the theme level, the compact styling is always active in both panels. There is no runtime toggle — it applies to all users by default.
+Because it is imported at the theme level, the compact styling is always active in both panels. There is no runtime toggle. It applies to all users by default.
 
 ## What It Affects
 
@@ -37,17 +33,15 @@ The compact CSS layer overrides Filament's default spacing for the following ele
 | Chatter modal | Tighter header, content, and footer spacing |
 | Masonry layout | Two-column `lg:columns-2` with `break-inside-avoid` |
 
-## Customising the Compact Theme
+## Customizing the Compact Theme
 
 ### Overriding Specific Rules
 
 Add CSS after the `@import` statement in the relevant theme file to override individual compact rules. For example, to restore larger padding on form sections:
 
 ```css
-/* resources/css/filament/admin/theme.css */
 @import '../shared/compact.css';
 
-/* Override: restore default section padding */
 .fi-section:not(.fi-section-not-contained):not(.fi-divided)
   > .fi-section-content-ctn
   > .fi-section-content {
@@ -57,14 +51,7 @@ Add CSS after the `@import` statement in the relevant theme file to override ind
 
 ### Disabling the Compact Theme
 
-To remove the compact layer entirely from a panel, delete or comment out the `@import` line in the panel's theme CSS file:
-
-```css
-/* resources/css/filament/admin/theme.css */
-
-/* Remove this line to disable compact styling: */
-/* @import '../shared/compact.css'; */
-```
+To remove the compact layer entirely from a panel, delete the `@import '../shared/compact.css';` line from the panel's theme CSS file (`resources/css/filament/admin/theme.css` or `resources/css/filament/customer/theme.css`).
 
 After editing any theme CSS file, rebuild the frontend assets:
 
@@ -82,11 +69,11 @@ npm run dev
 
 You can add your own density rules directly to `resources/css/filament/shared/compact.css`. Because both panels import this file, any additions apply everywhere. If you need panel-specific adjustments, add them to the individual panel theme file instead.
 
-## Branding and Colour Customisation
+## Branding and Color Customization
 
-Colours and logos are separate from the compact theme and are managed through the **Settings → Branding** page in the admin panel (`Webkul\Support\Filament\Clusters\Settings\Pages\ManageBranding`). From there you can set:
+Colors and logos are separate from the compact theme and are managed through the **Settings → Branding** page in the admin panel (`Webkul\Support\Filament\Clusters\Settings\Pages\ManageBranding`). From there you can set:
 
 - Light and dark logos, favicon, and logo height.
-- Primary, gray, danger, info, success, and warning panel colours.
+- Primary, gray, danger, info, success, and warning panel colors.
 
 These settings are stored via `Webkul\Support\Settings\BrandSettings` and applied at runtime through a middleware, independently of the compact CSS layer.

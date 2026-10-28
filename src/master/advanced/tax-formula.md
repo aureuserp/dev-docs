@@ -1,4 +1,4 @@
-# Custom Tax Formulas
+# Overview
 
 AureusERP supports a **code-based tax type** (`AmountType::CODE`) that lets you define the tax amount using an arithmetic formula rather than a fixed percentage or a fixed amount. The formula is evaluated at invoice time by `Webkul\Account\Services\TaxFormulaEvaluator`.
 
@@ -6,11 +6,11 @@ AureusERP supports a **code-based tax type** (`AmountType::CODE`) that lets you 
 
 Formulas are simple arithmetic expressions. Only the following constructs are allowed:
 
-- **Numbers** — integer or decimal literals (e.g. `100`, `1.5`)
-- **Variables** — `price_unit`, `quantity`, `price_subtotal`
-- **Functions** — `min(a, b)`, `max(a, b)`
-- **Operators** — `+`, `-`, `*`, `/`
-- **Parentheses** — for grouping
+- **Numbers**: integer or decimal literals (e.g. `100`, `1.5`)
+- **Variables**: `price_unit`, `quantity`, `price_subtotal`
+- **Functions**: `min(a, b)`, `max(a, b)`
+- **Operators**: `+`, `-`, `*`, `/`
+- **Parentheses**: for grouping
 
 Anything else (strings, PHP code, unknown identifiers) is rejected at save time by `TaxFormulaEvaluator::validate()`.
 
@@ -24,7 +24,7 @@ Anything else (strings, PHP code, unknown identifiers) is rejected at save time 
 
 ### Functions
 
-| Function | Behaviour |
+| Function | Behavior |
 |---|---|
 | `min(a, b, ...)` | Returns the smallest argument |
 | `max(a, b, ...)` | Returns the largest argument |
@@ -63,19 +63,15 @@ use Webkul\Account\Exceptions\InvalidTaxFormulaException;
 
 $evaluator = new TaxFormulaEvaluator;
 
-// Evaluate a formula with real line values
 $taxAmount = $evaluator->evaluate('min(price_subtotal * 0.18, 500)', [
     'price_unit'     => 120.00,
     'quantity'       => 5,
     'price_subtotal' => 600.00,
 ]);
-// $taxAmount === 108.0
 
-// Validate a formula without evaluating real values (used on save)
 try {
     $evaluator->validate($formulaFromRequest);
 } catch (InvalidTaxFormulaException $e) {
-    // Show $e->getMessage() to the user
 }
 ```
 
