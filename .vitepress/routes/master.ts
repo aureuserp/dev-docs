@@ -181,6 +181,26 @@ const routes = [
         link: '/master/advanced/custom-fields'
       },
       {
+        text: 'Custom Sequence',
+        link: '/master/advanced/custom-sequence'
+      },
+      {
+        text: 'Price Lists',
+        link: '/master/advanced/price-lists'
+      },
+      {
+        text: 'Compact Theme',
+        link: '/master/advanced/compact-theme'
+      },
+      {
+        text: 'PDF Preview & Export',
+        link: '/master/advanced/pdf-preview'
+      },
+      {
+        text: 'Custom Tax Formulas',
+        link: '/master/advanced/tax-formula'
+      },
+      {
         text: 'Chatter',
         collapsed: true,
         items: [

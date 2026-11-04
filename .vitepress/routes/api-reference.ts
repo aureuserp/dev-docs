@@ -248,6 +248,70 @@ const apiReference = {
       ]
     },
     {
+      "text": "Projects",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Projects",
+          "link": "/master/api-reference/endpoints/projects/projects"
+        },
+        {
+          "text": "Tasks",
+          "link": "/master/api-reference/endpoints/projects/tasks"
+        },
+        {
+          "text": "Project Stages",
+          "link": "/master/api-reference/endpoints/projects/project-stages"
+        },
+        {
+          "text": "Task Stages",
+          "link": "/master/api-reference/endpoints/projects/task-stages"
+        },
+        {
+          "text": "Milestones",
+          "link": "/master/api-reference/endpoints/projects/milestones"
+        },
+        {
+          "text": "Tags",
+          "link": "/master/api-reference/endpoints/projects/tags"
+        }
+      ]
+    },
+    {
+      "text": "Purchases",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Vendor Price Lists",
+          "link": "/master/api-reference/endpoints/purchases/vendor-price-lists"
+        },
+        {
+          "text": "Purchase Orders",
+          "link": "/master/api-reference/endpoints/purchases/purchase-orders"
+        },
+        {
+          "text": "Purchase Order Lines",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-lines"
+        },
+        {
+          "text": "Purchase Order Receipts",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-receipts"
+        },
+        {
+          "text": "Purchase Order Bills",
+          "link": "/master/api-reference/endpoints/purchases/purchase-order-bills"
+        },
+        {
+          "text": "Purchase Agreements",
+          "link": "/master/api-reference/endpoints/purchases/purchase-agreements"
+        },
+        {
+          "text": "Purchase Agreement Lines",
+          "link": "/master/api-reference/endpoints/purchases/purchase-agreement-lines"
+        }
+      ]
+    },
+    {
       "text": "Sales",
       "collapsed": true,
       "items": [

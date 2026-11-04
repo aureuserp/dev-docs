@@ -232,6 +232,64 @@ class Dashboard extends BaseDashboard
 
 The Inventory plugin likewise ships dashboard widgets (`OperationTypeCardWidget`, `OperationTypeOverviewWidget` in `Webkul\Inventory\Filament\Widgets`) added in v1.5.0.
 
+## Invoice Dashboard
+
+Added in v1.7.0. The `Webkul\Invoice\Filament\Pages\Invoices` dashboard (`$routePath = 'invoice'`) provides a unified view across invoices and bills.
+
+**Filters**
+
+| Filter | Type | Description |
+|---|---|---|
+| `date_range` | Date range | `DashboardDateRange` picker |
+| `product_id` | Select | Filter by product |
+| `category_id` | Select | Filter by product category |
+| `customer_id` | Select | Filter by customer |
+| `vendor_id` | Select | Filter by vendor |
+| `salesperson_id` | Select | Filter by salesperson |
+| `payment_state` | Select | Filter by payment state |
+
+**Widgets**
+
+| Widget | Namespace | Purpose |
+|---|---|---|
+| `InvoiceStatsWidget` | `Webkul\Invoice\Filament\Widgets` | Key invoice metrics (count, total, overdue) |
+| `BillStatsWidget` | `Webkul\Invoice\Filament\Widgets` | Key bill metrics |
+| `RevenueOverTimeWidget` | `Webkul\Invoice\Filament\Widgets` | Revenue trend chart over date range |
+| `CustomerRevenueChart` | `Webkul\Invoice\Filament\Widgets` | Revenue breakdown by customer |
+| `SalespersonPerformanceChart` | `Webkul\Invoice\Filament\Widgets` | Revenue by salesperson |
+| `TopInvoicesWidget` | `Webkul\Invoice\Filament\Widgets` | Highest-value invoices |
+| `TopBillsWidget` | `Webkul\Invoice\Filament\Widgets` | Highest-value bills |
+
+All widgets use `HasInvoiceDashboardFilters` to read the shared filter state.
+
+## Purchase Dashboard
+
+Added in v1.7.0. The `Webkul\Purchase\Filament\Admin\Pages\Purchases` dashboard (`$routePath = 'purchase'`) covers procurement metrics.
+
+**Filters**
+
+| Filter | Type | Description |
+|---|---|---|
+| `date_range` | Date range | `DashboardDateRange` picker |
+| `country_id` | Select | Filter by vendor country |
+| `product_id` | Select | Filter by product |
+| `partner_id` | Select | Filter by vendor |
+| `category_id` | Select | Filter by product category |
+| `buyer_id` | Select | Filter by buyer (user) |
+| `state` | Select | Filter by order state |
+
+**Widgets**
+
+| Widget | Namespace | Purpose |
+|---|---|---|
+| `PurchaseStatsWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Key order metrics (RFQ count, PO total, etc.) |
+| `PurchaseTrendWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Purchase spend over time |
+| `VendorSpendChart` | `Webkul\Purchase\Filament\Admin\Widgets` | Spend breakdown by vendor |
+| `TopOrdersWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Highest-value purchase orders |
+| `TopPurchasedProductsWidget` | `Webkul\Purchase\Filament\Admin\Widgets` | Most-ordered products by spend |
+
+All widgets use `HasPurchaseDashboardFilters` to read the shared filter state.
+
 ## More Information
 
 For more details, refer to the [FilamentPHP Dashboard Documentation](https://filamentphp.com/docs/5.x/widgets/overview#customizing-the-dashboard-page).
