@@ -29,6 +29,7 @@ These plugins can be installed as needed to extend system functionality:
 | Accounting   | Main accounting operations module that handles journal entries, financial reports, period closing, and accounting workflows based on the Accounts setup           |
 | Barcode      | Barcode-driven warehouse operations interface |
 | Contacts     | Contact management for customers and vendors |
+| CRM          | Lead capture, sales pipeline, activities, and forecast reporting |
 | Employees    | Employees management                         |
 | Inventory    | Inventory and warehouse management           |
 | Invoices     | Invoice generation and management            |
@@ -118,6 +119,25 @@ The **Accounting plugin depends on Accounts** to function correctly and uses its
   - Store and manage details of customers, partners, and vendors.
   - Integration with sales and CRM modules.
   - Custom fields support for specific business needs.
+
+### CRM
+
+- **Purpose**: Customer relationship management, from lead capture to quotation.
+- **Requires**: The Contacts and Sales plugins. The installer installs them if needed.
+- **Key Features**:
+  - Leads and opportunities on Kanban boards by stage, with Convert to Opportunity, Won, and Lost actions.
+  - Expected revenue, probability, priority, and tags on each opportunity.
+  - Activities (Email, Call, Meeting, To-Do) with schedule, reschedule, and mark-as-done actions.
+  - Sales teams with their own pipelines, plus automatic lead assignment rules and lead scoring.
+  - Quotations from the Sales plugin, opened from CRM.
+  - Forecast, Pipeline, Leads, and Activities reports with graph, summary, and list views.
+  - CSV import and CSV/Excel export for leads, opportunities, quotations, and the Forecast report.
+- **Commands**:
+  - `php artisan crm:install` and `php artisan crm:uninstall` install and remove the plugin.
+  - `php artisan crm:assign-leads` assigns leads to teams and salespeople.
+  - `php artisan crm:fetch-mail` creates leads from emails on the incoming mail servers.
+  - `php artisan crm:visits-to-leads` creates leads from website visits.
+- **Note**: Import and export run as background jobs, so a queue worker (`php artisan queue:work`) must be running.
 
 ### Employees
 
